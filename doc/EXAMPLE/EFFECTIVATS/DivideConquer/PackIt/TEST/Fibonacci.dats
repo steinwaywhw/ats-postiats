@@ -14,9 +14,24 @@
 //
 (* ****** ****** *)
 //
-#staload
-"./../DATS/DivideConquer.dats"
+#include "./../mylibies.hats"
 //
+(*
+//
+// If the package
+// [effectivats-divideconquer]
+// is npm-installed,
+// please use this version:
+//
+#include
+"{$PATSHOMELOCS}\
+/effectivats-divideconquer/mylibies.hats"
+//
+*)
+(* ****** ****** *)
+
+#staload $DivideConquer
+
 (* ****** ****** *)
 //
 extern
@@ -30,7 +45,7 @@ assume output_t0ype = int
 (* ****** ****** *)
 //
 implement
-DivideConquer$base_test<>
+DC_base_test<>
   (n) =
 (
 if n >= 2 then false else true
@@ -39,22 +54,21 @@ if n >= 2 then false else true
 (* ****** ****** *)
 //
 implement
-DivideConquer$base_solve<>
+DC_base_solve<>
   (n) = n
 //
 (* ****** ****** *)
 //
 implement
-DivideConquer$divide<>
-  (n) =
+DC_divide<>(n) =
 (
 g0ofg1($list{int}(n-1, n-2))
-)
+) (* DC_divide *)
 //
 (* ****** ****** *)
 
 implement
-DivideConquer$conquer$combine<>
+DC_conquer_combine<>
   (_, rs) = r1 + r2 where
 {
 //
@@ -73,15 +87,8 @@ println!
 (
   "Fibonacci(", n, ")"
 )
-//
-(*
-implement
-DivideConquer$solve_rec<>
-  (n) = Fibonacci(n)
-*)
-//
 in
-  DivideConquer$solve<>(n)
+  DC_solve<>(n)
 end // end of [Fibonacci]
 
 (* ****** ****** *)
@@ -90,11 +97,8 @@ implement
 main0() =
 {
 //
-(*
 val () =
 println! ("Fibonacci(5) = ", Fibonacci(5))
-*)
-//
 val () =
 println! ("Fibonacci(10) = ", Fibonacci(10))
 val () =
@@ -106,4 +110,4 @@ println! ("Fibonacci(30) = ", Fibonacci(30))
 
 (* ****** ****** *)
 
-(* end of [test01.dats] *)
+(* end of [Fibonacci.dats] *)
