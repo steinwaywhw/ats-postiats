@@ -29,6 +29,7 @@ Bohem-GC) can be readily employed.
 
 * [![Build Status](https://travis-ci.org/githwxi/ATS-Postiats.svg?branch=master)](https://travis-ci.org/githwxi/ATS-Postiats) Ubuntu
 * [![Build Status](https://ci.appveyor.com/api/projects/status/github/githwxi/ats-postiats?branch=master&svg=true)](https://ci.appveyor.com/project/githwxi/ats-postiats/branch/master) Cygwin
+* [![Build Status](https://travis-ci.org/ats-lang/ATS-Postiats-release.svg?branch=master)](https://travis-ci.org/ats-lang/ATS-Postiats-release) Release (Ubuntu/Mac * gcc/clang)
 
 ## Installing ATS2
 
