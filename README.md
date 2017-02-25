@@ -27,7 +27,7 @@ Bohem-GC) can be readily employed.
 
 ## Build Status
 
-* [![Build Status](https://travis-ci.org/githwxi/ATS-Postiats-release.svg?branch=master)](https://travis-ci.org/githwxi/ATS-Postiats-release) Ubuntu
+* [![Build Status](https://travis-ci.org/ats-lang/ATS-Postiats-release.svg?branch=master)](https://travis-ci.org/ats-lang/ATS-Postiats-release) Ubuntu
 
 ## Installing ATS2
 
