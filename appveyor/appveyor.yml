@@ -7,12 +7,10 @@ environment:
     global:
         BUILD_FOLDER: C:/projects
         CYG_MIRROR: http://cygwin.mirror.constant.com
-        ATS1VER: 0.2.12
-        ATS1VERNAME: anairiats
         ATS1PACK: ats-lang-anairiats-0.2.12
         ATS1PACKTGZ: ats-lang-anairiats-0.2.12.tgz
-        ATS1LANGURL: http://sourceforge.net/projects/ats-lang
-        ATS1PACKURL: "%ATS1LANGURL%/files/ats-lang/%ATS1VERNAME%-%ATS1VER%/%ATS1PACKTGZ%"
+        ATS1PACKURL: http://ats-lang.github.io/ATS-Anairiats/ats-lang-anairiats-0.2.12.tgz
+        HOMEDIR: "/cygdrive/c/projects"
         ATSHOME: "/cygdrive/c/projects/ats-lang-anairiats-0.2.12"
         ATSHOMERELOC: ATS-0.2.12
         PATSHOME: "/cygdrive/c/projects/ATS-Postiats"
@@ -41,13 +39,13 @@ init:
     - 'echo Setup Cygwin dependencies is finished!'
 
 install:
-    - 'echo Build ATS1(with GC support)'
-    - 'bash -lc "wget -q -P %BUILD_FOLDER% %ATS1PACKURL%"'
-    - 'bash -lc "tar -C $(cygpath -u %BUILD_FOLDER%) -zxf $(cygpath -u %BUILD_FOLDER%/%ATS1PACKTGZ%)"'
-    - 'bash -lc "cd %ATSHOME%; exec 0</dev/null; ./configure && make all"'
-    - 'echo Build ATS1(with GC support) is finished!'
+    - 'echo Build ATS1(with GC)...'
+    - 'bash -lc "cd %BUILD_FOLDER% && curl -O %ATS1PACKURL% && tar -zxf %ATS1PACKTGZ%"'
+    - 'bash -lc "cd %BUILD_FOLDER%/%ATS1PACK%; exec 0</dev/null; ./configure && make all"'
+    - 'echo Build ATS1(with GC) is finished!'
     - 'echo Download ATS2-contrib...'
     - 'bash -lc "cd %BUILD_FOLDER% && git clone %PATSCONTRIBURL%"'
+    - 'echo Download ATS2-contrib is finished!'
 
 build_script:
     - 'echo Cygwin root is: %CYG_ROOT%'
