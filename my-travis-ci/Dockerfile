@@ -23,7 +23,7 @@ ENV PATSHOME_contrib=${PATSHOMERELOC}
 ENV PATH=${PATH}:${PATSHOME}/bin
 
 WORKDIR ${HOME}
-RUN git clone https://github.com/githwxi/ATS-Postiats
+RUN git clone https://github.com/ats-lang/ATS-Postiats-release/ ${HOME}/ATS-Postiats
 
 WORKDIR /tmp
 RUN (cd ${HOME}     && /tmp/install_ats1.sh)
