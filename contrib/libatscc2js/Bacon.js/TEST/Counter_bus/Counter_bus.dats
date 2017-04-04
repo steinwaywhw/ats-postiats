@@ -3,16 +3,22 @@
 *)
 
 (* ****** ****** *)
-
-#define ATS_MAINATSFLAG 1
-#define ATS_DYNLOADNAME "my_dynload"
-
+//
+#define
+ATS_MAINATSFLAG 1
+#define
+ATS_DYNLOADNAME "my_dynload"
+//
+(* ****** ****** *)
+//
+#define
+LIBATSCC2JS_targetloc
+"$PATSHOME/contrib/libatscc2js"
+//
 (* ****** ****** *)
 //
 #include
-"share/atspre_define.hats"
-#include
-"{$LIBATSCC2JS}/staloadall.hats"
+"{$LIBATSCC2JS}/mylibies.hats"
 //
 (* ****** ****** *)
 //

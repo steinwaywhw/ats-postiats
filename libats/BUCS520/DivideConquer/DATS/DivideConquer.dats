@@ -35,8 +35,7 @@
 //
 #define
 ATS_PACKNAME
-"ATSLIB.libats\
-.BUCS520.DivideConquer"
+"ATSLIB.libats.BUCS520.DivideConquer"
 //
 (* ****** ****** *)
 //
