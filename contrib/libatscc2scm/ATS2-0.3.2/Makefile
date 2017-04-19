@@ -79,16 +79,22 @@ all_in_one:: libatscc2scm_all
 DATE=/bin/date
 ECHO=/bin/echo -en
 #
+PRINTF=printf
+#
+######
+#
 libatscc2scm_all:: ; \
 $(ECHO) | $(CAT) - >$(LIBATSCC2SCM_ALL_SCM)
 libatscc2scm_all:: ; \
-$(ECHO) ';;\n' | $(CAT) - >>$(LIBATSCC2SCM_ALL_SCM)
+$(PRINTF) ';;\n' | $(CAT) - >>$(LIBATSCC2SCM_ALL_SCM)
 libatscc2scm_all:: ; \
-$(ECHO) ';; Time of Generation:\n' | $(CAT) - >>$(LIBATSCC2SCM_ALL_SCM)
+$(PRINTF) ';; Time of Generation:\n' | $(CAT) - >>$(LIBATSCC2SCM_ALL_SCM)
 libatscc2scm_all:: ; \
-$(ECHO) ';; ' | $(CAT) - >>$(LIBATSCC2SCM_ALL_SCM) && $(DATE) | $(CAT) - >>$(LIBATSCC2SCM_ALL_SCM)
+$(PRINTF) ';; ' | $(CAT) - >>$(LIBATSCC2SCM_ALL_SCM) && $(DATE) | $(CAT) - >>$(LIBATSCC2SCM_ALL_SCM)
 libatscc2scm_all:: ; \
-$(ECHO) ';;\n\n' | $(CAT) - >>$(LIBATSCC2SCM_ALL_SCM)
+$(PRINTF) ';;\n\n' | $(CAT) - >>$(LIBATSCC2SCM_ALL_SCM)
+#
+######
 #
 libatscc2scm_all:: ; \
 $(CAT) >>$(LIBATSCC2SCM_ALL_SCM) \
@@ -122,11 +128,11 @@ output/DATS/qlistref_dats.scm \
 output/DATS/ML/list0_dats.scm \
 
 ######
-
+#
 libatscc2scm_all:: ; \
-$(ECHO) '\n;; ****** ****** ;;\n' | $(CAT) - >>$(LIBATSCC2SCM_ALL_SCM)
+$(PRINTF) '\n;; ****** ****** ;;\n' | $(CAT) - >>$(LIBATSCC2SCM_ALL_SCM)
 libatscc2scm_all:: ; \
-$(ECHO) '\n;; end of [libatscc2scm_all.scm] ;;\n' | $(CAT) - >>$(LIBATSCC2SCM_ALL_SCM)
+$(PRINTF) '\n;; end of [libatscc2scm_all.scm] ;;\n' | $(CAT) - >>$(LIBATSCC2SCM_ALL_SCM)
 #
 ######
 #

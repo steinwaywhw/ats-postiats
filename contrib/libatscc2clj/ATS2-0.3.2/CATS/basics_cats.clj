@@ -92,12 +92,10 @@
 ;; ****** ****** ;;
 
 (defmacro
- ATSPMVtyrec[& xs]
-`(vector ~@(for [x xs] x))
+ ATSPMVtyrec[& xs] `(vector ~@(for [x xs] x))
 )
 (defmacro
- ATSPMVtysum[& xs]
-`(vector ~@(for [x xs] x))
+ ATSPMVtysum[& xs] `(vector ~@(for [x xs] x))
 )
 
 ;; ****** ****** ;;

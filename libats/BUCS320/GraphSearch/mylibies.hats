@@ -14,10 +14,12 @@ GraphSearch =
 (* ****** ****** *)
 //
 #ifdef
+//
 GRAPHSEARCH_BFS
 #staload
 GraphSearch_bfs =
 "./DATS/GraphSearch_bfs.dats"
+//
 #endif // #ifdef(GRAPHSEARCH_BFS)
 //
 (* ****** ****** *)

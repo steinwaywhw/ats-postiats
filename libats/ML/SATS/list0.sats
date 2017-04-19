@@ -38,10 +38,13 @@
 // higher-order functions should not be annotated!
 //
 (* ****** ****** *)
-
-#define ATS_PACKNAME "ATSLIB.libats.ML"
-#define ATS_EXTERN_PREFIX "atslib_ML_" // prefix for external names
-
+//
+#define
+ATS_PACKNAME "ATSLIB.libats.ML"
+//
+#define
+ATS_EXTERN_PREFIX "atslib_ML_" // prefix for external names
+//
 (* ****** ****** *)
 
 staload "libats/ML/SATS/basis.sats"
@@ -715,6 +718,12 @@ fun{
 a:t0p}{b:t0p
 } list0_imap
   (list0(INV(a)), fopr: cfun2(int, a, b)): list0(b)
+fun{
+a:t0p}{b:t0p
+} list0_imap_method
+  (list0(INV(a)), TYPE(b))(fopr: cfun2(int, a, b)): list0(b)
+//
+overload .imap with list0_imap_method
 //
 (* ****** ****** *)
 

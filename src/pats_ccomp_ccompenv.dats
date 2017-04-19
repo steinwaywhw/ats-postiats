@@ -701,21 +701,26 @@ end // end of [fprint_markenvlst]
 (* ****** ****** *)
 
 vtypedef
-freeconenv = List_vt (primvalist_vt)
+freeconenv = List_vt(primvalist_vt)
 
 extern
-fun freeconenv_free (xs: freeconenv): void
+fun
+freeconenv_free(xs: freeconenv): void
 
 implement
-freeconenv_free (xs) = let
+freeconenv_free(xs) = let
+//
+(*
+val () = println! ("freeconenv_free")
+*)
+//
 in
 //
 case+ xs of
-| ~list_vt_cons
-    (x, xs) => let
+| ~list_vt_nil() => ()
+| ~list_vt_cons(x, xs) => let
     val () = list_vt_free (x) in freeconenv_free (xs)
   end // end of [list_vt_cons]
-| ~list_vt_nil () => ()
 //
 end // end of [freeconenv_free]
 
@@ -923,45 +928,52 @@ implement
 ccompenv_make
   () = env where
 {
-val env = CCOMPENV (?)
-val CCOMPENV (!p) = env
+val env = CCOMPENV(?)
+val CCOMPENV(!p) = env
 //
 val () = p->ccompenv_tmplevel := 0
 val () = p->ccompenv_tmprecdepth := 0
 //
-val () = p->ccompenv_freeconenv := list_vt_nil ()
-val () = p->ccompenv_loopexnenv := list_vt_nil ()
+val () = p->ccompenv_freeconenv := list_vt_nil()
+val () = p->ccompenv_loopexnenv := list_vt_nil()
 //
-val () = p->ccompenv_tailcalenv := list_vt_nil ()
+val () = p->ccompenv_tailcalenv := list_vt_nil()
 //
-val () = p->ccompenv_flabsetenv := list_vt_nil ()
-val () = p->ccompenv_dvarsetenv := list_vt_nil ()
-val () = p->ccompenv_vbindmapenv := list_vt_nil ()
+val () = p->ccompenv_flabsetenv := list_vt_nil()
+val () = p->ccompenv_dvarsetenv := list_vt_nil()
+val () = p->ccompenv_vbindmapenv := list_vt_nil()
 //
-val () = p->ccompenv_markenvlst := MARKENVLSTnil ()
+val () = p->ccompenv_markenvlst := MARKENVLSTnil()
 //
-val () = p->ccompenv_vbindmapall := d2varmaplst_vt_nil ()
+val () = p->ccompenv_vbindmapall := d2varmaplst_vt_nil()
 //
 val () = fold@ (env)
 //
-val () = ccompenv_inc_flabsetenv (env) // toplevel flabs
-val () = ccompenv_inc_dvarsetenv (env) // toplevel d2vars
-val () = ccompenv_inc_vbindmapenv (env) // toplevel vbinds
+val () = ccompenv_inc_flabsetenv(env) // toplevel flabs
+val () = ccompenv_inc_dvarsetenv(env) // toplevel d2vars
+val () = ccompenv_inc_vbindmapenv(env) // toplevel vbinds
 //
 } // end of [ccompenv_make]
 
 (* ****** ****** *)
 
 implement
-ccompenv_free (env) = let
+ccompenv_free(env) = let
+//
+(*
+val () = println! ("ccompenv_free")
+*)
+//
 in
 //
 case+ env of
-| CCOMPENV (!p_env) => let
-    val () = ccompenv_struct_uninitize (!p_env)
-  in
-    free@ (env)
-  end // end of [CCOMPENV]
+| CCOMPENV
+  (
+    !p_env
+  ) => free@ (env) where
+  {
+    val () = ccompenv_struct_uninitize(!p_env)
+  } // end of [CCOMPENV]
 //
 end // end of [ccompenv_free]
 
@@ -970,16 +982,24 @@ end // end of [ccompenv_free]
 implement
 fprint_ccompenv
   (out, env) = let
+//
+(*
+val () = println! ("fprint_ccompenv")
+*)
+//
 in
 //
 case+ env of
-| CCOMPENV (!p_env) => let
-    val () = fprint_string (out, "ccompenv_markenvlst: ")
-    val () = fprint_markenvlst (out, p_env->ccompenv_markenvlst)
-    val () = fprint_newline (out)
-  in
-    fold@ (env)
-  end // end of [CCOMPENV]
+| CCOMPENV(!p_env) =>
+  {
+//
+    val () = fprint_string(out, "ccompenv_markenvlst: ")
+    val () = fprint_markenvlst(out, p_env->ccompenv_markenvlst)
+    val () = fprint_newline(out)
+//
+    prval ((*folded*)) = fold@ (env)
+//
+  } // end of [CCOMPENV]
 //
 end // end of [fprint_ccompenv]
 
@@ -987,20 +1007,28 @@ end // end of [fprint_ccompenv]
 
 implement
 ccompenv_get_tmplevel
-  (env) = let
-  val CCOMPENV (!p) = env
-  val tmplev = p->ccompenv_tmplevel
-  prval () = fold@ (env)
-in
-  tmplev
-end // end of [ccompenv_get_tmplevel]
+  (env) = level where
+{
+//
+val CCOMPENV (!p) = env
+//
+val level = p->ccompenv_tmplevel
+//
+prval ((*folded*)) = fold@ (env)
+//
+} (* end of [ccompenv_get_tmplevel] *)
 
 implement
 ccompenv_inc_tmplevel
   (env) = let
-  val CCOMPENV (!p) = env
-  val () = (p->ccompenv_tmplevel := p->ccompenv_tmplevel + 1)
-  prval () = fold@ (env)
+//
+val CCOMPENV(!p) = env
+//
+val level = p->ccompenv_tmplevel
+val ((*void*)) = (p->ccompenv_tmplevel := level + 1)
+//
+prval ((*folded*)) = fold@ (env)
+//
 in
   // nothing
 end // end of [ccompenv_inc_tmplevel]
@@ -1008,9 +1036,14 @@ end // end of [ccompenv_inc_tmplevel]
 implement
 ccompenv_dec_tmplevel
   (env) = let
-  val CCOMPENV (!p) = env
-  val () = (p->ccompenv_tmplevel := p->ccompenv_tmplevel - 1)
-  prval () = fold@ (env)
+//
+val CCOMPENV(!p) = env
+//
+val level = p->ccompenv_tmplevel
+val ((*void*)) = (p->ccompenv_tmplevel := level - 1)
+//
+prval ((*folded*)) = fold@ (env)
+//
 in
   // nothing
 end // end of [ccompenv_dec_tmplevel]
@@ -1019,20 +1052,27 @@ end // end of [ccompenv_dec_tmplevel]
 
 implement
 ccompenv_get_tmprecdepth
-  (env) = let
-  val CCOMPENV (!p) = env
-  val depth = p->ccompenv_tmprecdepth
-  prval () = fold@ (env)
-in
-  depth
-end // end of [ccompenv_get_tmprecdepth]
+  (env) = depth where
+{
+val CCOMPENV(!p) = env
+//
+val depth = p->ccompenv_tmprecdepth
+//
+prval ((*folded*)) = fold@ (env)
+//
+} (* end of [ccompenv_get_tmprecdepth] *)
 
 implement
 ccompenv_inc_tmprecdepth
   (env) = let
-  val CCOMPENV (!p) = env
-  val () = (p->ccompenv_tmprecdepth := p->ccompenv_tmprecdepth + 1)
-  prval () = fold@ (env)
+//
+val CCOMPENV(!p) = env
+//
+val depth = p->ccompenv_tmprecdepth
+val ((*void*)) = p->ccompenv_tmprecdepth := depth+1
+//
+prval ((*folded*)) = fold@ (env)
+//
 in
   // nothing
 end // end of [ccompenv_inc_tmprecdepth]
@@ -1040,10 +1080,14 @@ end // end of [ccompenv_inc_tmprecdepth]
 implement
 ccompenv_dec_tmprecdepth
   (env) = let
-  val CCOMPENV (!p) = env
-  val depth = p->ccompenv_tmprecdepth
-  val ((*void*)) = p->ccompenv_tmprecdepth := depth - 1
-  prval () = fold@ (env)
+//
+val CCOMPENV(!p) = env
+//
+val depth = p->ccompenv_tmprecdepth
+val ((*void*)) = p->ccompenv_tmprecdepth := depth-1
+//
+prval ((*folded*)) = fold@ (env)
+//
 in
   // nothing
 end // end of [ccompenv_dec_tmprecdepth]
@@ -1053,12 +1097,16 @@ end // end of [ccompenv_dec_tmprecdepth]
 implement
 ccompenv_inc_freeconenv
   (env) = let
-  val CCOMPENV (!p) = env
-  val pmvs = list_vt_nil{primval}()
-  val pmvss = p->ccompenv_freeconenv
-  val ((*void*)) =
-    p->ccompenv_freeconenv := list_vt_cons (pmvs, pmvss)
-  prval () = fold@ (env)
+//
+val CCOMPENV(!p) = env
+//
+val pmvs = list_vt_nil{primval}()
+val pmvss = p->ccompenv_freeconenv
+val ((*void*)) =
+  p->ccompenv_freeconenv := list_vt_cons(pmvs, pmvss)
+//
+prval ((*folded*)) = fold@ (env)
+//
 in
   // nothing
 end // end of [ccompenv_inc_freeconenv]
@@ -1067,10 +1115,16 @@ implement
 ccompenv_getdec_freeconenv
   (env) = pmvs where
 {
-val CCOMPENV (!p) = env
-val-~list_vt_cons (pmvs, pmvss) = p->ccompenv_freeconenv
+//
+val CCOMPENV(!p) = env
+//
+val-
+~list_vt_cons
+ (pmvs, pmvss) = p->ccompenv_freeconenv
 val ((*void*)) = p->ccompenv_freeconenv := pmvss
-prval () = fold@ (env)
+//
+prval ((*folded*)) = fold@ (env)
+//
 } // end of [ccompenv_getdec_freeconenv]
 
 (* ****** ****** *)
@@ -1079,29 +1133,57 @@ implement
 ccompenv_add_freeconenv
   (env, pmv) = let
 //
-val CCOMPENV (!p) = env
-val-list_vt_cons
-  (!p_pmvs, _) = p->ccompenv_freeconenv
-val () = !p_pmvs := list_vt_cons (pmv, !p_pmvs)
-prval () = fold@ (p->ccompenv_freeconenv)
-prval () = fold@ (env)
+val CCOMPENV(!p) = env
+//
+val-
+list_vt_cons(!p_pmvs, _) = p->ccompenv_freeconenv
+val ((*void*)) = !p_pmvs := list_vt_cons(pmv, !p_pmvs)
+prval ((*folded*)) = fold@ (p->ccompenv_freeconenv)
+//
+prval ((*folded*)) = fold@ (env)
 //
 in
   // nothing
 end // end of [ccompenv_add_freeconenv]
 
 implement
-ccompenv_add_freeconenv_if
-  (env, pmv, pck, d2c) = let
+ccompenv_add_freetupenv_if
+  (env, pmv, pck) = let
+//
+(*
+val () =
+println! ("ccompenv_add_freetupenv_if")
+*)
+//
 in
 //
 case+ pck of
-| PCKfree () => let
-    val isnul = d2con_is_nullary (d2c)
+| PCKfree() =>
+  ccompenv_add_freeconenv(env, pmv)
+| _ (* non-PCKfree *) => ((*nothing*))
+//
+end // end of [ccompenv_add_freetupenv_if]
+
+implement
+ccompenv_add_freeconenv_if
+  (env, pmv, pck, d2c) = let
+//
+(*
+val () =
+println! ("ccompenv_add_freeconenv_if")
+*)
+//
+in
+//
+case+ pck of
+| PCKfree() => let
+    val isnul = d2con_is_nullary(d2c)
   in
-    if not(isnul) then ccompenv_add_freeconenv (env, pmv)
+    if not(isnul)
+      then ccompenv_add_freeconenv(env, pmv)
+    // end of [if]
   end (* end of [PCKfree] *)
-| _ => ((*nothing*))
+| _ (* non-PCKfree *) => ((*nothing*))
 //
 end // end of [ccompenv_add_freeconenv_if]
 

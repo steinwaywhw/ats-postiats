@@ -7,9 +7,11 @@
 PATSCC=${PATSHOME}/bin/patscc
 
 ######
-
-INCLATS += -I$(PATSCONTRIB)/contrib
-
+#
+INCLATS += -I./../..
+#
+#INCLATS += -I${PATSHOME}/contrib
+#
 ######
 
 all::

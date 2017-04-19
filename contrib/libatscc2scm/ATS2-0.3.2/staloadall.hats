@@ -10,6 +10,7 @@
 (* ****** ****** *)
 //
 staload "./basics_scm.sats"
+staload _ = "./DATS/basics.dats"
 //
 (* ****** ****** *)
 //
@@ -30,6 +31,7 @@ staload _(*anon*) = "./DATS/print.dats"
 (* ****** ****** *)
 //
 staload "./SATS/list.sats"
+staload "./SATS/SCMlist.sats"
 //
 (* ****** ****** *)
 //
@@ -43,6 +45,10 @@ staload "./SATS/reference.sats"
 (* ****** ****** *)
 //
 staload _(*anon*) = "./DATS/list.dats"
+//
+staload _(*anon*) = "./DATS/SCMlist.dats"
+//
+(* ****** ****** *)
 //
 staload _(*anon*) = "./DATS/stream.dats"
 staload _(*anon*) = "./DATS/stream_vt.dats"
