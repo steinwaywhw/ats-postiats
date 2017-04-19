@@ -245,6 +245,26 @@ cleanall:: ; $(RMF) bug-2016-10-08
 
 ######
 
+all:: \
+bug-2017-04-16
+bug-2017-04-16: \
+bug-2017-04-16.dats; $(PATSCC) -DATS_MEMALLOC_LIBC -o $@ $<
+#
+# regress: \
+# valgrind ./bug-2017-04-16
+#
+cleanall:: ; $(RMF) bug-2017-04-16
+
+######
+
+all:: \
+bug-2017-04-17
+bug-2017-04-17: \
+bug-2017-04-17.dats; $(PATSCC) -DATS_MEMALLOC_LIBC -o $@ $<
+cleanall:: ; $(RMF) bug-2017-04-17
+
+######
+
 RMF=rm -f
 
 ######
