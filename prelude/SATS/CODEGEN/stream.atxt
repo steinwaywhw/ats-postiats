@@ -1,14 +1,28 @@
 %{
-#define ATSCODEFORMAT "txt"
-#if (ATSCODEFORMAT == "txt")
-#include "utils/atsdoc/HATS/postiatsatxt.hats"
+#define
+ATSCODEFORMAT "txt"
+#if(ATSCODEFORMAT == "txt")
+//
+#include
+"utils/atsdoc/HATS/postiatsatxt.hats"
+//
 #endif // end of [ATSCCODEFORMAT]
-val _thisfilename = atext_strcst"stream.sats"
-val () = theAtextMap_insert_str ("thisfilename", _thisfilename)
+//
+val
+_thisfilename = atext_strcst"stream.sats"
+val () =
+theAtextMap_insert_str("thisfilename", _thisfilename)
+//
 %}\
 \
 #atscode_banner()
 #atscode_copyright_GPL()
+
+#atscode_separator()
+
+#atscode_author("Hongwei Xi")
+#atscode_start_time("February, 2012")
+#atscode_authoremail("gmhwxiATgmailDOTcom")
 
 #atscode_separator()
 
@@ -188,7 +202,7 @@ a:t0p}{b:t0p
 //
 fun{
 a:t0p}{b:t0p
-} stream_imap{n:int}
+} stream_imap
   (xs: stream(INV(a))):<!laz> stream(b)
 //
 fun{
@@ -331,7 +345,7 @@ stream_labelize
 //
 fun
 {a:t0p}
-stream_foreach (xs: stream(a)): void
+stream_foreach(xs: stream(a)): void
 fun
 {a:t0p}
 {env:vt0p}

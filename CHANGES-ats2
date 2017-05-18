@@ -36,8 +36,20 @@ Here is a list of major additions and changes since the last release:
    needs to be written as
    fun foo(xy): ... = let $tup(x, y) = xy in ... end
 5. Adding myatscc-support (in utils/myatscc)
-   for allowing compilation commands being embedded inside source code
-      
+   for allowing compilation commands being embedded inside source code.
+   For instance, the following comment can be included to support using
+   ATS as a scripting language:
+   (*
+   ##myatsccdef=\
+   patsopt --constraint-ignore --dynamic $1 | \
+   tcc -run -DATS_MEMALLOC_LIBC -I${PATSHOME} -I${PATSHOME}/ccomp/runtime - $arglst(2)
+   *)
+6. Adding ats1-libatsopt (npm-package)
+7. Adding contrib/atscntrb-hx-getargs for building command-line support
+8. Adding ATS-Postiats/npm-util/libats-hwxi/OpenSCAD:
+   Supporting meta-programming for OpenSCAD, that is, writing programs in
+   ATS for generating OpenSCAD code (that can create models for 3D-printing)
+  
 ######
 
 0.3.4
