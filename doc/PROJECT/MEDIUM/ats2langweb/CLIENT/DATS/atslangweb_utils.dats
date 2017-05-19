@@ -12,15 +12,8 @@
 //
 (* ****** ****** *)
 //
-#include
-"share/atspre_define.hats"
-//
-staload
-UN = "prelude/SATS/unsafe.sats"
-//
-(* ****** ****** *)
-//
-#define ATS_DYNLOADFLAG 0
+#define
+ATS_DYNLOADFLAG 0
 //
 (* ****** ****** *)
 
@@ -29,6 +22,19 @@ ATS_EXTERN_PREFIX "atslangweb_"
 #define
 ATS_STATIC_PREFIX "atslangweb_"
 
+(* ****** ****** *)
+//
+staload
+UN =
+"prelude/SATS/unsafe.sats"
+//
+(* ****** ****** *)
+//
+#define
+LIBATSCC2JS_targetloc
+"$PATSHOME\
+/contrib/libatscc2js/ATS2-0.3.2"
+//
 (* ****** ****** *)
 //
 #include
@@ -335,12 +341,12 @@ Home_queenpuzzle_button_set(name)
 function
 Home_queenpuzzle_reply(reply)
 {
-  var comparr =
-    JSON.parse(decodeURIComponent(reply));
-  // end of [var]
-  if (comparr[0]===0) eval(comparr[1]);
+  var
+  comparr =
+  JSON.parse(decodeURIComponent(reply));
+  if (comparr[0]===0) eval( comparr[1] );
   if (comparr[0] > 0) alert("Compilation failed!");
-  Home_queenpuzzle_button_set("Try-it-yourself"); // HX: change it back!
+  Home_queenpuzzle_button_set( "Try-it-yourself" ); // HX: change it back!
   return/*void*/;
 }
 //
