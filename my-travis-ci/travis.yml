@@ -17,8 +17,8 @@ env:
     # ATS2
     - PATSHOME=${TRAVIS_BUILD_DIR}
     - PATSHOMERELOC=${HOME}/ATS-Postiats-contrib
+    - PATSCONTRIB=${PATSHOMERELOC}
     - PATSHOME_contrib=${PATSHOMERELOC}
-    - PATCONTRIB=${PATSHOMERELOC}
     # Path
     - PATH=${PATH}:${PATSHOME}/bin
     # Docker
