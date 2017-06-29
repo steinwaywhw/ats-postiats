@@ -42,6 +42,18 @@ UN =
 //
 (* ****** ****** *)
 //
+local
+#staload
+FILEBAS =
+"prelude/SATS/filebas.sats"
+in (* in-of-local *)
+macdef
+streamize_fileref_line =
+$FILEBAS.streamize_fileref_line
+end // end of [local]
+//
+(* ****** ****** *)
+//
 implement
 line_is_key(line) = let
 //
@@ -663,9 +675,19 @@ case+ xs of
 } (* end of [process_linenumlst] *)
 
 (* ****** ****** *)
-
+//
 implement
-streamize_fileref_gvhashtbl
+streamize_fileref_gvhashtbl_0
+  (inp) =
+(
+streamize_fileref_gvhashtbl_cap
+  (inp, 8(*default*))
+)
+//
+(* ****** ****** *)
+//
+implement
+streamize_fileref_gvhashtbl_cap
   (inp, cap) =
   auxmain(gxs) where
 {
@@ -715,8 +737,8 @@ stream_vt_imap_fun
 //
 val gxs = lines_grouping(lns)
 //
-} // end of [streamize_fileref_gvhashtbl]
-
+} (* end of [streamize_fileref_gvhashtbl] *)
+//
 (* ****** ****** *)
 
 (* end of [libatsrec.dats] *)

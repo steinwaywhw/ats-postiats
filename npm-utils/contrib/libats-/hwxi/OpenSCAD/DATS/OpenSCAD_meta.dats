@@ -394,6 +394,18 @@ in
 end // end of [scadobj_sphere_float1]
 
 (* ****** ****** *)
+//
+implement
+scadobj_sphere_at
+(
+  cntr, rad
+) : scadobj = let
+  val+POINT3(x, y, z) = cntr
+in
+  scadobj_tfmapp(scadtfm_translate(x, y, z), scadobj_sphere(rad))
+end // end of [scadobj_sphere_at]
+//      
+(* ****** ****** *)
 
 implement
 scadobj_cylinder1_int2
@@ -861,12 +873,32 @@ $list{point3}(p0, p1, p2, p3)
 val f0 = $list(0, 1, 2)
 val f1 = $list(0, 2, 3)
 val f2 = $list(0, 3, 1)
-val f3 = $list(1, 2, 3)
+val f3 = $list(1, 3, 2)
 val faces = $list(f0, f1, f2, f3)
 //
 in
   scadobj_polyhedron(pts, faces, 2(*N*))
 end // end of [scadobj_tetrahedron]
+
+(* ****** ****** *)
+
+implement
+scadobj_square_pyramid
+  (p0, p1, p2, p3, p4) = let
+//
+val pts =
+$list{point3}(p0, p1, p2, p3, p4)
+//
+val f0 = $list(0, 1, 2)
+val f1 = $list(0, 2, 3)
+val f2 = $list(0, 3, 4)
+val f3 = $list(0, 4, 1)
+val f4 = $list(1, 4, 3, 2)
+val faces = $list(f0, f1, f2, f3, f4)
+//
+in
+  scadobj_polyhedron(pts, faces, 2(*N*))
+end // end of [scadobj_square_pyramid]
 
 (* ****** ****** *)
 

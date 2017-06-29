@@ -1,3 +1,4 @@
+######
 #
 # A simple Makefile
 #
@@ -24,7 +25,7 @@ PATSOPT=$(PATSHOME)/bin/patsopt
 #
 ATSCC2JS=$(PATSHOME)/bin/atscc2js
 LIBATSCC2JS_ALL_JS=\
-${PATSHOMERELOC}/contrib/libatscc/libatscc2js/output/libatscc2js_all.js
+${PATSHOME}/contrib/libatscc2js/ATS2-0.3.2/output/libatscc2js_all.js
 #
 ######
 
@@ -213,6 +214,10 @@ $(NODEJS) patsopt_dats.js \
 test_patsopt:: ; \
 $(NODEJS) patsopt_dats.js \
   --dynamic /PATSHOME/prelude/DATS/stream_vt.dats 
+#
+test_patsopt:: ; \
+$(NODEJS) patsopt_dats.js \
+  --dynamic /PATSHOME/contrib/libatscc2js/DATS/stream_vt.dats 
 #
 ######
 

@@ -1,9 +1,9 @@
+(* ****** ****** *)
 (*
 //
 // For server-side actions
 //
 *)
-
 (* ****** ****** *)
 //
 #define ATS_PACKNAME "atslangweb"
@@ -42,9 +42,9 @@ datatype compres =
 // HX-2014-09:
 // the order must be maintained!!!
 //
-  | COMPRES0_succ of (string(*target*)) // success
-  | COMPRES1_fail of (string(*target*)) // failure1
-  | COMPRES2_fail of (string(*source*), string(*errmsg*)) // failure2
+| COMPRES0_succ of (string(*target*)) // success
+| COMPRES1_fail of (string(*target*)) // failure1
+| COMPRES2_fail of (string(*source*), string(*errmsg*)) // failure2
 //
 (* ****** ****** *)
 //
@@ -98,10 +98,9 @@ atscc2js_command(): string
 fun{}
 atscc2js_comp_command
 (
-  !tmpfile(*inp*), !tmpfile(*out*), !tmpfile(*stderr*)
+  inp: !tmpfile
+, out: !tmpfile, err: !tmpfile(*stderr*)
 ) : string // end of [atscc2js_comp_command]
-//
-(* ****** ****** *)
 //
 fun{}
 atscc2js_comp_file(fname: !tmpfile): compres
@@ -109,18 +108,23 @@ atscc2js_comp_file(fname: !tmpfile): compres
 (* ****** ****** *)
 //
 fun{}
-pats2xhtml_command(): string
+pats2xhtml_command
+  ((*void*)): string
+//
 fun{}
 pats2xhtml_eval_command
 (
   stadyn: int
-, !tmpfile(*inp*), !tmpfile(*out*), !tmpfile(*stderr*)
+, !tmpfile(*inp*)
+, !tmpfile(*out*), !tmpfile(*stderr*)
 ) : string // end of [pats2xhtml_eval_command]
 //
 fun{}
-pats2xhtml_eval_code(stadyn: int, code: string): compres
+pats2xhtml_eval_code
+  (stadyn: int, code: string): compres
 fun{}
-pats2xhtml_eval_file(stadyn: int, fname: !tmpfile): compres
+pats2xhtml_eval_file
+  (stadyn: int, fname: !tmpfile): compres
 //
 (* ****** ****** *)
 

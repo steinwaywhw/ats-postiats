@@ -2,7 +2,7 @@
 "name":
 "atsccomp-atscc2js"
 ,
-"version": "1.0.2"
+"version": "1.0.4"
 ,
 "description":
 "For transpiling into JS the C code generated from ATS source via patsopt"

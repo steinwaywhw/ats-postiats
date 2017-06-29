@@ -6,12 +6,15 @@
 //
 (* ****** ****** *)
 //
-#define ATS_DYNLOADFLAG 0
+#define
+ATS_DYNLOADFLAG 0
 //
 (* ****** ****** *)
 //
-#include
-"share/atspre_define.hats"
+#define
+LIBATSCC2PL_targetloc
+"$PATSHOME\
+/contrib/libatscc2pl/ATS2-0.3.2"
 //
 (* ****** ****** *)
 //
@@ -25,16 +28,16 @@ fun
 fact : double -> double = "mac#fact"
 //
 implement
-fact (n) = let
+fact(n) = let
 //
 fun loop
 (
   n: double, res: double
 ) : double =
-  if n > 0.0 then loop (n-1.0, n*res) else res
+  if n > 0.0 then loop(n-1.0, n*res) else res
 //
 in
-  loop (n, 1.0)
+  loop(n, 1.0)
 end // end of [fact]
 
 (* ****** ****** *)

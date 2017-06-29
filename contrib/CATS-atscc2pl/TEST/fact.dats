@@ -6,8 +6,10 @@
 //
 (* ****** ****** *)
 //
-#include
-"share/atspre_define.hats"
+#define
+LIBATSCC2PL_targetloc
+"$PATSHOME\
+/contrib/libatscc2pl/ATS2-0.3.2"
 //
 (* ****** ****** *)
 //
@@ -26,7 +28,7 @@ extern
 fun fact : int -> int = "mac#fact"
 //
 implement
-fact (n) = if n > 0 then n * fact(n-1) else 1
+fact(n) = if n > 0 then n * fact(n-1) else 1
 //
 (* ****** ****** *)
 
