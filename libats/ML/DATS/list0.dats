@@ -1497,32 +1497,34 @@ list0_mapopt
 fun loop
 (
   xs: list0 (a)
-, res: &ptr? >> List0_vt (b)
+, res: &ptr? >> List0_vt(b)
 ) : void = let
 in
 //
 case+ xs of
+| list0_nil () =>
+  (
+    res := list_vt_nil ()
+  ) (* end of [list0_nil] *)
 | list0_cons
     (x, xs) =>
   (
   case+ fopr(x) of
-  | ~Some_vt y => let
+  | ~Some_vt(y) => let
       val () =
       (
       res :=
       list_vt_cons{b}{0}(y, _)
       )
-      val+list_vt_cons (_, res1) = res
-      val () = loop (xs, res1)
-      prval () = fold@ (res)
+      val+
+      list_vt_cons(_, res1) = res
+      val () = loop(xs, res1)
+      prval ((*folded*)) = fold@(res)
     in
       // nothing
     end // end of [Some0]
-  | ~None_vt () => loop (xs, res)
+  | ~None_vt((*void*)) => loop(xs, res)
   ) (* end of [list0_cons] *)
-| list0_nil () => (
-    res := list_vt_nil ()
-  ) (* end of [list0_nil] *)
 //
 end // end of [loop]
 //
@@ -1586,12 +1588,68 @@ in
 end // end of [list0_imap]
 
 (* ****** ****** *)
+
+implement
+{a}{b}
+list0_imapopt
+  (xs, fopr) = res where
+{
+//
+fun loop
+(
+  i0: int
+, xs: list0 (a)
+, res: &ptr? >> List0_vt(b)
+) : void = let
+in
+//
+case+ xs of
+| list0_nil () =>
+  (
+    res := list_vt_nil ()
+  ) (* end of [list0_nil] *)
+| list0_cons
+    (x, xs) =>
+  (
+  case+
+  fopr(i0, x) of
+  | ~Some_vt(y) => let
+      val () =
+      (
+      res :=
+      list_vt_cons{b}{0}(y, _)
+      )
+      val+
+      list_vt_cons(_, res1) = res
+      val () = loop(i0+1, xs, res1)
+      prval ((*folded*)) = fold@(res)
+    in
+      // nothing
+    end // end of [Some0]
+  | ~None_vt((*void*)) => loop(i0+1, xs, res)
+  ) (* end of [list0_cons] *)
+//
+end // end of [loop]
+//
+var res: ptr
+val () = loop(0, xs, res)
+val res = list0_of_list_vt(res)
+//
+} // end of [list0_imapopt]
+
+(* ****** ****** *)
 //
 implement
 {a}{b}
 list0_imap_method
   (xs, _(*TYPE*)) =
   lam(fopr) => list0_imap<a><b>(xs, fopr)
+//
+implement
+{a}{b}
+list0_imapopt_method
+  (xs, _(*TYPE*)) =
+  lam(fopr) => list0_imapopt<a><b>(xs, fopr)
 //
 (* ****** ****** *)
 //
@@ -1634,7 +1692,35 @@ $UN.castvwtp0{b2}
 in
   list0_of_list_vt{b}(list_map2<a1,a2><b>(g1ofg0(xs1), g1ofg0(xs2)))
 end // end of [list0_map2]
-
+//
+(* ****** ****** *)
+//
+implement
+{a1,a2}{b}
+list0_imap2
+  (xs1, xs2, fopr) = let
+//
+var _n_: int = 0
+val nptr = addr@(_n_)
+//
+implement
+{a11,a12}{b2}
+list_map2$fopr
+  (x1, x2) = let
+//
+val n0 =
+$UN.ptr0_get<int>(nptr)
+val res =
+$UN.castvwtp0{b2}
+  (fopr(n0, $UN.cast{a1}(x1), $UN.cast{a2}(x2)))
+in
+  $UN.ptr0_set<int>(nptr, n0+1); res
+end // end of [list_map2$fopr]
+//
+in
+  list0_of_list_vt{b}(list_map2<a1,a2><b>(g1ofg0(xs1), g1ofg0(xs2)))
+end // end of [list0_imap2]
+//
 (* ****** ****** *)
 
 implement

@@ -682,11 +682,12 @@ a,b:t0p
 fun
 {a:t0p}
 list0_filter
-  (xs: list0(INV(a)), pred: cfun(a, bool)): list0(a)
+(xs: list0(INV(a)), pred: cfun(a, bool)): list0(a)
+//
 fun
 {a:t0p}
 list0_filter_method
-  (xs: list0(INV(a)))(pred: cfun(a, bool)): list0(a)
+(xs: list0(INV(a)))(pred: cfun(a, bool)): list0(a)
 //
 overload .filter with list0_filter_method
 //
@@ -733,32 +734,57 @@ overload .mapopt with list0_mapopt_method
 //
 fun{a:t0p}
 list0_mapcons
-  (x0: a, xss: list0(list0(INV(a)))): list0(list0(a))
+(x0: a, xss: list0(list0(INV(a)))): list0(list0(a))
 //
 overload * with list0_mapcons
 //
 (* ****** ****** *)
 //
-fun{
-a:t0p}{b:t0p
-} list0_imap
-  (list0(INV(a)), fopr: cfun2(int, a, b)): list0(b)
-fun{
-a:t0p}{b:t0p
-} list0_imap_method
-  (list0(INV(a)), TYPE(b))(fopr: cfun2(int, a, b)): list0(b)
-//
-overload .imap with list0_imap_method
+fun
+{a:t0p}
+{b:t0p}
+list0_imap
+(list0(INV(a)), fopr: cfun2(int, a, b)): list0(b)
+fun
+{a:t0p}
+{b:t0p}
+list0_imapopt
+(list0(INV(a)), fopr: cfun2(int, a, Option_vt(b))): list0(b)
 //
 (* ****** ****** *)
-
+//
+fun
+{a:t0p}
+{b:t0p}
+list0_imap_method
+(list0(INV(a)), TYPE(b))(fopr: cfun2(int, a, b)): list0(b)
+fun
+{a:t0p}
+{b:t0p}
+list0_imapopt_method
+(list0(INV(a)), TYPE(b))(fopr: cfun2(int, a, Option_vt(b))): list0(b)
+//
+overload .imap with list0_imap_method
+overload .imapopt with list0_imapopt_method
+//
+(* ****** ****** *)
+//
 fun{
-a1,a2:t0p}{b:t0p
+a1,
+a2:t0p}{b:t0p
 } list0_map2
 (
   list0(INV(a1)), list0(INV(a2)), fopr: cfun2(a1, a2, b)
 ) : list0(b) // end of [list0_map2]
-
+//
+fun{
+a1,
+a2:t0p}{b:t0p
+} list0_imap2
+(
+  list0(INV(a1)), list0(INV(a2)), fopr: cfun3(int, a1, a2, b)
+) : list0(b) // end of [list0_imap2]
+//
 (* ****** ****** *)
 //
 fun{a:t0p}
@@ -842,13 +868,15 @@ fun{
 x,y:t0p
 } list0_iforeach_xprod2
 (
-  list0(INV(x)), list0(INV(y)), fwork: cfun4(intGte(0), x, intGte(0), y, void)
+  list0(INV(x))
+, list0(INV(y)), fwork: cfun4(intGte(0), x, intGte(0), y, void)
 ) : void // end-of-function
 fun
 {x,y:t0p}
 list0_iforeach_xprod2_method
 (
-  list0(INV(x)), list0(INV(y)))(fwork: cfun4(intGte(0), x, intGte(0), y, void)
+  list0(INV(x))
+, list0(INV(y)))(fwork: cfun4(intGte(0), x, intGte(0), y, void)
 ) : void // end-of-function
 //
 overload .foreach_xprod2 with list0_foreach_xprod2_method
