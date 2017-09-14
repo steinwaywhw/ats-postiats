@@ -36,8 +36,8 @@
 #define
 ATS_PACKNAME "ATSLIB.libats.ML"
 //
-#define
-ATS_EXTERN_PREFIX "atslib_ML_" // prefix for external names
+#define // prefix for external
+ATS_EXTERN_PREFIX "atslib_ML_" // names
 //
 (* ****** ****** *)
 
@@ -76,28 +76,38 @@ sortdef t0p = t@ype and vt0p = viewt@ype
 //
 fun{}
 matrix0_of_mtrxszref
-  {a:vt0p} (mtrxszref (a)):<> matrix0(a)
+  {a:vt0p}(mtrxszref (a)):<> matrix0(a)
 //
 fun{}
 mtrxszref_of_matrix0
-  {a:vt0p} (M: matrix0 (a)):<> mtrxszref(a)
+  {a:vt0p}(M: matrix0 (a)):<> mtrxszref(a)
 //
 (* ****** ****** *)
-
-fun{a:t0p}
+//
+symintr
 matrix0_make_elt
+//
+fun{a:t0p}
+matrix0_make_elt_int
+  (nrow: int, ncol: int, init: a):<!wrt> matrix0(a)
+// end of [matrix0_make_elt]
+fun{a:t0p}
+matrix0_make_elt_size
   (nrow: size_t, ncol: size_t, init: a):<!wrt> matrix0(a)
 // end of [matrix0_make_elt]
-
+//
+overload matrix0_make_elt with matrix0_make_elt_int
+overload matrix0_make_elt with matrix0_make_elt_size
+//
 (* ****** ****** *)
 //
 fun{}
-matrix0_get_ref{a:vt0p} (M: matrix0 a):<> Ptr1
+matrix0_get_ref{a:vt0p}(M: matrix0 a):<> Ptr1
 //
 fun{}
-matrix0_get_nrow{a:vt0p} (M: matrix0 a):<> size_t
+matrix0_get_nrow{a:vt0p}(M: matrix0 a):<> size_t
 fun{}
-matrix0_get_ncol{a:vt0p} (M: matrix0 a):<> size_t
+matrix0_get_ncol{a:vt0p}(M: matrix0 a):<> size_t
 //
 fun{}
 matrix0_get_refsize
@@ -137,9 +147,9 @@ overload matrix0_set_at with matrix0_set_at_size
 (* ****** ****** *)
 //
 fun{a:vt0p}
-print_matrix0 (M: matrix0(a)): void
+print_matrix0(M: matrix0(a)): void
 fun{a:vt0p}
-prerr_matrix0 (M: matrix0(a)): void
+prerr_matrix0(M: matrix0(a)): void
 //
 (*
 fprint_matrix$sep1 // col separation
@@ -155,26 +165,55 @@ fprint_matrix0_sep
 (* ****** ****** *)
 
 fun{a:t0p}
-matrix0_copy (M: matrix0(a)): matrix0(a)
+matrix0_copy(M: matrix0(a)): matrix0(a)
 
 (* ****** ****** *)
-
-fun{a:vt0p}
+//
+fun
+{a:vt0p}
 matrix0_tabulate
+  {m,n:int}
 (
-  nrow: size_t, ncol: size_t, f: cfun (size_t, size_t, a)
-) : matrix0(a) // end-of-fun
-
+  nrow: size_t(m)
+, ncol: size_t(n)
+, fopr: cfun(sizeLt(m), sizeLt(n), a)
+) : matrix0(a) // end of [matrix0_tabulate]
+//
+(* ****** ****** *)
+//
+fun
+{a:vt0p}
+matrix0_tabulate_method_int
+  {m,n:nat}
+(
+  nrow: int(m)
+, ncol: int(n))(fopr: cfun(natLt(m), natLt(n), a)
+) : matrix0(a) // end of [matrix0_tabulate_method_int]
+//
+fun
+{a:vt0p}
+matrix0_tabulate_method_size
+  {m,n:int}
+(
+  nrow: size_t(m)
+, ncol: size_t(n))(fopr: cfun(sizeLt(m), sizeLt(n), a)
+) : matrix0(a) // end of [matrix0_tabulate_method_size]
+//
+overload
+.matrix0_tabulate with matrix0_tabulate_method_int
+overload
+.matrix0_tabulate with matrix0_tabulate_method_size
+//
 (* ****** ****** *)
 
 fun{a:vt0p}
 matrix0_foreach
-  (M: matrix0(a), f: (&a >> _) -<cloref1> void): void
+  (M: matrix0(a), fwork: (&a >> _) -<cloref1> void): void
 // end of [matrix0_foreach]
 
 fun{a:vt0p}
 matrix0_iforeach
-  (M: matrix0(a), f: (size_t, size_t, &a >> _) -<cloref1> void): void
+  (M: matrix0(a), fwork: (size_t, size_t, &a >> _) -<cloref1> void): void
 // end of [matrix0_iforeach]
 
 (* ****** ****** *)
@@ -183,14 +222,14 @@ fun{
 res:vt0p}{a:vt0p
 } matrix0_foldleft
 (
-  M: matrix0(a), ini: res, f: (res, &a) -<cloref1> res
+  M: matrix0(a), ini: res, fopr: (res, &a) -<cloref1> res
 ) : res // end of [matrix0_foldleft]
 
 fun{
 res:vt0p}{a:vt0p
 } matrix0_ifoldleft
 (
-  M: matrix0(a), ini: res, f: (res, size_t, size_t, &a) -<cloref1> res
+  M: matrix0(a), ini: res, fopr: (res, size_t, size_t, &a) -<cloref1> res
 ) : res // end of [matrix0_ifoldleft]
 
 (* ****** ****** *)
@@ -203,19 +242,21 @@ overload .nrow with matrix0_get_nrow
 overload .ncol with matrix0_get_ncol
 
 (* ****** ****** *)
-
+//
 overload [] with matrix0_get_at_int of 0
-overload [] with matrix0_get_at_size of 0
 overload [] with matrix0_set_at_int of 0
+//
+overload [] with matrix0_get_at_size of 0
 overload [] with matrix0_set_at_size of 0
-
+//
 (* ****** ****** *)
-
+//
 overload print with print_matrix0
 overload prerr with print_matrix0
+//
 overload fprint with fprint_matrix0
 overload fprint with fprint_matrix0_sep
-
+//
 (* ****** ****** *)
 
 (* end of [matrix0.sats] *)

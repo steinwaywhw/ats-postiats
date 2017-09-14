@@ -1,8 +1,8 @@
+(* ****** ****** *)
 (*
 ** For writing ATS code
 ** that translates into Javascript
 *)
-
 (* ****** ****** *)
 
 #define ATS_DYNLOADFLAG 0
@@ -32,10 +32,18 @@ UN =
 #staload "./../SATS/integer.sats"
 //
 (* ****** ****** *)
-
+//
 #staload "./../SATS/string.sats"
 #staload "./../SATS/JSarray.sats"
-
+//
+(* ****** ****** *)
+//
+#staload "./../SATS/stream.sats"
+#staload "./../SATS/stream_vt.sats"
+//
+#staload _(*STREAM*) = "./stream.dats"
+#staload _(*STREAM_VT*) = "./stream_vt.dats"
+//
 (* ****** ****** *)
 
 implement
@@ -167,6 +175,93 @@ $UN.cast{string(n)}
 ) (* end of [string_tabulate_cloref] *)
 //
 (* ****** ****** *)
+implement
+streamize_string_code
+  (str0) =
+  auxmain(0) where
+{
+//
+val
+[n:int] str0 = g1ofg0(str0)
+//
+val len = string_length(str0)
+//
+fun
+auxmain
+{i:nat | i <= n}
+(
+  i: int(i)
+) : stream_vt(int) = $ldelay
+(
+//
+if i < len
+  then
+  stream_vt_cons
+    (str0.charCodeAt(i), auxmain(i+1))
+  // stream_vt_cons
+  else stream_vt_nil((*void*))
+//
+) (* end of [auxmain] *)
+//
+} (* end of [streamize_string_code] *)
+
+(* ****** ****** *)
+
+implement
+streamize_string_line
+  (inp) = let
+//
+#define ENDL 10
+//
+val
+[n:int]
+inp = g1ofg0(inp)
+//
+val n = length(inp)
+//
+fun
+auxmain
+{i,j:nat
+|i <= j; j <= n}
+(
+ i: int(i), j: int(j)
+) : stream_vt(string) = $ldelay
+(
+if
+(j < n)
+then let
+  val c0 = inp.charCodeAt(j)
+in
+  if
+  (c0 != ENDL)
+  then !(auxmain(i, j+1))
+  else let
+    val j1 = j + 1
+    val line =
+    string_substring_beg_end(inp, i, j)
+  in
+    stream_vt_cons(line, auxmain(j1, j1))
+  end
+end // end of [then]
+else
+(
+//
+  if
+  (i = j)
+  then
+  stream_vt_nil((*void*))
+  else
+  stream_vt_sing(string_substring_beg_end(inp, i, j))
+//
+) (* end of [else] *)
+) (* end of [auxmain] *)
+//
+in
+  auxmain(0(*i*), 0(*j*))
+end // end of [streamize_string_line]
+
+(* ****** ****** *)
+
 implement
 streamize_string_code
   (str0) =

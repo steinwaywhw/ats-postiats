@@ -1,6 +1,6 @@
 //
 // Some atext macros and functions
-// for writing the INT2PROGINATS book
+// for writing the ATS2TUTORIAL book
 //
 (* ****** ****** *)
 (*
