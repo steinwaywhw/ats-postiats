@@ -49,9 +49,10 @@ PATSPRE_targetloc
 #staload _ = "{$PATSPRE}/DATS/integer_fixed.dats"
 //
 (* ****** ****** *)
-
-#staload _ = "{$PATSPRE}/DATS/tuple.dats"
-
+//
+#staload
+_(*TUPLE*) = "{$PATSPRE}/DATS/tuple.dats"
+//
 (* ****** ****** *)
 
 #staload _ = "{$PATSPRE}/DATS/memory.dats"
@@ -103,13 +104,15 @@ PATSPRE_targetloc
 //
 (* ****** ****** *)
 //
-#staload UNSAFE = "{$PATSPRE}/SATS/unsafe.sats"
-//
-#staload _(*UNSAFE*) = "{$PATSPRE}/DATS/unsafe.dats"
+#staload
+UNSAFE = "{$PATSPRE}/SATS/unsafe.sats"
+#staload
+_(*UNSAFE*) = "{$PATSPRE}/DATS/unsafe.dats"
 //
 (* ****** ****** *)
 
-#staload _(*CHECKAST*) = "{$PATSPRE}/DATS/checkast.dats"
+#staload
+_(*CHECKAST*) = "{$PATSPRE}/DATS/checkast.dats"
 
 (* ****** ****** *)
 

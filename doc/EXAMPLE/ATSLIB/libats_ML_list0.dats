@@ -160,6 +160,27 @@ val () = fprintln! (out, "imap2: ys = ", ys)
 
 val () =
 {
+//
+val out = stdout_ref
+//
+val xs = list0_make_intrange(0, 10)
+//
+val-list0_cons(5, _) =
+list0_skip_while(xs, lam(x) => x < 5)
+val-list0_cons(5, _) =
+list0_skip_until(xs, lam(x) => x >= 5)
+//
+val-5 =
+length(list0_take_while(xs, lam(x) => x < 5))
+val-5 =
+length(list0_take_until(xs, lam(x) => x >= 5))
+//
+} (* end of [val] *)
+
+(* ****** ****** *)
+
+val () =
+{
 val out = stdout_ref
 val xs = list0_make_intrange (10, 0, ~1)
 val () = fprintln! (out, "xs = ", xs)
@@ -175,10 +196,10 @@ val () = {
 //
 val xs = g0ofg1($list{int}(0,1,2))
 //
-val () = xs.foreach_choose2()(lam(x, y) => println!(x, "/", y))
+val () = xs.choose2_foreach()(lam(x, y) => println!(x, "/", y))
 //
-val () = xs.foreach_xprod2(xs)(lam(x, y) => println!(x, "/", y))
-val () = xs.iforeach_xprod2(xs)(lam(i, x, j, y) => println!(i, ":", x, "/", j, ":", y))
+val () = xs.xprod2_foreach(xs)(lam(x, y) => println!(x, "/", y))
+val () = xs.xprod2_iforeach(xs)(lam(i, x, j, y) => println!(i, ":", x, "/", j, ":", y))
 //
 } (* end of [val] *)
 

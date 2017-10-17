@@ -111,13 +111,13 @@ loop
 (
 //
 case+ xs of
-| list_nil () => ()
-| list_cons (x, xs) =>
+| list_nil() => ()
+| list_cons(x, xs) =>
   (
     if i > 0
-      then fprint_list$sep<> (out);
+      then fprint_list$sep<>(out);
     // end of [if]
-    fprint_val<a> (out, x); loop (xs, i+1)
+    fprint_val<a>(out, x); loop(xs, i+1)
   ) (* end of [list_cons] *)
 //
 ) (* end of [loop] *)
@@ -378,11 +378,17 @@ list_insert_at
 if
 (i > 0)
 then let
-  val+list_cons (x, xs) = xs
+//
+val+
+list_cons(x, xs) = xs
+//
 in
-  list_cons (x, list_insert_at (xs, i-1, x0))
+//
+list_cons
+  (x, list_insert_at(xs, i-1, x0))
+//
 end // end of [then]
-else list_cons (x0, xs)
+else list_cons(x0, xs)
 //
 ) (* end of [list_insert_at] *)
   
@@ -439,15 +445,13 @@ list_exists
   case+ xs of
   | list_nil() => false
   | list_cons(x, xs) =>
-      if pred(x)
-        then true else list_exists(xs, pred)
-      // end of [if[
-    // end of [list_cons]
+    (pred(x) || list_exists(xs, pred))
 ) (* end of [list_exists] *)
 //
 implement
 list_exists_method
-  {a}(xs) = lam(pred) => list_exists{a}(xs, pred)
+  {a}(xs) =
+  lam(pred) => list_exists{a}(xs, pred)
 //  
 (* ****** ****** *)
 //
@@ -467,14 +471,14 @@ fun loop
   case+ xs of
   | list_nil() => false
   | list_cons(x, xs) =>
-      if pred(i, x) then true else loop(i+1, xs)
-    // end of [list_cons]
+    (pred(i, x) || loop(i+1, xs))
 )
 } (* end of [list_iexists] *)
 //
 implement
 list_iexists_method
-  {a}(xs) = lam(pred) => list_iexists{a}(xs, pred)
+  {a}(xs) =
+  lam(pred) => list_iexists{a}(xs, pred)
 //  
 (* ****** ****** *)
 //
@@ -485,15 +489,13 @@ list_forall
   case+ xs of
   | list_nil() => (true)
   | list_cons(x, xs) =>
-      if pred(x)
-        then list_forall(xs, pred) else false
-      // end of [if[
-    // end of [list_cons]
+    (pred(x) && list_forall(xs, pred))
 ) (* end of [list_forall] *)
 //
 implement
 list_forall_method
-  {a}(xs) = lam(pred) => list_forall{a}(xs, pred)
+  {a}(xs) =
+  lam(pred) => list_forall{a}(xs, pred)
 //
 (* ****** ****** *)
 //
@@ -513,14 +515,14 @@ fun loop
   case+ xs of
   | list_nil() => (true)
   | list_cons(x, xs) =>
-      if pred(i, x) then loop(i+1, xs) else false
-    // end of [list_cons]
+    (pred(i, x) && loop(i+1, xs))
 )
 } (* end of [list_iforall] *)
 //
 implement
 list_iforall_method
-  {a}(xs) = lam(pred) => list_iforall{a}(xs, pred)
+  {a}(xs) =
+  lam(pred) => list_iforall{a}(xs, pred)
 //  
 (* ****** ****** *)
 //
@@ -539,7 +541,8 @@ case+ xs of
 //
 implement
 list_foreach_method
-  {a}(xs) = lam(fwork) => list_foreach{a}(xs, fwork)
+  {a}(xs) =
+  lam(fwork) => list_foreach{a}(xs, fwork)
 //  
 (* ****** ****** *)
 //
@@ -563,7 +566,8 @@ end (* end of [list_iforeach] *)
 //
 implement
 list_iforeach_method
-  {a}(xs) = lam(fwork) => list_iforeach{a}(xs, fwork)
+  {a}(xs) =
+  lam(fwork) => list_iforeach{a}(xs, fwork)
 //  
 (* ****** ****** *)
 //
@@ -596,15 +600,26 @@ aux{n:int}
   case+ xs of
   | list_nil() => list_nil()
   | list_cons(x, xs) =>
-      if p(x) then list_cons(x, aux(xs)) else aux(xs)
-    // end of [list_cons]
+    (
+      if p(x)
+        then list_cons(x, aux(xs)) else aux(xs)
+      // end of [if]
+    ) // end of [list_cons]
 //
 } (* end of [list_filter] *)
 //
 implement
 list_filter_method
-  {a}(xs) = lam(pred) => list_filter{a}(xs, pred)
+  {a}(xs) =
+  lam(pred) => list_filter{a}(xs, pred)
 //  
+(* ****** ****** *)
+//
+implement
+list_labelize
+  {a}(xs) =
+  list_imap{a}(xs, lam(i, x) => $tup(i, x))
+//
 (* ****** ****** *)
 //
 implement
@@ -623,8 +638,10 @@ xs: list(a, n)
 ) : list(b, n) =
 (
 case+ xs of
-| list_nil() => list_nil()
-| list_cons(x, xs) => list_cons(fopr(x), aux(xs))
+| list_nil() =>
+  list_nil()
+| list_cons(x, xs) =>
+  list_cons(fopr(x), aux(xs))
 ) (* end of [aux] *)
 //
 prval () = lemma_list_param(xs)
@@ -633,7 +650,70 @@ prval () = lemma_list_param(xs)
 //
 implement
 list_map_method
-  {a}(xs, _) = lam(fopr) => list_map{a}(xs, fopr)
+  {a}(xs, _) =
+  lam(fopr) => list_map{a}(xs, fopr)
+//
+(* ****** ****** *)
+//
+implement
+list_imap
+  {a}{b}
+(
+  xs, fopr
+) = aux(0, xs) where
+{
+//
+fun
+aux
+{n:nat} .<n>.
+(
+i0: Nat,
+xs: list(a, n)
+) : list(b, n) =
+(
+case+ xs of
+| list_nil() =>
+  list_nil()
+| list_cons(x, xs) =>
+  list_cons(fopr(i0, x), aux(i0+1, xs))
+) (* end of [aux] *)
+//
+prval () = lemma_list_param(xs)
+//
+} (* end of [list_imap] *)
+//
+implement
+list_imap_method
+  {a}(xs, _) = lam(fopr) => list_imap{a}(xs, fopr)
+//
+(* ****** ****** *)
+//
+implement
+list_map2
+(
+  xs1, xs2, fopr
+) = let
+//
+prval() =
+lemma_list_param(xs1)
+prval() =
+lemma_list_param(xs2)
+//
+in
+//
+case+ xs1 of
+| list_nil() =>
+  list_nil()
+| list_cons(x1, xs1) =>
+  (
+    case+ xs2 of
+    | list_nil() =>
+      list_nil()
+    | list_cons(x2, xs2) =>
+      list_cons(fopr(x1, x2), list_map2(xs1, xs2, fopr))
+  )
+//
+end (* end of [list_map2] *)
 //
 (* ****** ****** *)
 
@@ -659,7 +739,8 @@ end // end of [list_foldleft]
 //
 implement
 list_foldleft_method
-  {a}(xs, init) = lam(fopr) => list_foldleft{a}(xs, init, fopr)
+  {a}(xs, init) =
+  lam(fopr) => list_foldleft{a}(xs, init, fopr)
 //
 (* ****** ****** *)
 
@@ -766,8 +847,65 @@ list_sort_1(xs) =
 //
 (* ****** ****** *)
 //
+implement
+list_mergesort
+{a}(xs, cmp) = let
+//
+fun
+msort
+{n:int}
+(
+xs: list(a, n), n: int(n)
+) : list(a, n) =
+(
+if
+(n < 2)
+then xs
+else let
+  val n2 = half(n)
+  val
+  $tup(xs1, xs2) =
+  list_split_at(xs, n2)
+in
+  merge(msort(xs1, n2), msort(xs2, n-n2))
+end // end of [then]
+) (* end of [msort] *)
+//
+and
+merge
+{n1,n2:int}
+(
+xs10: list(a, n1)
+,
+xs20: list(a, n2)
+) : list(a, n1+n2) =
+(
+case+ xs10 of
+| list_nil() => xs20
+| list_cons(x10, xs11) =>
+  (
+    case+ xs20 of
+    | list_nil() => xs10
+    | list_cons(x20, xs21) => let
+        val sgn = cmp(x10, x20)
+      in
+        if
+        (sgn <= 0)
+        then list_cons(x10, merge(xs11, xs20))
+        else list_cons(x20, merge(xs10, xs21))
+      end // end of [list_cons]
+  )
+)
+//
+in
+  msort(xs, list_length(xs))
+end // end of [list_mergesort]
+//
+(* ****** ****** *)
+//
 #if
-defined(ATSCC_STREAM_VT)
+defined
+(ATSCC_STREAM_VT)
 #then
 //
 implement
@@ -791,12 +929,13 @@ in
   $effmask_all(auxmain(xs))
 end
 //
-#endif // ATSCC_STREAM_VT
+#endif // if-defined(ATSCC_STREAM_VT)
 //
 (* ****** ****** *)
 
 #if
-defined(ATSCC_STREAM_VT)
+defined
+(ATSCC_STREAM_VT)
 #then
 //
 implement
@@ -826,12 +965,13 @@ in
   $effmask_all(auxmain(xs, ys))
 end // end of [streamize_list_zip]
 //
-#endif // ATSCC_STREAM_VT
+#endif // if-defined(ATSCC_STREAM_VT)
 
 (* ****** ****** *)
 
 #if
-defined(ATSCC_STREAM_VT)
+defined
+(ATSCC_STREAM_VT)
 #then
 //
 implement
@@ -870,7 +1010,7 @@ in
   $effmask_all(auxmain(xs, ys))
 end // end of [streamize_list_cross]
 //
-#endif // ATSCC_STREAM_VT
+#endif // if-defined(ATSCC_STREAM_VT)
 
 (* ****** ****** *)
 

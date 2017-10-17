@@ -771,12 +771,26 @@ lazy_vt(a:vt@ype) = lazy_vt0ype_vtype(a)
 // HX-2016-02-21:
 // these are renamed/relocated elsewhere
 //
+// HX-2017-10-03:
+// Is this even needed? Parsing works but
+// $literal(...) does not seem to be in use
+// Please see $PATSHOME/utils/atexting/TEST
+//
+(*
 abst0ype
 literal_int(intlit) = $extype"atsliteral_int"
+*)
+//
+(*
 abst0ype
 literal_float(float) = $extype"atsliteral_float"
-abst1ype
+*)
+//
+(*
+abst0ype
 literal_string(string) = $extype"atsliteral_string"
+*)
+//
 *)
 //
 (* ****** ****** *)

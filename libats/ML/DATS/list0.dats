@@ -49,11 +49,11 @@ staload "libats/ML/SATS/list0.sats"
 //
 implement
 {a}(*tmp*)
-list0_make_sing (x) =
+list0_make_sing(x) =
   list0_cons{a}(x, list0_nil)
 implement
 {a}(*tmp*)
-list0_make_pair (x1, x2) =
+list0_make_pair(x1, x2) =
   list0_cons{a}(x1, list0_cons{a}(x2, list0_nil))
 //
 (* ****** ****** *)
@@ -476,7 +476,7 @@ list0_fset_at_exn
   (xs, i0, x0) = let
 //
 fun
-loop
+fset
 {i:nat} .<i>.
 (
   xs: list0(a), i: int i
@@ -488,19 +488,19 @@ case+ xs of
     (x, xs) =>
   (
     if i > 0
-      then cons0(x, loop(xs, i-1)) else cons0(x0, xs)
+      then cons0(x, fset(xs, i-1)) else cons0(x0, xs)
     // end of [if]
   ) // end of [list0_cons]
 | list0_nil() => $raise ListSubscriptExn()
 //
-) (* end of [loop] *)
+) (* end of [fset] *)
 //
 val i0 = g1ofg0(i0)
 //
 in
 //
 if i0 >= 0
-  then loop(xs, i0) else $raise ListSubscriptExn()
+  then fset(xs, i0) else $raise ListSubscriptExn()
 //
 end // end of [list0_fset_at_exn]
 //
@@ -521,6 +521,88 @@ Some_vt{list0(a)}
 )
 with ~ListSubscriptExn((*void*)) => None_vt()
 ) (* $effmask_exn *)
+
+(* ****** ****** *)
+
+implement
+{a}(*tmp*)
+list0_fexch_at_exn
+  (xs, i0, x0) = let
+//
+val p0 = addr@(x0)
+//
+fun
+fexch
+{i:nat} .<i>.
+(
+xs: list0(a), i: int(i), visited: List0_vt(a)
+) :<!exnwrt> list0(a) =
+(
+case+ xs of
+| list0_cons
+    (x1, xs) =>
+  (
+    if
+    (i > 0)
+    then
+    (
+      fexch
+      (xs, i-1, list_vt_cons(x1, visited))
+    )
+    else let
+      val x2 = $UN.ptr0_get<a>(p0)
+      val () = $UN.ptr0_set<a>(p0, x1)
+      val x2_xs = g1ofg0(list0_cons(x2, xs))
+    in
+      g0ofg1(list_reverse_append1_vt(visited, x2_xs))
+    end // end of [else]
+  )  
+| list0_nil() => let
+    val () = list_vt_free(visited) in $raise ListSubscriptExn()
+  end // end of [list0_nil]
+)
+//
+val i0 = g1ofg0(i0)
+//
+in
+  if i0 >= 0
+    then fexch(xs, i0, list_vt_nil()) else $raise ListSubscriptExn()
+  // end of [if]
+end // end of [list0_fexch_at_exn]
+
+(* ****** ****** *)
+
+implement
+{a}(*tmp*)
+list0_fexch_at_opt
+(
+  xs, i0, x0
+) = let
+//
+val p0 = addr@x0
+//
+in
+//
+$effmask_exn
+(
+try
+Some_vt{list0(a)}
+(
+let
+  val
+  (pf, fpf | p0) =
+  $UN.ptr_vtake{a}(p0)
+  val res =
+  list0_fexch_at_exn<a>(xs, i0, !p0)
+  prval ((*returned*)) = fpf(pf)
+in
+  res
+end // end of [let]
+)
+with ~ListSubscriptExn((*void*)) => None_vt()
+) (* $effmask_exn *)
+//
+end // end of [list0_fexch_at_opt]
 
 (* ****** ****** *)
 
@@ -1330,7 +1412,9 @@ case+ xs of
   // list0_nil
 | list0_cons(x, xs) =>
   (
-    if pred(x) then Some_vt{a}(x) else loop(xs)
+    if pred(x)
+      then Some_vt{a}(x) else loop(xs)
+    // end of [if]
   ) (* end of [list_cons] *)
 //
 } (* end of [list0_find_opt] *)
@@ -1367,10 +1451,128 @@ case+ xs of
 | list0_nil() => (~1)
 | list0_cons(x, xs) =>
   (
-    if pred(x) then (i) else loop(xs, i+1)
+    if pred(x)
+      then (i) else loop(xs, i+1)
+    // end of [if]
   ) (* end of [list0_cons] *)
 //
 } (* end of [list0_find_index] *)
+
+(* ****** ****** *)
+
+implement
+{a}(*tmp*)
+list0_find_suffix
+(
+  xs, pred
+) = loop(xs) where
+{
+//
+fun
+loop(xs: list0(a)): list0(a) =
+(
+case+ xs of
+| list0_nil() =>
+  list0_nil()
+| list0_cons(_, xs2) =>
+  if pred(xs) then xs else loop(xs2)
+)
+//
+} (* end of [list0_find_suffix] *)
+
+(* ****** ****** *)
+
+implement
+{a}(*tmp*)
+list0_skip_while
+  (xs, pred) =
+  auxmain(xs) where
+{
+//
+fun
+auxmain
+(
+xs: list0(a)
+) : list0(a) =
+(
+case+ xs of
+| list0_nil() =>
+  list0_nil()
+| list0_cons(x0, xs1) =>
+  if pred(x0) then auxmain(xs1) else xs
+)
+//
+} // end of [list0_skip_while]
+
+implement
+{a}(*tmp*)
+list0_skip_until
+  (xs, pred) =
+  auxmain(xs) where
+{
+//
+fun
+auxmain
+(
+xs: list0(a)
+) : list0(a) =
+(
+case+ xs of
+| list0_nil() =>
+  list0_nil()
+| list0_cons(x0, xs1) =>
+  if pred(x0) then xs else auxmain(xs1)
+)
+//
+} // end of [list0_skip_until]
+
+(* ****** ****** *)
+
+implement
+{a}(*tmp*)
+list0_take_while
+  (xs, pred) = let
+//
+fun
+auxmain
+(
+xs: list0(a), res: List0_vt(a)
+) : List0_vt(a) =
+(
+case+ xs of
+| list0_nil() => res
+| list0_cons(x0, xs1) =>
+  if pred(x0)
+    then auxmain(xs1, list_vt_cons(x0, res)) else res
+  // end of [if]
+)
+//
+in
+  g0ofg1(list_vt_reverse(auxmain(xs, list_vt_nil())))
+end // end of [list0_take_while]
+
+implement
+{a}(*tmp*)
+list0_take_until
+  (xs, pred) = let
+//
+fun
+auxmain
+(
+xs: list0(a), res: List0_vt(a)
+) : List0_vt(a) =
+(
+case+ xs of
+| list0_nil() => res
+| list0_cons(x0, xs1) =>
+  if pred(x0)
+    then res else auxmain(xs1, list_vt_cons(x0, res))
+  // end of [if]
+)
+//
+in
+  g0ofg1(list_vt_reverse(auxmain(xs, list_vt_nil())))
+end // end of [list0_take_until]
 
 (* ****** ****** *)
 
@@ -1998,6 +2200,37 @@ implement
 {a}(*tmp*)
 streamize_list0_elt
   (xs) = streamize_list_elt<a>(g1ofg0(xs))
+//
+(* ****** ****** *)
+
+implement
+{a}(*tmp*)
+streamize_list0_suffix
+  (xs) =
+  auxmain(xs) where
+{
+//
+fun
+auxmain:
+$d2ctype
+(
+streamize_list0_suffix<a>
+) = lam(xs) => $ldelay
+(
+case+ xs of
+| list0_nil
+  (
+  // none
+  ) => stream_vt_nil()
+| list0_cons
+  (
+    x0, xs1
+  ) => stream_vt_cons(xs, auxmain(xs1))
+)
+} (* end of [streamize_list0_suffix] *)
+
+(* ****** ****** *)
+//
 implement
 {a}(*tmp*)
 streamize_list0_choose2

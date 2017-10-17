@@ -64,16 +64,18 @@ typedef NSH(a:type) = a // for commenting purpose
 (* ****** ****** *)
 //
 #define
-list0_sing(x) list0_cons(x, list0_nil())
+list0_sing(x)
+list0_cons(x, list0_nil())
 //
 #define
 list0_pair(x1, x2)
-list0_cons(x1, list0_cons (x2, list0_nil()))
+list0_cons(x1, list0_cons(x2, list0_nil()))
 //
 (* ****** ****** *)
 //
 castfn
-list0_cast{x:t0p} (xs: list0(INV(x))):<> list0(x)
+list0_cast{x:t0p}
+  (xs: list0(INV(x))):<> list0(x)
 //
 (* ****** ****** *)
 //
@@ -87,9 +89,11 @@ list0_of_list_vt
 (* ****** ****** *)
 //
 castfn
-g0ofg1_list{a:t@ype}(List(INV(a))):<> list0(a)
+g0ofg1_list
+  {a:t@ype}(List(INV(a))):<> list0(a)
 castfn
-g0ofg1_list_vt{a:t@ype}(List_vt(INV(a))):<> list0(a)
+g0ofg1_list_vt
+  {a:t@ype}(List_vt(INV(a))):<> list0(a)
 //
 overload g0ofg1 with g0ofg1_list
 overload g0ofg1 with g0ofg1_list_vt
@@ -97,21 +101,22 @@ overload g0ofg1 with g0ofg1_list_vt
 (* ****** ****** *)
 //
 castfn
-g1ofg0_list{a:t@ype}(list0(INV(a))):<> List0(a)
+g1ofg0_list
+  {a:t@ype}(xs: list0(INV(a))):<> List0(a)
 //
 overload g1ofg0 with g1ofg0_list
 //
 (* ****** ****** *)
 
 fun{a:t0p}
-list0_make_sing (x: a):<> list0(a)
+list0_make_sing(x: a):<> list0(a)
 fun{a:t0p}
-list0_make_pair (x1: a, x2: a):<> list0(a)
+list0_make_pair(x1: a, x2: a):<> list0(a)
 
 (* ****** ****** *)
 
 fun{a:t0p}
-list0_make_elt (n: int, x: a):<!exn> list0(a)
+list0_make_elt(n: int, x: a):<!exn> list0(a)
 
 (* ****** ****** *)
 //
@@ -134,8 +139,10 @@ list0_make_intrange_lrd
 //
 symintr list0_make_intrange
 //
-overload list0_make_intrange with list0_make_intrange_lr
-overload list0_make_intrange with list0_make_intrange_lrd
+overload
+list0_make_intrange with list0_make_intrange_lr
+overload
+list0_make_intrange with list0_make_intrange_lrd
 //
 (* ****** ****** *)
 //
@@ -243,7 +250,16 @@ list0_fset_at_exn
   (list0(INV(a)), i0: int, x0: a):<!exn> list0(a)
 fun{a:t0p}
 list0_fset_at_opt
-  (list0(INV(a)), i0: int, x0: a):<!exn> Option_vt(list0(a))
+  (list0(INV(a)), i0: int, x0: a):<> Option_vt(list0(a))
+//
+(* ****** ****** *)
+//
+fun{a:t0p}
+list0_fexch_at_exn
+  (list0(INV(a)), i0: int, x0: &a >> a):<!exnwrt> list0(a)
+fun{a:t0p}
+list0_fexch_at_opt
+  (list0(INV(a)), i0: int, x0: &a >> a):<!wrt> Option_vt(list0(a))
 //
 (* ****** ****** *)
 //
@@ -284,7 +300,7 @@ overload fprint with fprint_listlist0_sep
 fun{a:t0p}
 list0_insert_at_exn
 (
-  SHR(list0(INV(a))), i: int, x: a
+  SHR(list0(INV(a))), i: int, x: (a)
 ) :<!exn> list0(a) // endfun
 
 (* ****** ****** *)
@@ -305,7 +321,8 @@ overload takeout_at with list0_takeout_at_exn
 //
 (* ****** ****** *)
 //
-fun{a:t0p}
+fun
+{a:t0p}
 list0_append
 (
   xs: NSH(list0(INV(a))), ys: SHR(list0(a))
@@ -324,7 +341,8 @@ macdef list0_snoc = list0_extend
 //
 (* ****** ****** *)
 //
-fun{a:t0p}
+fun
+{a:t0p}
 mul_int_list0
 (
   m0: intGte(0), xs: NSH(list0(INV(a)))
@@ -659,8 +677,47 @@ fun
 {a:t0p}
 list0_find_index
 (
-  xs: list0(INV(a)), pred: cfun(a, bool)
+xs: list0(INV(a)), pred: cfun(a, bool)
 ) : intGte(~1) // end of [list0_find_index]
+//
+(* ****** ****** *)
+//
+fun
+{a:t0p}
+list0_find_suffix
+(
+xs: list0(INV(a)), pred: cfun(list0(a), bool)
+) : list0(a) // end of [list0_find_suffix]
+//
+(* ****** ****** *)
+//
+fun
+{a:t0p}
+list0_skip_while
+(
+xs: list0(INV(a)), pred: cfun(a, bool)
+) : list0(a) // end of [list0_skip_while]
+fun
+{a:t0p}
+list0_skip_until
+(
+xs: list0(INV(a)), pred: cfun(a, bool)
+) : list0(a) // end of [list0_skip_until]
+//
+(* ****** ****** *)
+//
+fun
+{a:t0p}
+list0_take_while
+(
+xs: list0(INV(a)), pred: cfun(a, bool)
+) : list0(a) // end of [list0_take_while]
+fun
+{a:t0p}
+list0_take_until
+(
+xs: list0(INV(a)), pred: cfun(a, bool)
+) : list0(a) // end of [list0_take_until]
 //
 (* ****** ****** *)
 //
@@ -905,6 +962,14 @@ overload .xprod2_iforeach with list0_xprod2_iforeach_method
 fun{a:t0p}
 streamize_list0_elt
   (list0(INV(a))):<!wrt> stream_vt(a)
+//
+(* ****** ****** *)
+//
+fun{a:t0p}
+streamize_list0_suffix
+  (list0(INV(a))):<!wrt> stream_vt(list0(a))
+//
+(* ****** ****** *)
 //
 fun{a:t0p}
 streamize_list0_choose2
