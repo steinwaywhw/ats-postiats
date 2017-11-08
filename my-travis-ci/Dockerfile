@@ -16,9 +16,8 @@ ENV ATSHOME=${HOME}/ats-lang-anairiats-${ATSVER}
 ENV ATSHOMERELOC=ATS-${ATSVER}
 
 ENV PATSHOME=${HOME}/ATS-Postiats
-ENV PATSHOMERELOC=${HOME}/ATS-Postiats-contrib
-ENV PATSCONTRIB=${PATSHOMERELOC}
-ENV PATSHOME_contrib=${PATSHOMERELOC}
+ENV PATSCONTRIB=${HOME}/ATS-Postiats-contrib
+ENV PATSHOME_contrib=${HOME}/ATS-Postiats-contrib
 
 ENV PATH=${PATH}:${PATSHOME}/bin
 
@@ -27,10 +26,10 @@ RUN git clone https://github.com/ats-lang/ATS-Postiats-release/ ${HOME}/ATS-Post
 
 WORKDIR /tmp
 RUN (cd ${HOME}     && /tmp/install_ats1.sh)
+RUN (cd ${HOME}     && /tmp/install_contrib.sh)
 RUN (cd ${PATSHOME} && /tmp/install_ats2.sh)
 RUN (cd ${PATSHOME} && /tmp/install_utilities.sh)
-RUN (cd ${HOME}     && /tmp/install_contrib.sh)
 
 WORKDIR /tmp
 RUN rm -rf *
-CMD patscc
+CMD patscc -vats
