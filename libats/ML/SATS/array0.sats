@@ -28,8 +28,8 @@
 (* ****** ****** *)
 
 (* Author: Hongwei Xi *)
-(* Authoremail: gmmhwxiATgmailDOTcom *)
 (* Start time: July, 2012 *)
+(* Authoremail: gmmhwxiATgmailDOTcom *)
 
 (* ****** ****** *)
 //
@@ -84,6 +84,54 @@ sortdef vt0p = viewt@ype
 
 (* ****** ****** *)
 //
+fun
+{a:t0p}
+array0_tuple_0(): array0(a)
+//
+fun
+{a:t0p}
+array0_tuple_1(x0: a): array0(a)
+fun
+{a:t0p}
+array0_tuple_2(x0: a, x1: a): array0(a)
+fun
+{a:t0p}
+array0_tuple_3(x0: a, x1: a, x2: a): array0(a)
+//
+fun
+{a:t0p}
+array0_tuple_4
+  (x0: a, x1: a, x2: a, x3: a): array0(a)
+fun
+{a:t0p}
+array0_tuple_5
+  (x0: a, x1: a, x2: a, x3: a, x4: a): array0(a)
+fun
+{a:t0p}
+array0_tuple_6
+  (x0: a, x1: a, x2: a, x3: a, x4: a, x5: a): array0(a)
+//
+(* ****** ****** *)
+//
+symintr array0_tuple
+//
+overload
+array0_tuple with array0_tuple_0
+overload
+array0_tuple with array0_tuple_1
+overload
+array0_tuple with array0_tuple_2
+overload
+array0_tuple with array0_tuple_3
+overload
+array0_tuple with array0_tuple_4
+overload
+array0_tuple with array0_tuple_5
+overload
+array0_tuple with array0_tuple_6
+//
+(* ****** ****** *)
+//
 fun{}
 array0_of_arrszref
   {a:vt0p}(arrszref(a)):<> array0(a)
@@ -94,18 +142,19 @@ arrszref_of_array0
 //
 (* ****** ****** *)
 //
-symintr array0
-//
 fun{}
 array0_make_arrpsz
   {a:vt0p}{n:int}
   (psz: arrpsz(INV(a), n)):<!wrt> array0(a)
-overload array0 with array0_make_arrpsz
 //
 fun{}
 array0_make_arrayref
   {a:vt0p}{n:int}
   (Arf: arrayref(a, n), n: size_t(n)):<!wrt> array0(a)
+//
+symintr array0
+//
+overload array0 with array0_make_arrpsz
 overload array0 with array0_make_arrayref
 //
 (* ****** ****** *)
@@ -116,6 +165,9 @@ array0_get_ref
 fun{}
 array0_get_size
 {a:vt0p}(A: array0(a)):<> size_t
+fun{}
+array0_get_length
+{a:vt0p}(A: array0(a)):<> intGte(0)
 //
 fun{}
 array0_get_refsize
@@ -277,6 +329,9 @@ array0_append
 //
 overload + with array0_append
 //
+overload append with array0_append
+overload .append with array0_append
+//
 (* ****** ****** *)
 //
 fun
@@ -291,7 +346,7 @@ fun
 {b:vt0p}
 array0_map_method
 (
-A0: array0(a), TYPE(b)) (fopr: (&a) -<cloref1> b
+A0: array0(a), TYPE(b))(fopr: (&a) -<cloref1> b
 ) : array0(b) // end of [array0_map_method]
 //
 overload .map with array0_map_method
@@ -365,8 +420,6 @@ xs: array0(a))(pred: (&a) -<cloref1> bool
 ) : bool // end of [array0_exists_method]
 //
 overload
-exists with array0_exists
-overload
 .exists with array0_exists_method
 //
 (* ****** ****** *)
@@ -381,13 +434,10 @@ array0_iexists
 fun
 {a:t0p}
 array0_iexists_method
-(
-xs: array0(a)
-)(pred: (size_t, &a) -<cloref1> bool
+(xs: array0(a))
+(pred: ( size_t, &a ) -<cloref1> bool
 ) : bool // end of [array0_iexists_method]
 //
-overload
-iexists with array0_iexists
 overload
 .iexists with array0_iexists_method
 //
@@ -407,8 +457,6 @@ xs: array0(a)) (pred: (&a) -<cloref1> bool
 ) : bool // end of [array0_forall_method]
 //
 overload
-forall with array0_forall
-overload
 .forall with array0_forall_method
 //
 (* ****** ****** *)
@@ -423,13 +471,10 @@ array0_iforall
 fun
 {a:t0p}
 array0_iforall_method
-(
-xs: array0(a)
-)(pred: (size_t, &a) -<cloref1> bool
+(xs: array0(a))
+(pred: ( size_t, &a ) -<cloref1> bool
 ) : bool // end of [array0_iforall_method]
 //
-overload
-iforall with array0_iforall
 overload
 .iforall with array0_iforall_method
 //
@@ -446,13 +491,10 @@ array0_foreach
 fun
 {a:vt0p}
 array0_foreach_method
-(
-  A0: array0(a)
-) (fwork: (&a >> _) -<cloref1> void): void
+(A0: array0(a))
+(fwork: (&a >> _) -<cloref1> void): void
 // end of [array0_foreach_methon]
 //
-overload
-foreach with array0_foreach
 overload
 .foreach with array0_foreach_method
 //
@@ -469,13 +511,10 @@ array0_iforeach
 fun
 {a:vt0p}
 array0_iforeach_method
-(
-  A0: array0(a)
-) (fwork: (size_t, &a >> _) -<cloref1> void): void
+(A0: array0(a))
+(fwork: (size_t, &a >> _) -<cloref1> void): void
 // end of [array0_iforeach_method]
 //
-overload
-iforeach with array0_iforeach
 overload
 .iforeach with array0_iforeach_method
 //
@@ -484,17 +523,17 @@ overload
 fun
 {a:vt0p}
 array0_rforeach
-  (A: array0(a), fwork: (&a >> _) -<cloref1> void): void
-// end of [array0_rforeach]
+( A0: array0(a)
+, fwork: (&a >> _) -<cloref1> void
+) : void // end of [array0_rforeach]
 //
 fun
 {a:vt0p}
 array0_rforeach_method
-  (A: array0(a)) (fwork: (&a >> _) -<cloref1> void): void
+(A0: array0(a))
+(fwork: (&a >> _) -<cloref1> void): void
 // end of [array0_rforeach]
 //
-overload
-rforeach with array0_rforeach
 overload
 .rforeach with array0_rforeach_method
 //
@@ -503,8 +542,7 @@ overload
 fun{
 res:vt0p}{a:vt0p
 } array0_foldleft
-(
-  A0: array0(a)
+( A0: array0(a)
 , ini: res, fopr: (res, &a) -<cloref1> res
 ) : res // end of [array0_foldleft]
 //
@@ -518,15 +556,15 @@ res:vt0p}{a:vt0p
   ini: res, fopr: (res, &a) -<cloref1> res
 ) : res // end of [array0_foldleft_method]
 //
-overload .foldleft with array0_foldleft_method
+overload
+.foldleft with array0_foldleft_method
 //
 (* ****** ****** *)
 //
 fun{
 res:vt0p}{a:vt0p
 } array0_ifoldleft
-(
-  A0: array0(a), ini: res
+( A0: array0(a), ini: res
 , fopr: (res, size_t, &a) -<cloref1> res
 ) : res // end of [array0_ifoldleft]
 //
@@ -541,8 +579,6 @@ res:vt0p}{a:vt0p
 , fopr: (res, size_t, &a) -<cloref1> res
 ) : res // end of [array0_ifoldleft_method]
 //
-overload
-ifoldleft with array0_ifoldleft
 overload
 .ifoldleft with array0_ifoldleft_method
 //
@@ -568,8 +604,6 @@ a:vt0p}{res:vt0p
   fopr: (&a, res) -<cloref1> res, snk: res
 ) : res // end of [array0_foldright_method]
 //
-overload
-foldright with array0_foldright
 overload
 .foldright with array0_foldright_method
 //
@@ -613,20 +647,19 @@ overload
 [] with array0_set_at_guint
 //
 (* ****** ****** *)
-
+//
 overload size with array0_get_size
+overload length with array0_get_length
+//
 overload .size with array0_get_size
-
+overload .length with array0_get_length
+//
 (* ****** ****** *)
 
 overload print with print_array0
 overload prerr with print_array0
 overload fprint with fprint_array0
 overload fprint with fprint_array0_sep
-
-(* ****** ****** *)
-
-overload append with array0_append
 
 (* ****** ****** *)
 

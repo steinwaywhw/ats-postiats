@@ -28,8 +28,8 @@
 (* ****** ****** *)
 
 (* Author: Hongwei Xi *)
-(* Authoremail: gmhwxiATgmailDOTcom *)
 (* Start time: June, 2012 *)
+(* Authoremail: gmhwxiATgmailDOTcom *)
 
 (* ****** ****** *)
 
@@ -45,6 +45,35 @@ UN = "prelude/SATS/unsafe.sats"
 staload "libats/ML/SATS/basis.sats"
 staload "libats/ML/SATS/list0.sats"
 
+(* ****** ****** *)
+//
+implement
+{a}(*tmp*)
+list0_tuple_0() = list0_nil()
+//
+implement
+{a}(*tmp*)
+list0_tuple_1(x0) = g0ofg1($list{a}(x0))
+implement
+{a}(*tmp*)
+list0_tuple_2(x0, x1) = g0ofg1($list{a}(x0, x1))
+implement
+{a}(*tmp*)
+list0_tuple_3(x0, x1, x2) = g0ofg1($list{a}(x0, x1, x2))
+//
+implement
+{a}(*tmp*)
+list0_tuple_4
+(x0, x1, x2, x3) = g0ofg1($list{a}(x0, x1, x2, x3))
+implement
+{a}(*tmp*)
+list0_tuple_5
+(x0, x1, x2, x3, x4) = g0ofg1($list{a}(x0, x1, x2, x3, x4))
+implement
+{a}(*tmp*)
+list0_tuple_6
+(x0, x1, x2, x3, x4, x5) = g0ofg1($list{a}(x0, x1, x2, x3, x4, x5))
+//
 (* ****** ****** *)
 //
 implement
@@ -429,9 +458,13 @@ case+ xs of
 | list0_cons
     (x, xs) =>
   (
-    if i > 0 then loop(xs, i-1) else x
+    if i > 0
+      then loop(xs, i-1) else x
   ) // end of [list0_cons]
-| list0_nil() => $raise ListSubscriptExn()
+| list0_nil() =>
+  (
+    $raise ListSubscriptExn(*void*)
+  ) (* end of [list0_nil] *)
 //
 ) (* end of [loop] *)
 //
@@ -440,7 +473,8 @@ val i0 = g1ofg0_int(i0)
 in
 //
 if i0 >= 0
-  then loop(xs, i0) else $raise ListSubscriptExn()
+  then loop(xs, i0)
+  else $raise ListSubscriptExn(*void*)
 // end of [if]
 //
 end // end of [list0_nth_exn]
@@ -458,7 +492,7 @@ Some_vt{a}
 (
   list0_nth_exn<a>(xs, i0)
 )
-with ~ListSubscriptExn((*void*)) => None_vt()
+with ~ListSubscriptExn() => None_vt(*void*)
 ) (* $effmask_exn *)
 //
 (* ****** ****** *)
@@ -466,7 +500,11 @@ with ~ListSubscriptExn((*void*)) => None_vt()
 implement
 {a}(*tmp*)
 list0_get_at_exn
-  (xs, i0) = list0_nth_exn (xs, i0)
+  (xs, i0) = list0_nth_exn<a>(xs, i0)
+implement
+{a}(*tmp*)
+list0_get_at_opt
+  (xs, i0) = list0_nth_opt<a>(xs, i0)
 //
 (* ****** ****** *)
 //
@@ -896,17 +934,19 @@ list0_foreach
 fun
 loop(xs: list0(a)): void =
 (
-  case+ xs of
-  | list0_nil() => ()
-  | list0_cons(x, xs) => (fwork(x); loop(xs))
+case+ xs of
+| list0_nil() => ()
+| list0_cons
+    (x, xs) => (fwork(x); loop(xs))
+  // end of [list0_cons]
 )
 //
 } (* end of [list0_foreach] *)
 //
 implement
 {a}(*tmp*)
-list0_foreach_method
-  (xs) = lam(fwork) => list0_foreach<a>(xs, fwork)
+list0_foreach_method(xs) =
+lam(fwork) => list0_foreach<a>(xs, fwork)
 //
 (* ****** ****** *)
 //
@@ -930,8 +970,8 @@ aux0(xs: list0(a)): void =
 //
 implement
 {a}(*tmp*)
-list0_rforeach_method
-  (xs) = lam(fwork) => list0_rforeach<a>(xs, fwork)
+list0_rforeach_method(xs) =
+lam(fwork) => list0_rforeach<a>(xs, fwork)
 //
 (* ****** ****** *)
 
@@ -959,9 +999,8 @@ end // end of [list0_iforeach]
 //
 implement
 {a}(*tmp*)
-list0_iforeach_method
-  (xs) =
-  lam(fwork) => list0_iforeach<a>(xs, fwork)
+list0_iforeach_method(xs) =
+lam(fwork) => list0_iforeach<a>(xs, fwork)
 //
 (* ****** ****** *)
 
@@ -1030,7 +1069,7 @@ end // end of [list0_foldleft]
 implement
 {res}{a}
 list0_foldleft_method(xs, _) =
-  lam(ini, fopr) =>list0_foldleft<res><a>(xs, ini, fopr)
+lam(ini, fopr) =>list0_foldleft<res><a>(xs, ini, fopr)
 //
 (* ****** ****** *)
 
@@ -1069,8 +1108,7 @@ implement
 list0_foldleft2
 (
   xs1, xs2, ini, fopr
-) = loop(xs1, xs2, ini) where
-{
+) = let
 //
 fun
 loop
@@ -1081,17 +1119,20 @@ loop
 (
   case+ xs1 of
   | list0_nil() => res
-  | list0_cons(x1, xs1) => (
-    case+ xs2 of
-    | list0_nil() => res
-    | list0_cons (x2, xs2) =>
-      (
-        loop(xs1, xs2, fopr(res, x1, x2))
-      ) // end of [list0_cons]
+  | list0_cons(x1, xs1) =>
+    (
+      case+ xs2 of
+      | list0_nil() => res
+      | list0_cons (x2, xs2) =>
+        (
+          loop(xs1, xs2, fopr(res, x1, x2))
+        ) (* end of [list0_cons] *)
     )
 ) (* end of [loop] *)
 //
-} (* end of [list0_foldleft2] *)
+in
+  loop(xs1, xs2, ini)
+end (* end of [list0_foldleft2] *)
 
 (* ****** ****** *)
 
@@ -1114,7 +1155,7 @@ loop(xs: list0(a)): res =
 implement
 {a}{res}
 list0_foldright_method(xs, _) =
-  lam(f, snk) => list0_foldright<a><res>(xs, f, snk)
+lam(f, snk) => list0_foldright<a><res>(xs, f, snk)
 //
 (* ****** ****** *)
 
@@ -1350,21 +1391,68 @@ loop
 ) : bool =
 (
   case+ xs1 of
-  | list0_nil() => (
+  | list0_nil() =>
+    (
     case+ xs2 of
     | list0_nil() => true
     | list0_cons _ => false
     )
-  | list0_cons(x1, xs1) => (
+  | list0_cons
+      (x1, xs1) =>
+    (
     case+ xs2 of
-    | list0_nil() => false
-    | list0_cons(x2, xs2) =>
-        if eqfn (x1, x2) then loop(xs1, xs2) else false
+    | list0_nil
+        () => false
+      // list0_nil
+    | list0_cons
+        (x2, xs2) =>
+        if eqfn(x1, x2)
+          then loop(xs1, xs2) else false
+        // end of [if]
       // end of [list0_cons]
     )
 ) (* end of [loop] *)
 //
 } (* end of [list0_equal] *)
+
+(* ****** ****** *)
+
+implement
+{a}(*tmp*)
+list0_compare
+(
+  xs1, xs2, cmpfn
+) = loop(xs1, xs2) where
+{
+//
+fun
+loop
+(
+  xs1: list0(a), xs2: list0(a)
+) : int =
+(
+  case+ xs1 of
+  | list0_nil() =>
+    (
+    case+ xs2 of
+    | list0_nil() => 0
+    | list0_cons _ => ~1
+    )
+  | list0_cons
+      (x1, xs1) =>
+    (
+    case+ xs2 of
+    | list0_nil() => (1)
+    | list0_cons
+        (x2, xs2) => let
+        val sgn = cmpfn(x1, x2)
+      in
+        if sgn != 0 then sgn else loop(xs1, xs2)
+      end // end of [list0_cons]
+    )
+) (* end of [loop] *)
+//
+} (* end of [list0_compare] *)
 
 (* ****** ****** *)
 

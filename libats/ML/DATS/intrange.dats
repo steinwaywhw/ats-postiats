@@ -28,8 +28,8 @@
 (* ****** ****** *)
 
 (* Author: Hongwei Xi *)
-(* Authoremail: gmhwxiATgmailDOTcom *)
 (* Start time: September, 2014 *)
+(* Authoremail: gmhwxiATgmailDOTcom *)
 
 (* ****** ****** *)
 
@@ -62,10 +62,12 @@ loop
   n: int, f: cfun0(void)
 ) : void = (
 //
-if n > 0
-  then
+if
+(n > 0)
+then
+(
   let val () = fopr() in loop(n-1, fopr) end
-  else ((*void*))
+) else ((*void*))
 //
 ) (* end of [loop] *)
 //
@@ -78,7 +80,10 @@ end // end of [int_repeat_cloref]
 implement
 {}(*tmp*)
 int_repeat_method
-  (n) = lam(fopr) => int_repeat_cloref(n, fopr)
+  (n) =
+(
+lam(fopr) => int_repeat_cloref(n, fopr)
+)
 //
 (* ****** ****** *)
 //
@@ -109,16 +114,47 @@ int_foreach_method
 (* ****** ****** *)
 //
 implement
+{}(*tmp*)
+int_rforeach_cloref
+  (n, f) =
+  intrange_rforeach_cloref<>(0, n, f)
+//
+implement
+{}(*tmp*)
+int_rforeach_method
+  (n) = lam(f) => int_rforeach_cloref<>(n, f)
+//
+(* ****** ****** *)
+//
+implement
 {res}(*tmp*)
 int_foldleft_cloref
   (n, ini, f) =
-  intrange_foldleft_cloref<res> (0, n, ini, f)
+  intrange_foldleft_cloref<res>(0, n, ini, f)
 //
 implement
 {res}(*tmp*)
 int_foldleft_method
   (n, tres) =
-  lam(ini, f) => int_foldleft_cloref (n, ini, f)
+(
+lam(ini, f) => int_foldleft_cloref<res>(n, ini, f)
+)
+//
+(* ****** ****** *)
+//
+implement
+{res}(*tmp*)
+int_foldright_cloref
+  (n, f, snk) =
+  intrange_foldright_cloref<res>(0, n, f, snk)
+//
+implement
+{res}(*tmp*)
+int_foldright_method
+  (n, tres) =
+(
+lam(f, snk) => int_foldright_cloref<res>(n, f, snk)
+)
 //
 (* ****** ****** *)
 
@@ -129,10 +165,10 @@ intrange_forall_cloref
 //
 fun
 loop
-(
-  l: int, r: int
+( l: int, r: int
 , f: cfun1(int, bool)
-) : bool = (
+) : bool =
+(
 //
 if l < r
   then (
@@ -148,10 +184,11 @@ end // end of [intrange_forall_cloref]
 implement
 {}(*tmp*)
 intrange_forall_method
-  ( @(l, r) ) = lam(f) => intrange_forall_cloref (l, r, f)
+  ( @(l, r) ) =
+  lam(f) => intrange_forall_cloref<>(l, r, f)
 //
 (* ****** ****** *)
-
+//
 implement
 {}(*tmp*)
 intrange_foreach_cloref
@@ -160,25 +197,61 @@ intrange_foreach_cloref
 fun
 loop
 (
-  l: int, r: int, f: cfun1(int, void)
+ l: int, r: int, f: cfun1(int, void)
 ) : void = (
 //
-if l < r
-  then let val () = f(l) in loop(l+1, r, f) end
-  else ()
+if
+(l < r)
+then
+(
+  let val () = f(l) in loop(l+1, r, f) end
+)
+else ((*void*))
 //
 ) (* end of [loop] *)
 //
 in
   loop (l, r, f)
 end // end of [intrange_foreach_cloref]
-
-(* ****** ****** *)
-
+//
 implement
 {}(*tmp*)
 intrange_foreach_method
-  ( @(l, r) ) = lam(f) => intrange_foreach_cloref (l, r, f)
+  ( @(l, r) ) =
+  lam(f) => intrange_foreach_cloref<>(l, r, f)
+//
+(* ****** ****** *)
+//
+implement
+{}(*tmp*)
+intrange_rforeach_cloref
+  (l, r, f) = let
+//
+fun
+loop
+(
+  l: int, r: int, f: cfun1(int, void)
+) : void = (
+//
+if
+(l < r)
+then
+(
+  let val () = f(r-1) in loop(l, r-1, f) end
+)
+else ((*void*))
+//
+) (* end of [loop] *)
+//
+in
+  loop (l, r, f)
+end // end of [intrange_rforeach_cloref]
+//
+implement
+{}(*tmp*)
+intrange_rforeach_method
+  ( @(l, r) ) =
+  lam(f) => intrange_rforeach_cloref<>(l, r, f)
 //
 (* ****** ****** *)
 
@@ -194,12 +267,14 @@ loop
 , ini: res, f: cfun2(res, int, res)
 ) : res = (
 //
-if l < r then loop (l+1, r, f(ini, l), f) else ini
+if (l < r)
+  then loop(l+1, r, f(ini, l), f) else ini
+// end of [if]
 //
 ) (* end of [loop] *)
 //
 in
-  loop (l, r, ini, fopr)
+  loop(l, r, ini, fopr)
 end // end of [intrange_foldleft_cloref]
 
 (* ****** ****** *)
@@ -211,9 +286,49 @@ intrange_foldleft_method
 (
 //
 lam(ini, f) =>
-  intrange_foldleft_cloref<res> (l, r, ini, f)
+  intrange_foldleft_cloref<res>(l, r, ini, f)
 //
 ) (* end of [intrange_foldleft_method] *)
+//
+(* ****** ****** *)
+
+implement
+{res}(*tmp*)
+intrange_foldright_cloref
+  (l, r, f, snk) = let
+//
+fun
+loop
+(
+  l: int, r: int
+, f: cfun2(int, res, res), snk: res
+) : res = (
+//
+if
+(l < r)
+then let
+  val r1 = r-1 in loop(l, r1, f, f(r1, snk))
+end // end of [then]
+else snk // end of [else]
+//
+) (* end of [loop] *)
+//
+in
+  loop(l, r, f, snk)
+end // end of [intrange_foldright_cloref]
+
+(* ****** ****** *)
+//
+implement
+{res}(*tmp*)
+intrange_foldright_method
+  ( @(l, r), tres ) =
+(
+//
+lam(f, snk) =>
+  intrange_foldright_cloref<res>(l, r, f, snk)
+//
+) (* end of [intrange_foldright_method] *)
 //
 (* ****** ****** *)
 //

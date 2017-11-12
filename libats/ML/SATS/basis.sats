@@ -92,28 +92,47 @@ stadef cfun = cfun8
 stadef cfun = cfun9
 
 (* ****** ****** *)
-
-datatype // t@ype+: covariant
-list0_t0ype_type (a: t@ype+) =
-  | list0_nil of () | list0_cons of (a, list0_t0ype_type a)
-stadef list0 = list0_t0ype_type
-
+//
+// t@ype+: covariant
+//
+datatype
+list0_t0ype_type
+(
+  a: t@ype+
+) =
+  | list0_nil of
+      ((*void*))
+  | list0_cons of
+      (a, list0_t0ype_type(a))
+    // end of [list0_cons]
+//
+stadef
+list0(a:t@ype) = list0_t0ype_type(a)
+//
 #define nil0 list0_nil
 #define cons0 list0_cons
-
+//
 (* ****** ****** *)
-
-datatype // t@ype+: covariant
+//
+// t@ype+: covariant
+//
+datatype
 option0_t0ype_type
-  (a: t@ype+) = Some0 of (a) | None0 of ()
-stadef option0 = option0_t0ype_type
-
+  (a: t@ype+) =
+  | None0 of ((*void*)) | Some0 of (a)
+//
+stadef
+option0(a:t@ype) = option0_t0ype_type(a)
+//
 (* ****** ****** *)
 //
 abstype
 array0_vt0ype_type
   (a: vt@ype(*invariant*)) = ptr
-stadef array0 = array0_vt0ype_type
+//
+stadef
+array0(a:vt@ype) = array0_vt0ype_type(a)
+//
 (*
 abstype
 subarray0_vt0ype_type
@@ -126,7 +145,9 @@ stadef subarray0 = subarray0_vt0ype_type
 abstype
 matrix0_vt0ype_type
   (a: vt@ype(*invariant*)) = ptr
-stadef matrix0 = matrix0_vt0ype_type
+//
+stadef
+matrix0(a:vt@ype) = matrix0_vt0ype_type(a)
 //
 (* ****** ****** *)
 //
@@ -147,14 +168,15 @@ dynarray(a:vt@ype) = dynarray_type(a)
 //
 (* ****** ****** *)
 //
-// HX: for maps of elements of type (a)
+// HX:
+// for elements of type (a)
 //
 abstype
 hashtbl_type
-  (key:t@ype, itm:t@ype) = ptr
+(key:t@ype, itm:t@ype+) = ptr
 //
 typedef
-hashtbl(key:t@ype, itm:t@ype) = hashtbl_type(key, itm)
+hashtbl(key:t0p, itm:t0p) = hashtbl_type(key, itm)
 //
 (* ****** ****** *)
 //
@@ -201,6 +223,11 @@ and
 gvdynarr = dynarray(gvalue)
 and
 gvhashtbl = hashtbl(string, gvalue)
+//
+(*
+typedef gvopt = Option(gvalue)
+vtypedef gvopt_vt = Option_vt(gvalue)
+*)
 //
 (* ****** ****** *)
 

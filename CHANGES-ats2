@@ -24,8 +24,21 @@ https://sourceforge.net/projects/ats2-lang-contrib/
 
 Here is a list of major additions and changes since the last release:
 
-1. Minorly improving libatscc/ML/list0 and libatscc/ML/array0
-
+1. Adding libatscc/ML/option0
+2. Adding libatscc/ML/matrix0
+3. Minorly improving libatscc/ML/list0 and libatscc/ML/array0
+4. Fixing missing cases in eval1_p2at (pats_dmacro2_eval1.dats)
+5. Fixing and improving libats/funarray
+6. Adding calls to the_dynconlst_add to ensure that every exception
+   constructor is declared in the generated C code.
+7. Initiating building the "compiled" library libats/ML/COMPILE
+8. Fixing a glitch in compiling polymorphic functions that call
+   function templates (auxmat_env in [pats_ccomp_template.dats])
+   A simple use case is found in doc/EXAMPLE/TESTATS/tempboxed.dats
+9. Adding support for calling variadic functions in a type-safe way.
+   There is no attempt to add support for type-safe implementation of
+   variadic functions yet.
+  
 ######
 
 0.3.7
@@ -1813,7 +1826,7 @@ make good use of ATS2 without any need for compiled library (libatslib.a).
 Also, GC support in ATS2 becomes optional; if needed, third-party GC (e.g.,
 Bohem-GC) can be readily employed.
 
-I will gradually list differences between ATS and ATS2, helping people
+I will gradually list differences between ATS1 and ATS2, helping people
 make the transition from ATS1 to ATS2.
 
 ###### end of [CHANGES-ats2] ######

@@ -55,12 +55,50 @@ memcpy
 (* ****** ****** *)
 //
 implement
-{}(*tmp*)
-array0_of_arrszref{a}(A) = $UN.cast{array0(a)}(A)
+{a}(*tmp*)
+array0_tuple_0
+  () = array0($arrpsz{a}())
+//
+implement
+{a}(*tmp*)
+array0_tuple_1
+  (x0) = array0($arrpsz{a}(x0))
+implement
+{a}(*tmp*)
+array0_tuple_2
+  (x0, x1) = array0($arrpsz{a}(x0, x1))
+implement
+{a}(*tmp*)
+array0_tuple_3
+  (x0, x1, x2) = array0($arrpsz{a}(x0, x1, x2))
+//
+implement
+{a}(*tmp*)
+array0_tuple_4
+  (x0, x1, x2, x3) =
+  array0($arrpsz{a}(x0, x1, x2, x3))
+implement
+{a}(*tmp*)
+array0_tuple_5
+  (x0, x1, x2, x3, x4) =
+  array0($arrpsz{a}(x0, x1, x2, x3, x4))
+implement
+{a}(*tmp*)
+array0_tuple_6
+  (x0, x1, x2, x3, x4, x5) =
+  array0($arrpsz{a}(x0, x1, x2, x3, x4, x5))
+//
+(* ****** ****** *)
 //
 implement
 {}(*tmp*)
-arrszref_of_array0{a}(A) = $UN.cast{arrszref(a)}(A)
+array0_of_arrszref
+  {a}(A) = $UN.cast{array0(a)}(A)
+//
+implement
+{}(*tmp*)
+arrszref_of_array0
+  {a}(A) = $UN.cast{arrszref(a)}(A)
 //
 (* ****** ****** *)
 
@@ -68,51 +106,71 @@ implement
 {}(*tmp*)
 array0_get_ref
   (A0) = let
-  val ASZ =
-    arrszref_of_array0(A0) in arrszref_get_ref(ASZ)
-  // end of [val]
+//
+val
+ASZ =
+arrszref_of_array0(A0) in arrszref_get_ref(ASZ)
+// end of [val]
 end // end of [array0_get_ref]
-
-implement
-{}(*tmp*)
-array0_get_size
-  (A0) = let
-  val ASZ =
-    arrszref_of_array0(A0) in arrszref_get_size(ASZ)
-  // end of [val]
-end // end of [array0_get_size]
-
-implement
-{}(*tmp*)
-array0_get_refsize
-  (A0) = let
-  var asz: size_t
-  val ASZ = arrszref_of_array0(A0)
-  val A = $effmask_wrt(arrszref_get_refsize(ASZ, asz))
-in
-  @(A, asz)
-end // end of [array0_get_refsize]
 
 (* ****** ****** *)
 
 implement
 {}(*tmp*)
+array0_get_size
+  (A0) = let
+//
+val
+ASZ =
+arrszref_of_array0(A0) in arrszref_get_size(ASZ)
+// end of [val]
+end // end of [array0_get_size]
+
+(* ****** ****** *)
+//
+implement
+{}(*tmp*)
+array0_get_length
+  (A0) = sz2i(g1ofg0_uint(array0_get_size<>(A0)))
+//
+(* ****** ****** *)
+
+implement
+{}(*tmp*)
+array0_get_refsize
+  (A0) = let
+//
+var asz: size_t
+val ASZ = arrszref_of_array0(A0)
+val A = $effmask_wrt(arrszref_get_refsize(ASZ, asz))
+//
+in
+  @(A, asz)
+end // end of [array0_get_refsize]
+
+(* ****** ****** *)
+//
+implement
+{}(*tmp*)
 array0_make_arrpsz
   (psz) = let
-  val ASZ =
-    arrszref_make_arrpsz(psz) in array0_of_arrszref(ASZ)
-  // end of [val]
+//
+val
+ASZ =
+arrszref_make_arrpsz(psz) in array0_of_arrszref(ASZ)
+// end of [val]
 end // end of [array0_make_arrpsz]
-
+//
 implement
 {}(*tmp*)
 array0_make_arrayref
   (A, n) = let
-  val ASZ =
-    arrszref_make_arrayref(A, n) in array0_of_arrszref(ASZ)
-  // end of [val]
+val
+ASZ =
+arrszref_make_arrayref(A, n) in array0_of_arrszref(ASZ)
+// end of [val]
 end // end of [array0_make_arrpsz]
-
+//
 (* ****** ****** *)
 //
 implement
