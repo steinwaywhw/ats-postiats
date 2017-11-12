@@ -55,11 +55,11 @@ case+ xs of
 implement
 {x}(*tmp*)
 list_make_sing(x) =
-  list_vt_cons{x}(x, list_vt_nil)
+list_vt_cons{x}(x, list_vt_nil())
 implement
 {x}(*tmp*)
 list_make_pair(x1, x2) =
-  list_vt_cons{x}(x1, list_vt_cons{x}(x2, list_vt_nil))
+list_vt_cons{x}(x1, list_vt_cons{x}(x2, list_vt_nil()))
 //
 #atscode_separator()
 
@@ -901,19 +901,24 @@ end // end of [list_reverse_append2_vt]
 
 #atscode_separator()
 
+(*
 implement
 {a}(*tmp*)
 list_concat(xss) = let
 //
+typedef T = List(a)
+//
 prval() = lemma_list_param(xss)
 //
-typedef T = List(a)
-fun aux {n:nat} .<n>.
+fun
+aux{n:nat} .<n>.
 (
   xs0: T
 , xss: list(T, n)
 ) :<!wrt> List0_vt(a) = let
-  prval() = lemma_list_param(xs0)
+//
+prval() = lemma_list_param(xs0)
+//
 in
   case+ xss of
   | list_nil
@@ -937,6 +942,65 @@ case+ xss of
 | list_cons
     (xs, xss) => aux (xs, xss)
   // list_cons
+//
+end // end of [list_concat]
+*)
+
+#atscode_separator()
+
+implement
+{x}(*tmp*)
+list_concat(xss) = let
+//
+typedef xs = List(x)
+//
+prval() = lemma_list_param(xss)
+//
+fnx
+aux1
+{n1:nat} .<n1,0>.
+(
+  xss: list(xs, n1)
+, res: &ptr? >> List0_vt(x)
+) :<!wrt> void =
+(
+case+ xss of
+| list_nil() =>
+  (res := list_vt_nil())
+| list_cons(xs0, xss) => let
+    prval() =
+      lemma_list_param(xs0) in aux2(xs0, xss, res)
+    // end of [val]
+  end // end of [list_cons]
+)
+and
+aux2
+{n1,n2:nat} .<n1,n2+1>.
+(
+  xs0: list(x, n2)
+, xss: list(xs, n1)
+, res: &ptr? >> List0_vt(x)
+) :<!wrt> void = let
+in
+  case+ xs0 of
+  | list_nil() =>
+    aux1(xss, res)
+  | list_cons(x0, xs1) =>
+    {
+      val () =
+      (
+        res :=
+        list_vt_cons{x}{0}(x0, _)
+      ) (* end of [val] *)
+      val+list_vt_cons(_, res1) = res
+      val ((*void*)) = aux2(xs1, xss, res1)
+      prval ((*folded*)) = fold@(res)
+    }
+end // end of [aux2]
+//
+in
+//
+  let var res: ptr in aux1(xss, res); res end
 //
 end // end of [list_concat]
 
@@ -1248,10 +1312,6 @@ end // end of [list_iforall_cloref]
 #atscode_separator()
 
 implement
-{a}(*tmp*)
-list_equal$eqfn = gequal_val_val<a>
-
-implement
 {x}(*tmp*)
 list_equal
 (
@@ -1267,14 +1327,12 @@ $d2ctype
 //
 case+ xs1 of
 | list_nil((*void*)) =>
-  (
-    case+ xs2 of
+  ( case+ xs2 of
     | list_nil _ => true
     | list_cons _ => false
   ) // end of [list_nil]
 | list_cons(x1, xs1) =>
-  (
-    case+ xs2 of
+  ( case+ xs2 of
     | list_nil() => false
     | list_cons(x2, xs2) => let
         val test =
@@ -1288,6 +1346,10 @@ case+ xs1 of
 } (* end of [list_equal] *)
 
 implement
+{a}(*tmp*)
+list_equal$eqfn = gequal_val_val<a>
+
+implement
 {x}(*tmp*)
 list_equal_cloref
   (xs1, xs2, eqfn) =
@@ -1295,9 +1357,63 @@ list_equal_cloref
 {
 //
 implement{y}
-list_equal$eqfn(x1, x2) = eqfn($UN.cast(x1), $UN.cast(x2))
+list_equal$eqfn
+  (x1, x2) = eqfn($UN.cast(x1), $UN.cast(x2))
 //
 } (* end of [list_equal_cloref] *)
+
+#atscode_separator()
+
+implement
+{x}(*tmp*)
+list_compare
+(
+  xs1, xs2
+) = loop(xs1, xs2) where
+{
+fun
+loop :
+$d2ctype
+(
+  list_compare<x>
+) = lam(xs1, xs2) =>
+//
+case+ xs1 of
+| list_nil((*void*)) =>
+  ( case+ xs2 of
+    | list_nil _ => 0
+    | list_cons _ => ~1
+  ) // end of [list_nil]
+| list_cons(x1, xs1) =>
+  ( case+ xs2 of
+    | list_nil() => (1)
+    | list_cons(x2, xs2) => let
+        val test =
+          list_compare$cmpfn<x>(x1, x2)
+        // end of [val]
+      in
+        if test = 0 then loop(xs1, xs2) else test
+      end // end of [list_cons]
+  ) (* end of [list_cons] *)
+//
+} (* end of [list_compare] *)
+
+implement
+{a}(*tmp*)
+list_compare$cmpfn = gcompare_val_val<a>
+
+implement
+{x}(*tmp*)
+list_compare_cloref
+  (xs1, xs2, cmpfn) =
+  list_compare<x>(xs1, xs2) where
+{
+//
+implement{y}
+list_compare$cmpfn
+  (x1, x2) = cmpfn($UN.cast(x1), $UN.cast(x2))
+//
+} (* end of [list_compare_cloref] *)
 
 #atscode_separator()
 

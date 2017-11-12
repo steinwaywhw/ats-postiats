@@ -204,7 +204,7 @@ fprint_list_sep
 // end of [fprint_list_sep]
 //
 fun{}
-fprint_list$sep (out: FILEref): void
+fprint_list$sep(out: FILEref): void
 //
 #atscode_separator()
 
@@ -525,6 +525,16 @@ list_equal(xs1: List(INV(x)), xs2: List(x)):<> bool
 fun{x:t0p}
 list_equal_cloref
   (List(INV(x)), List(x), eqfn: (x, x) -<cloref> bool):<> bool
+//
+#atscode_separator()
+//
+fun{x:t0p}
+list_compare$cmpfn(x1: x, x2: x):<> int
+fun{x:t0p}
+list_compare(xs1: List(INV(x)), xs2: List(x)):<> int
+fun{x:t0p}
+list_compare_cloref
+  (List(INV(x)), List(x), cmpfn: (x, x) -<cloref> int):<> int
 //
 #atscode_separator()
 //
