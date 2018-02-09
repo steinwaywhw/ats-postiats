@@ -101,9 +101,21 @@ string_copy(str: NSH(string)):<> string
 (* ****** ****** *)
 //
 fun{}
-string_make_list(cs: list0(char)):<> string
+string_make_list(cs: List(char)):<> string
 fun{}
-string_make_rlist(cs: list0(char)):<> string
+string_make_rlist(cs: List(char)):<> string
+//
+fun{}
+string_make_list0(cs: list0(char)):<> string
+fun{}
+string_make_rlist0(cs: list0(char)):<> string
+//
+(* ****** ****** *)
+//
+fun{}
+string_make_list_vt(List_vt(char)):<!wrt> string
+fun{}
+string_make_rlist_vt(List_vt(char)):<!wrt> string
 //
 (* ****** ****** *)
 
@@ -188,7 +200,8 @@ string_implode(list0(char)):<> string
 fun{}
 string_copywith
 (
-  cs: string, fopr: (charNZ) -<cloref1> charNZ
+  cs: string
+, fopr: (charNZ) -<cloref1> charNZ
 ) : string // end of [string_copywith]
 
 (* ****** ****** *)
@@ -201,6 +214,13 @@ string_tabulate
 , fopr: (sizeLt(n)) -<cloref1> charNZ
 ) : string // end of [string_tabulate]
 //
+(* ****** ****** *)
+
+fun{}
+string_find_index
+  (str: string, c0: charNZ):<> ssize_t
+// end of [string_find_index]
+
 (* ****** ****** *)
 //
 fun{}

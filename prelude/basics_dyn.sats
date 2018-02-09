@@ -231,6 +231,8 @@ cloptr_free
   {a:t0p}
   (pclo: cloptr(a)):<!wrt> void = "mac#%"
 //
+overload free with cloptr_free of 0
+//
 (* ****** ****** *)
 //
 fun
@@ -261,6 +263,7 @@ lazy_vt_free
   (lazyval: lazy_vt(a)):<!wrt> void = "mac#%"
 //
 overload ~ with lazy_vt_free of 0
+overload free with lazy_vt_free of 0
 //
 (* ****** ****** *)
 //
@@ -269,7 +272,8 @@ overload ~ with lazy_vt_free of 0
 //
 fun
 lazy2cloref
-  {a:t0p}(lazy(a)): ((*void*)) -<cloref1> (a) = "mac#%"
+  {a:t0p}
+  (lazy(a)): ((*void*)) -<cloref1> (a) = "mac#%"
 //
 (* ****** ****** *)
 
@@ -307,12 +311,16 @@ read_unsplit // HX: there is no need to check
 (* ****** ****** *)
 //
 castfn
-stamp_t{a:t@ype}(x: a):<> stamped_t(a)
+stamp_t
+  {a:t@ype}(x: INV(a)):<> stamped_t(a)
+// end of [stamp_t]
 castfn
-stamp_vt{a:vt@ype}(x: a):<> stamped_vt(a)
+stamp_vt
+  {a:vt@ype}(x: INV(a)):<> stamped_vt(a)
+// end of [stamp_vt]
 //
 (* ****** ****** *)
-
+//
 castfn
 unstamp_t
   {a:t@ype}{x:int}(x: stamped_t(INV(a), x)):<> a
@@ -321,7 +329,7 @@ castfn
 unstamp_vt
   {a:vt@ype}{x:int}(x: stamped_vt(INV(a), x)):<> a
 // end of [unstamp_vt]
-
+//
 (* ****** ****** *)
 //
 castfn

@@ -16,6 +16,21 @@
 #staload "./../SATS/OpenSCAD_meta.sats"
 //
 (* ****** ****** *)
+//
+implement
+scadobj_fapp
+(fopr, env0, args) =
+SCADOBJfapp(fopr, env0, args)
+//
+implement
+scadobj_fapp_enil
+  (fopr, args) = let
+  val env0 = scadenv_nil()
+in
+  scadobj_fapp(fopr, env0, args)
+end // scadobj_fapp_enil
+//
+(* ****** ****** *)
 
 implement
 scadobj_cube_int1
@@ -56,7 +71,6 @@ val x =
   SCADEXPfloat(x)
 //
 val x = SCADARGexp(x)
-//
 //
 val env = scadenv_nil((*void*))
 //
@@ -497,6 +511,27 @@ in
   SCADOBJfapp("cylinder", env, hr_a)
 end // end of [scadobj_cylinder1_float2_bool]
 
+(* ****** ****** *)
+//
+implement
+scadobj_unionlst
+  (objs) =
+(
+  SCADOBJmapp("union", objs)
+)
+implement
+scadobj_interlst
+  (objs) =
+(
+  SCADOBJmapp("intersection", objs)
+)
+implement
+scadobj_differlst
+  (objs) =
+(
+  SCADOBJmapp("difference", objs)
+)
+//
 (* ****** ****** *)
 
 implement

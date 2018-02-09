@@ -325,13 +325,13 @@ fun
 list0_filter
   {a:t0p}
 (
-  xs: list0(INV(a)), pred: cfun(a, bool)
+xs: list0(INV(a)), pred: cfun(a, bool)
 ) : list0(a) = "mac#%" // end-of-function
 fun
 list0_filter_method
   {a:t0p}
 (
-  xs: list0(INV(a)))(pred: cfun(a, bool)
+xs: list0(INV(a)))(pred: cfun(a, bool)
 ) : list0(a) = "mac#%" // end-of-function
 //
 overload .filter with list0_filter_method of 100
@@ -341,7 +341,7 @@ overload .filter with list0_filter_method of 100
 fun
 list0_labelize
   {x:t0p}
-  (xs: list0(INV(x))): list0($tup(int, x))
+  (list0(INV(x))): list0($tup(int, x)) = "mac#%"
 // end of [list0_labelize]
 //
 (* ****** ****** *)
@@ -389,16 +389,24 @@ list0_mapcons
 (* ****** ****** *)
 //
 fun
+list0_tabulate
+  {a:t0p}
+( n0: int
+, f0: cfun(int,a)): list0(a) = "mac#%"
+//
+(* ****** ****** *)
+//
+fun
 list0_find_opt
   {a:t0p}
 (
-  xs: list0(INV(a)), pred: cfun(a, bool)
+xs: list0(INV(a)), pred: cfun(a, bool)
 ) : Option_vt(a) = "mac#%" // end-of-fun
 fun
 list0_find_opt_method
   {a:t0p}
 (
-  xs: list0(INV(a)))(pred: cfun(a, bool)
+xs: list0(INV(a)))(pred: cfun(a, bool)
 ) : Option_vt(a) = "mac#%" // end-of-fun
 //
 overload

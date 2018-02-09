@@ -183,7 +183,7 @@ install_files_50: ; \
 
 ######
 #
-# HX-2018-11-11:
+# HX-2017-11-11:
 # Please execute the following
 # command-lines before reinstall
 #
@@ -222,8 +222,10 @@ cleanall:: ; $(RMF) stamp-h1
 cleanall:: ; $(RMRF) autom4te.cache
 
 cleanall:: ; $(RMF) bin/patscc
+cleanall:: ; $(RMF) bin/myatscc
 cleanall:: ; $(RMF) bin/patsopt
 cleanall:: ; $(RMF) bin/patscc_env.sh
+cleanall:: ; $(RMF) bin/myatscc_env.sh
 cleanall:: ; $(RMF) bin/patsopt_env.sh
 
 cleanall:: ; $(RMF) ccomp/atslib/lib/*

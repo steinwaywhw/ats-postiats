@@ -18,128 +18,158 @@ SHARE_ATSPRE_STALOAD_LIBATS_ML 1
 (* ****** ****** *)
 //
 #define
-PATSLIBATS_targetloc "$PATSHOME/libats"
+LIBATS_targetloc "$PATSHOME/libats"
+#define
+LIBATSML_targetloc "$PATSHOME/libats/ML"
 //
 (* ****** ****** *)
 //
 #staload
-"{$PATSLIBATS}/ML/SATS/basis.sats"
+"{$LIBATSML}/SATS/basis.sats"
+//
+(* ****** ****** *)
+//
+// HX-2017-12-30:
+// Please do not move
+// the following lines:
+//
+#staload
+"{$LIBATSML}/SATS/atspre.sats"
+#staload _ =
+"{$LIBATSML}/DATS/atspre.dats"
 //
 (* ****** ****** *)
 //
 #staload
-"{$PATSLIBATS}/ML/SATS/list0.sats"
-#staload _ =
-"{$PATSLIBATS}/ML/DATS/list0.dats"
-//
+"{$LIBATSML}/SATS/string.sats"
 #staload
-"{$PATSLIBATS}/ML/SATS/option0.sats"
+"{$LIBATSML}/SATS/strarr.sats"
 #staload _ =
-"{$PATSLIBATS}/ML/DATS/option0.dats"
-//
-#staload
-"{$PATSLIBATS}/ML/SATS/array0.sats"
-#staload
-"{$PATSLIBATS}/ML/SATS/matrix0.sats"
+"{$LIBATSML}/DATS/string.dats"
 #staload _ =
-"{$PATSLIBATS}/ML/DATS/array0.dats"
-#staload _ =
-"{$PATSLIBATS}/ML/DATS/matrix0.dats"
+"{$LIBATSML}/DATS/strarr.dats"
 //
 (* ****** ****** *)
 //
 #staload
-"{$PATSLIBATS}/ML/SATS/string.sats"
+"{$LIBATSML}/SATS/list0.sats"
+#staload _ =
+"{$LIBATSML}/DATS/list0.dats"
+//
 #staload
-"{$PATSLIBATS}/ML/SATS/strarr.sats"
+"{$LIBATSML}/SATS/list0_vt.sats"
 #staload _ =
-"{$PATSLIBATS}/ML/DATS/string.dats"
-#staload _ =
-"{$PATSLIBATS}/ML/DATS/strarr.dats"
+"{$LIBATSML}/DATS/list0_vt.dats"
 //
 (* ****** ****** *)
 //
 #staload
-"{$PATSLIBATS}/ML/SATS/stream.sats"
-#staload
-"{$PATSLIBATS}/ML/SATS/stream_vt.sats"
+"{$LIBATSML}/SATS/option0.sats"
 #staload _ =
-"{$PATSLIBATS}/ML/DATS/stream.dats"
-#staload _ =
-"{$PATSLIBATS}/ML/DATS/stream_vt.dats"
-//
-#staload
-"{$PATSLIBATS}/ML/SATS/gvalue.sats"
-#staload _ =
-"{$PATSLIBATS}/ML/DATS/gvalue.dats"
-//
-#staload
-"{$PATSLIBATS}/ML/SATS/filebas.sats"
-#staload
-"{$PATSLIBATS}/ML/SATS/intrange.sats"
-#staload _ =
-"{$PATSLIBATS}/ML/DATS/filebas.dats"
-#staload _ =
-"{$PATSLIBATS}/ML/DATS/intrange.dats"
+"{$LIBATSML}/DATS/option0.dats"
 //
 (* ****** ****** *)
 //
 #staload
-"{$PATSLIBATS}/ML/SATS/stdlib.sats"
+"{$LIBATSML}/SATS/array0.sats"
+#staload
+"{$LIBATSML}/SATS/matrix0.sats"
 #staload _ =
-"{$PATSLIBATS}/ML/DATS/stdlib.dats"
+"{$LIBATSML}/DATS/array0.dats"
+#staload _ =
+"{$LIBATSML}/DATS/matrix0.dats"
 //
 (* ****** ****** *)
 //
 #staload
-"{$PATSLIBATS}/ML/SATS/funmap.sats"
+"{$LIBATSML}/SATS/stream.sats"
+#staload _ =
+"{$LIBATSML}/DATS/stream.dats"
+//
 #staload
-"{$PATSLIBATS}/ML/SATS/funset.sats"
-//
+"{$LIBATSML}/SATS/stream_vt.sats"
 #staload _ =
-"{$PATSLIBATS}/ML/DATS/funmap.dats"
-#staload _ =
-"{$PATSLIBATS}/ML/DATS/funset.dats"
-//
-#staload _ =
-"{$PATSLIBATS}/DATS/funmap_avltree.dats"
-#staload _ =
-"{$PATSLIBATS}/DATS/funset_avltree.dats"
-//
-(* ****** ****** *)
-//
-#staload _ =
-"{$PATSLIBATS}/DATS/dynarray.dats"
-#staload
-"{$PATSLIBATS}/ML/SATS/dynarray.sats"
-#staload _ =
-"{$PATSLIBATS}/ML/DATS/dynarray.dats"
+"{$LIBATSML}/DATS/stream_vt.dats"
 //
 (* ****** ****** *)
 //
 #staload
-"{$PATSLIBATS}/ML/SATS/qlistref.sats"
+"{$LIBATSML}/SATS/gvalue.sats"
+#staload _ =
+"{$LIBATSML}/DATS/gvalue.dats"
+//
 #staload
-"{$PATSLIBATS}/ML/SATS/slistref.sats"
+"{$LIBATSML}/SATS/filebas.sats"
 #staload _ =
-"{$PATSLIBATS}/ML/DATS/qlistref.dats"
+"{$LIBATSML}/DATS/filebas.dats"
 #staload _ =
-"{$PATSLIBATS}/ML/DATS/slistref.dats"
+"{$LIBATSML}/DATS/filebas_dirent.dats"
+//
+#staload
+"{$LIBATSML}/SATS/intrange.sats"
+#staload _ =
+"{$LIBATSML}/DATS/intrange.dats"
+//
+(* ****** ****** *)
+//
+#staload
+"{$LIBATSML}/SATS/stdlib.sats"
+#staload _ =
+"{$LIBATSML}/DATS/stdlib.dats"
+//
+(* ****** ****** *)
+//
+#staload
+"{$LIBATSML}/SATS/funmap.sats"
+#staload
+"{$LIBATSML}/SATS/funset.sats"
+//
+#staload _ =
+"{$LIBATSML}/DATS/funmap.dats"
+#staload _ =
+"{$LIBATSML}/DATS/funset.dats"
+//
+#staload _ =
+"{$LIBATS}/DATS/funmap_avltree.dats"
+#staload _ =
+"{$LIBATS}/DATS/funset_avltree.dats"
 //
 (* ****** ****** *)
 //
 #staload _ =
-"{$PATSLIBATS}/DATS/qlist.dats"
-#staload _ =
-"{$PATSLIBATS}/DATS/hashfun.dats"
-#staload _ =
-"{$PATSLIBATS}/DATS/linmap_list.dats"
-#staload _ =
-"{$PATSLIBATS}/DATS/hashtbl_chain.dats"
+"{$LIBATS}/DATS/dynarray.dats"
+//
 #staload
-"{$PATSLIBATS}/ML/SATS/hashtblref.sats"
+"{$LIBATSML}/SATS/dynarray.sats"
 #staload _ =
-"{$PATSLIBATS}/ML/DATS/hashtblref.dats"
+"{$LIBATSML}/DATS/dynarray.dats"
+//
+(* ****** ****** *)
+//
+#staload
+"{$LIBATSML}/SATS/qlistref.sats"
+#staload
+"{$LIBATSML}/SATS/slistref.sats"
+#staload _ =
+"{$LIBATSML}/DATS/qlistref.dats"
+#staload _ =
+"{$LIBATSML}/DATS/slistref.dats"
+//
+(* ****** ****** *)
+//
+#staload _ =
+"{$LIBATS}/DATS/qlist.dats"
+#staload _ =
+"{$LIBATS}/DATS/hashfun.dats"
+#staload _ =
+"{$LIBATS}/DATS/linmap_list.dats"
+#staload _ =
+"{$LIBATS}/DATS/hashtbl_chain.dats"
+//
+#staload
+"{$LIBATSML}/SATS/hashtblref.sats"
+#staload _ =
+"{$LIBATSML}/DATS/hashtblref.dats"
 //
 (* ****** ****** *)
 //
@@ -149,11 +179,11 @@ PATSLIBATS_targetloc "$PATSHOME/libats"
 // See ML/BOXED/staloadall.hats
 //
 #staload
-"{$PATSLIBATS}/ML/BOXED/funmap.dats"
+"{$LIBATSML}/BOXED/funmap.dats"
 #staload
-"{$PATSLIBATS}/ML/BOXED/funarray.dats"
+"{$LIBATSML}/BOXED/funarray.dats"
 #staload
-"{$PATSLIBATS}/ML/BOXED/hashtblref.dats"
+"{$LIBATSML}/BOXED/hashtblref.dats"
 *)
 //
 (* ****** ****** *)

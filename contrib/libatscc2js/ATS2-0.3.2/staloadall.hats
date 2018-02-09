@@ -52,6 +52,10 @@
 #staload _ = "./DATS/stream_vt.dats"
 //
 (* ****** ****** *)
+
+#staload "./SATS/JSarray.sats"
+
+(* ****** ****** *)
 //
 #staload "./SATS/intrange.sats"
 #staload "./SATS/arrayref.sats"
@@ -61,15 +65,16 @@
 (* ****** ****** *)
 //
 #staload
-"./SATS/JSmath.sats" // JSlib
-#staload
-_(*anon*) = "./DATS/JSmath.dats" // JSlib
+"./SATS/JSLIBC/JSmisc.sats" // JS library
 //
-(* ****** ****** *)
-
-#staload "./SATS/JSdate.sats" // JS library
-#staload "./SATS/JSarray.sats" // JS library
-#staload "./SATS/JSglobal.sats" // JS library
+#staload
+"./SATS/JSLIBC/JSmath.sats" // JS library
+#staload
+_(*anon*) =
+"./DATS/JSLIBC/JSmath.dats" // JS library
+//
+#staload
+"./SATS/JSLIBC/JSdate.sats" // JS library
 //
 (* ****** ****** *)
 

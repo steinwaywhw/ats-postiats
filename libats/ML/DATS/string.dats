@@ -263,15 +263,32 @@ string_make_list
   (cs) = let
 //
 val cs =
-$UN.cast{list0(charNZ)}(cs)
+$UN.cast
+{List0(charNZ)}(cs)
 //
 val str =
 $effmask_wrt
-  (prelude_string_make_list(g1ofg0_list(cs)))
+(prelude_string_make_list(cs))
 //
 in
-  strnptr2string (str)
+  strnptr2string(str)
 end // end of [string_make_list]
+implement
+{}(*tmp*)
+string_make_list0
+  (cs) =
+  string_make_list<>(g1ofg0_list(cs))
+implement
+{}(*tmp*)
+string_make_list_vt
+  (cs) = res where
+{
+  val res =
+  string_make_list<>($UN.list_vt2t(cs))
+  val ((*freed*)) = list_vt_free<char>(cs)
+}
+//
+(* ****** ****** *)
 //
 implement
 {}(*tmp*)
@@ -279,15 +296,30 @@ string_make_rlist
   (cs) = let
 //
 val cs =
-$UN.cast{list0(charNZ)}(cs)
+$UN.cast
+{List0(charNZ)}(cs)
 //
 val str =
 $effmask_wrt
-  (prelude_string_make_rlist(g1ofg0_list(cs)))
+(prelude_string_make_rlist(cs))
 //
 in
   strnptr2string(str)
-end // end of [string_make_rlist]
+end // end of [string_make_rlist0]
+implement
+{}(*tmp*)
+string_make_rlist0
+  (cs) =
+  string_make_rlist<>(g1ofg0_list(cs))
+implement
+{}(*tmp*)
+string_make_rlist_vt
+  (cs) = res where
+{
+  val res =
+  string_make_rlist<>($UN.list_vt2t(cs))
+  val ((*freed*)) = list_vt_free<char>(cs)
+}
 //
 (* ****** ****** *)
 //
@@ -479,23 +511,23 @@ end (* end of [mul_int_string] *)
 implement
 {}(*tmp*)
 stringlst_concat
-  (xs) = let
+  (xs) =
+  strptr2string(res) where
+{
 //
 val res =
 $effmask_wrt
 (
   prelude_stringlst_concat(g1ofg0_list(xs))
 ) (* $effmask_wrt *)
-in
-  strptr2string (res)
-end // end of [stringlst_concat]
+} (* end of [stringlst_concat] *)
 
 (* ****** ****** *)
 //
 implement
 {}(*tmp*)
 string_implode
-  (cs) = string_make_list<>(cs)
+  (cs) = string_make_list0<>(cs)
 //
 (* ****** ****** *)
 
@@ -529,7 +561,7 @@ val cs = g1ofg0(cs)
 in
 //
 string_tabulate<>
-  (length(cs), lam(i) => fopr(cs[i]))
+(length(cs), lam(i) => fopr(cs[i]))
 //
 end // end of [string_copywith]
 
@@ -544,12 +576,21 @@ val n0 = g1ofg0_uint(n0)
 //
 implement
 string_tabulate$fopr<>
-  (i) = fopr($UN.cast{sizeLt(n)}(i))
+  (i) =
+  fopr($UN.cast{sizeLt(n)}(i))
 //
 in
-  strnptr2string(prelude_string_tabulate(n0))
+  strnptr2string
+  (prelude_string_tabulate(n0))
 end // end of [string_tabulate]
 
+(* ****** ****** *)
+//
+implement
+{}(*tmp*)
+string_find_index
+  (str, c0) = strchr<>(g1ofg0(str), c0)
+//
 (* ****** ****** *)
 
 implement

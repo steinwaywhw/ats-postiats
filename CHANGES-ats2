@@ -1,5 +1,87 @@
 ######
 
+0.3.10
+
+This is the 47th release of ATS2, the successor of the
+ATS programming language. The compiler for ATS2 is given
+the name ATS/Positats, ATS2/Postiats or simply Postiats.
+
+The official website for ATS is:
+
+http://www.ats-lang.org
+
+ATS-Postiats is hosted at github:
+
+https://github.com/githwxi/ATS-Postiats
+
+Major releases of ATS2 are available at:
+
+https://sourceforge.net/projects/ats2-lang/
+
+Major releases of external packages for ATS2 are available at:
+
+https://sourceforge.net/projects/ats2-lang-contrib/
+
+Here is a list of major additions and changes since the last release:
+
+1. Improving atscntrb-sdstring and atscntrb-hx-cstream
+2. Changing "atscntrb" to "atscntrb-hx" in the names of almost all of
+   the npm-based ATS packages contributed by myself (Hongwei). This is
+   a pervasive change due the wide use of these packages.
+
+######
+
+0.3.9
+
+------------------------------------------------
+ATS2-0.3.9.tgz:
+MD5: 89896a2ea58b07c2c409cd4297891aa1
+SHA1: e350b7872cbac5ab1c3a539c7e35d176e39eb378
+------------------------------------------------
+
+This is the 46th release of ATS2, the successor of the
+ATS programming language. The compiler for ATS2 is given
+the name ATS/Positats, ATS2/Postiats or simply Postiats.
+
+The official website for ATS is:
+
+http://www.ats-lang.org
+
+ATS-Postiats is hosted at github:
+
+https://github.com/githwxi/ATS-Postiats
+
+Major releases of ATS2 are available at:
+
+https://sourceforge.net/projects/ats2-lang/
+
+Major releases of external packages for ATS2 are available at:
+
+https://sourceforge.net/projects/ats2-lang-contrib/
+
+Here is a list of major additions and changes since the last release:
+
+1. Improving libatscc/libatscc2js regarding matrixref and matrix0
+2. Improving doc/BOOK/ATS2FUNCRASH by tidying-up and fixing errors
+3. Adding some examples in ATS-Tutoriats demonstrating ATS+ReactJS
+   and ATS+React-Native
+4. Adding basic programming support for parallelized stream-mapfold:
+   ${PATSHOME}/libats/BUCS320/StreamPar (stream-processing)
+   ${PATSHOME}/libats/BUCS520/StreamPar (linear-stream-processing)
+5. Adding basic programming support for recursive directory-traversal:
+   ${PATSHOME}/npm-utils/contrib/libats-hwxi/find_cli
+6. Moving most higher-order functions from ATSPRE to ATSLIB/ML/atspre.
+   This is a pervasive change, triggering a lot of (minor) fixes!
+7. Rewriting several stream_vt functions to make them tail-recursive.
+8. Moving ATSPRE/fcontainer and ATSPRE/giterator into libats/ATS2
+9. Finishing EFFECTIVATS/SteamPar on streamization and stream-processing
+   in parallel.
+10. Starting the ATS-CodeBook project (at http://github.com/ats-lang):
+    Hello, HX-intinf, ReadFromSTDIN, ReadFromSTDIN2, ReadFromSTDIN3, and
+    WordFrqncyCount
+
+######
+
 0.3.8
 
 This is the 45th release of ATS2, the successor of the
@@ -38,7 +120,8 @@ Here is a list of major additions and changes since the last release:
 9. Adding support for calling variadic functions in a type-safe way.
    There is no attempt to add support for type-safe implementation of
    variadic functions yet.
-  
+10. Supporting the user of the flag --gc for myatscc.
+    
 ######
 
 0.3.7
@@ -119,8 +202,7 @@ Here is a list of major additions and changes since the last release:
    source. For instance, a file of C code generated as such can serve as
    a script of some sort.
 4. Adding support for -dd/--dynamics, which compiles a list of given files
-   in a combined manner.
-   For instance, the following command-line:
+   in a combined manner. For instance, the following command-line:
 //
    patsopt -dd foo.dats bar1.dats bar2.dats bar3.dats
 //
