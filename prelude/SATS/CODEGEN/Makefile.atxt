@@ -118,9 +118,6 @@ all::
 #make_entry("gprint")
 #make_entry("tostring")
 
-#make_entry("giterator")
-#make_entry("fcontainer")
-
 #comment("
 for pointer arrays terminated with the null pointer
 ")

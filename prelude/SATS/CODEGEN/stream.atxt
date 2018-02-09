@@ -127,12 +127,14 @@ stream_get_at_exn
 // end of [stream_get_at_exn]
 
 #atscode_separator()
-
+//
+// HX: this one returns a linear stream!!!
+//
 fun{a:t0p}
 stream_takeLte
   (xs: stream(INV(a)), n: intGte(0)): stream_vt(a)
 // end of [stream_takeLte]
-
+//
 #atscode_separator()
 
 fun{a:t0p}
@@ -472,6 +474,10 @@ overload length with stream_length
 //
 overload .head with stream_head_exn
 overload .tail with stream_tail_exn
+//
+#atscode_separator()
+//
+overload .takeLte with stream_takeLte
 //
 #atscode_separator()
 

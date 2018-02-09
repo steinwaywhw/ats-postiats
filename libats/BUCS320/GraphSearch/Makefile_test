@@ -1,7 +1,7 @@
+######
 #
 # For testing
 #
-
 ######
 
 NPM=npm
@@ -28,6 +28,7 @@ for i in $(SUBDIRS); do $(MAKE) -C $$i testall; done
 ######
 
 cleanall:: ; $(RMRF) ./node_modules
+cleanall:: ; $(RMRF) ./package-lock.json
 
 ######
 

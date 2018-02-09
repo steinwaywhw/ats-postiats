@@ -45,6 +45,35 @@ List0_vt_(a:vt@ype+) = List0_vt(a)
 //
 implement
 {a}(*tmp*)
+list_vt_tuple_0() = list_vt_nil()
+//
+implement
+{a}(*tmp*)
+list_vt_tuple_1(x0) = $list_vt{a}(x0)
+implement
+{a}(*tmp*)
+list_vt_tuple_2(x0, x1) = $list_vt{a}(x0, x1)
+implement
+{a}(*tmp*)
+list_vt_tuple_3(x0, x1, x2) = $list_vt{a}(x0, x1, x2)
+//
+implement
+{a}(*tmp*)
+list_vt_tuple_4
+(x0, x1, x2, x3) = $list_vt{a}(x0, x1, x2, x3)
+implement
+{a}(*tmp*)
+list_vt_tuple_5
+(x0, x1, x2, x3, x4) = $list_vt{a}(x0, x1, x2, x3, x4)
+implement
+{a}(*tmp*)
+list_vt_tuple_6
+(x0, x1, x2, x3, x4, x5) = $list_vt{a}(x0, x1, x2, x3, x4, x5)
+//
+#atscode_separator()
+//
+implement
+{a}(*tmp*)
 list_vt_make_sing(x) =
   list_vt_cons{a}(x, list_vt_nil())
 implement
@@ -744,6 +773,7 @@ end // end of [list_split_vt_at]
 
 #atscode_separator()
 
+(*
 implement
 {a}(*tmp*)
 list_vt_concat
@@ -761,16 +791,17 @@ in
   case+ xss of
   | ~list_vt_cons
       (xs, xss) => let
-      val res = list_vt_append<a>(xs, res)
+      val res =
+      list_vt_append<a>(xs, res)
     in
       loop(res, xss)
     end // end of [list_vt_cons]
-  | ~list_vt_nil () => let
+  | ~list_vt_nil() => let
       prval() = lemma_list_vt_param(res) in res
     end // end of [list_vt_nil]
 end (* end of [loop] *)
 //
-val xss = list_vt_reverse (xss)
+val xss = list_vt_reverse<a>(xss)
 //
 prval() = lemma_list_vt_param(xss)
 //
@@ -781,6 +812,62 @@ case+ xss of
     (xs, xss) => loop(xs, xss)
 | ~list_vt_nil() => list_vt_nil()
 //
+end // end of [list_vt_concat]
+*)
+
+#atscode_separator()
+
+implement
+{a}(*tmp*)
+list_vt_concat
+  (xss) = let
+//
+fun
+last(res: ptr): ptr = let
+//
+val xs0 =
+$UN.ptr0_get<List_vt(a)>(res)
+//
+in
+//
+case+ xs0 of
+| list_vt_nil
+    () => res where
+  {
+    prval () = $UN.cast2void(xs0)
+  }
+| @list_vt_cons
+    (x0, xs1) => let
+    val res = addr@xs1
+    prval () = fold@(xs0)
+    prval () = $UN.cast2void(xs0)
+  in
+    last(res)
+  end // end of [list_vt_cons]
+//
+end // end of [last]
+//
+fun
+loop
+( res: ptr,
+  xss: List_vt(List_vt(a))) : void =
+(
+case+ xss of
+| ~list_vt_nil() => ()
+| ~list_vt_cons(xs, xss) =>
+    loop(last(res), xss) where
+  {
+    val () =
+    $UN.ptr0_set<List_vt(a)>(res, xs)
+  }
+)
+//
+var
+res0:
+List0_vt(a) = list_vt_nil()
+//
+in
+  $effmask_all(loop(addr@res0, xss)); res0
 end // end of [list_vt_concat]
 
 #atscode_separator()
@@ -980,42 +1067,114 @@ val () = xs := res2
 implement
 {a}(*tmp*)
 list_vt_app
-  (xs) = let
-in
+  (xs) =
+  loop(xs) where
+{
 //
+fun
+loop
+(
+xs: !List_vt(a)
+) : void =
+(
 case+ xs of
 | @list_vt_cons
-    (x, xs1) => let
+    (x, xs1) =>
+  {
     val () =
-      list_vt_app$fwork<a>(x)
-    val () = list_vt_app<a>(xs1)
-    prval ((*folded*)) = fold@ (xs)
-  in
-    // nothing
-  end // end of [cons]
+    list_vt_app$fwork<a>(x)
+    val () = loop(xs1)
+    prval ((*folded*)) = fold@(xs)
+  } (* end of [cons] *)
 | list_vt_nil((*void*)) => ()
+)
 //
-end // end of [list_vt_app]
+} // end of [list_vt_app]
 
 implement
 {a}(*tmp*)
 list_vt_appfree
-  (xs) = let
-in
+  (xs) =
+  loop(xs) where
+{
+fun
+loop
+(
+xs: List_vt(a)
+) : void = (
 //
 case+ xs of
 | @list_vt_cons
-    (x, xs1) => let
+    (x, xs1) =>
+    loop(xs1) where
+  {
     val xs1 = xs1
     val () =
     list_vt_appfree$fwork<a>(x)
     val ((*freed*)) = free@{a}{0}(xs)
-  in
-    list_vt_appfree<a>(xs1)
-  end // end of [cons]
+  } (* end of [cons] *)
 | ~list_vt_nil((*void*)) => ()
 //
-end // end of [list_vt_appfree]
+) (* end of [loop] *)
+} // end of [list_vt_appfree]
+
+#atscode_separator()
+
+implement
+{a}(*tmp*)
+list_vt_iapp
+  (xs) =
+  loop(0, xs) where
+{
+//
+fun
+loop
+(
+i0: intGte(0),
+xs: !List_vt(a)
+) : void =
+(
+case+ xs of
+| @list_vt_cons
+    (x, xs1) =>
+  {
+    val () =
+    list_vt_iapp$fwork<a>(i0, x)
+    val () = loop(i0+1, xs1)
+    prval ((*folded*)) = fold@(xs)
+  } (* end of [cons] *)
+| list_vt_nil((*void*)) => ((*void*))
+)
+//
+} // end of [list_vt_iapp]
+
+implement
+{a}(*tmp*)
+list_vt_iappfree
+  (xs) =
+  loop(0, xs) where
+{
+fun
+loop
+(
+i0: intGte(0),
+xs: List_vt(a)
+) : void = (
+//
+case+ xs of
+| @list_vt_cons
+    (x, xs1) =>
+    loop(i0+1, xs1) where
+  {
+    val xs1 = xs1
+    val () =
+    list_vt_iappfree$fwork<a>(i0, x)
+    val ((*freed*)) = free@{a}{0}(xs)
+  } (* end of [cons] *)
+| ~list_vt_nil((*void*)) => ((*void*))
+//
+) (* end of [loop] *)
+} // end of [list_vt_iappfree]
 
 #atscode_separator()
 
@@ -1062,65 +1221,6 @@ end // end of [list_vt_map]
 #atscode_separator()
 
 implement
-{x}{y}(*tmp*)
-list_vt_map_fun
-  (xs, f0) = let
-//
-implement
-{x2}{y2}
-list_vt_map$fopr(x2) = let
-//
-val f0 =
-$UN.cast{(&x2)->y}(f0) in $UN.castvwtp0{y2}(f0(x2))
-//
-end // end of [list_vt_map$fopr]
-//
-in
-  list_vt_map<x><y>(xs)
-end // end of [list_vt_map_fun]
-
-implement
-{x}{y}(*tmp*)
-list_vt_map_clo
-  (xs, f0) = let
-//
-val f0 =
-$UN.cast{(&x) -<cloref1> y}(addr@f0)
-//
-implement
-{x2}{y2}
-list_vt_map$fopr(x2) = let
-//
-val f0 =
-$UN.cast{(&x2)-<cloref1>y}(f0) in $UN.castvwtp0{y2}(f0(x2))
-//
-end // end of [list_vt_map$fopr]
-//
-in
-  list_vt_map<x><y>(xs)
-end // end of [list_vt_map_clo]
-
-implement
-{x}{y}(*tmp*)
-list_vt_map_cloref
-  (xs, f0) = let
-//
-implement
-{x2}{y2}
-list_vt_map$fopr(x2) = let
-//
-val f0 =
-$UN.cast{(&x2)-<cloref1>y}(f0) in $UN.castvwtp0{y2}(f0(x2))
-//
-end // end of [list_vt_map$fopr]
-//
-in
-  list_vt_map<x><y>(xs)
-end // end of [list_vt_map_cloref]
-
-#atscode_separator()
-
-implement
 {a}{b}
 list_vt_mapfree
   (xs) = let
@@ -1157,66 +1257,6 @@ end // end of [loop]
 in
   let var res: ptr in loop(xs, res); res end
 end // end of [list_vt_mapfree]
-
-#atscode_separator()
-
-implement
-{x}{y}(*tmp*)
-list_vt_mapfree_fun
-  (xs, f0) = let
-//
-implement
-{x2}{y2}
-list_vt_mapfree$fopr
-  (x2) = let
-//
-val f0 =
-$UN.cast{(&x2>>_?)->y}(f0) in $UN.castvwtp0{y2}(f0(x2))
-//
-end // end of [list_vt_mapfree$fopr]
-//
-in
-  list_vt_mapfree<x><y>(xs)
-end // end of [list_vt_mapfree_fun]
-
-implement
-{x}{y}(*tmp*)
-list_vt_mapfree_clo
-  (xs, f0) = let
-//
-val f0 =
-$UN.cast{(&x>>_?) -<cloref1> y}(addr@f0)
-//
-implement
-{x2}{y2}
-list_vt_mapfree$fopr(x2) = let
-//
-val f0 =
-$UN.cast{(&x2>>_?)-<cloref1>y}(f0) in $UN.castvwtp0{y2}(f0(x2))
-//
-end // end of [list_vt_mapfree$fopr]
-//
-in
-  list_vt_mapfree<x><y>(xs)
-end // end of [list_vt_mapfree_clo]
-
-implement
-{x}{y}(*tmp*)
-list_vt_mapfree_cloref
-  (xs, f0) = let
-//
-implement
-{x2}{y2}
-list_vt_mapfree$fopr(x2) = let
-//
-val f0 =
-$UN.cast{(&x2>>_?)-<cloref1>y}(f0) in $UN.castvwtp0{y2}(f0(x2))
-//
-end // end of [list_vt_mapfree$fopr]
-//
-in
-  list_vt_mapfree<x><y>(xs)
-end // end of [list_vt_mapfree_cloref]
 
 #atscode_separator()
 
@@ -1275,64 +1315,6 @@ end // end of [list_vt_foreach_env]
 implement
 {x}{env}
 list_vt_foreach$cont(x, env) = true
-
-#atscode_separator()
-
-implement
-{a}(*tmp*)
-list_vt_foreach_fun
-  {fe}(xs, f0) = let
-//
-prval() = lemma_list_vt_param(xs)
-//
-fun
-loop
-{n:nat} .<n>.
-(
-xs: !list_vt(a, n), f0: (&a) -<fe> void
-) :<fe> void =
-  case+ xs of
-  | @list_vt_cons
-      (x, xs1) => let
-      val () = f0(x)
-      val () = loop(xs1, f0)
-    in
-      fold@ (xs)
-    end // end of [cons]
-  | list_vt_nil((*void*)) => ()
-// end of [loop]
-in
-  loop(xs, f0)
-end // end of [list_vt_foreach_fun]
-
-#atscode_separator()
-
-implement
-{a}(*tmp*)
-list_vt_foreach_cloref
-  {fe}(xs, f0) = let
-//
-prval() = lemma_list_vt_param(xs)
-//
-fun
-loop
-{n:nat} .<n>.
-(
-xs: !list_vt(a, n), f0: (&a) -<cloref,fe> void
-) :<fe> void =
-  case+ xs of
-  | @list_vt_cons
-      (x, xs1) => let
-      val () = f0(x)
-      val () = loop(xs1, f0)
-    in
-      fold@ (xs)
-    end // end of [cons]
-  | list_vt_nil ((*void*)) => ()
-// end of [loop]
-in
-  loop(xs, f0)
-end // end of [list_vt_foreach_cloref]
 
 #atscode_separator()
 
@@ -1467,6 +1449,56 @@ list_vt_freelin<a>(xs)
 in
   $effmask_all(auxmain(xs))
 end (* end of [streamize_list_vt_elt] *)
+
+#atscode_separator()
+
+implement
+{a,b}(*tmp*)
+streamize_list_vt_zip
+  (xs, ys) =
+  auxmain(xs, ys) where
+{
+//
+fun
+auxmain:
+$d2ctype
+(
+streamize_list_vt_zip<a,b>
+) =
+lam
+(
+xs, ys
+) => $ldelay (
+(
+case+ xs of
+| ~list_vt_nil() =>
+  (
+    stream_vt_nil()
+  ) where
+  {
+    val+~list_vt_nil() = ys
+  }
+| ~list_vt_cons(x, xs) =>
+  (
+    case+ ys of
+(*
+    | ~list_vt_nil() => let
+        var x = x
+        val () = list_vt_freelin$clear<a>(x)
+      in
+        list_vt_freelin(xs); stream_vt_nil()
+      end // end of [list_vt_nil]
+*)
+    | ~list_vt_cons(y, ys) =>
+      (
+        stream_vt_cons((x, y), auxmain(xs, ys))
+      )
+  ) (* end of [list_vt_cons] *)
+)
+, (list_vt_freelin(xs); list_vt_freelin(ys))
+) (* end of [$ldelay] *)
+//
+} (* end of [streamize_list_vt_zip] *)
 
 #atscode_separator()
 

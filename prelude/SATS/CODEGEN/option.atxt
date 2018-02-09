@@ -147,11 +147,14 @@ option_equal$eqfn(x1: a, x2: a):<> bool
 //
 #atscode_separator()
 //
-fun{a:t0p}
+fun
+{a:t0p}
 print_option(opt: Option(INV(a))): void
-fun{a:t0p}
+fun
+{a:t0p}
 prerr_option(opt: Option(INV(a))): void
-fun{a:t0p}
+fun
+{a:t0p}
 fprint_option(FILEref, Option(INV(a))): void
 //
 #atscode_separator()
