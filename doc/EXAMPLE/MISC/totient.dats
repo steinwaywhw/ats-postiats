@@ -1,3 +1,4 @@
+//usr/bin/env myatscc "$0"; exit
 (* ****** ****** *)
 
 #include "share/atspre_staload.hats"
@@ -11,11 +12,19 @@
 #staload _(*M*) = "libats/libc/DATS/math.dats"
 //
 (* ****** ****** *)
+//
+(*
+##myatsccdef=\
+patsopt --constraint-ignore --dynamic $1 | \
+tcc -run -DATS_MEMALLOC_LIBC -I${PATSHOME} -I${PATSHOME}/ccomp/runtime -
+*)
+//
+(* ****** ****** *)
 
 (*
 //
 // HX-2018-01-08:
-// The following Haskell code taken from
+// The following Haskell code is taken from
 // http://blog.vmchale.com/article/ats-totient
 //
 hsIsPrime :: (Integral a) => a -> Bool
@@ -29,13 +38,33 @@ hsTotient n = (n * product [ p - 1 | p <- ps ]) div product ps
 
 (* ****** ****** *)
 //
+(*
+//
+fun
+atsIsPrime(1) =
+false
+|
+atsIsPrime(x) =
+forall
+(
+range(2, intsqrt(x))
+) where {
+  implement
+  intrange_forall$pred<>(i) = x % i > 0
+} (* where *)
+//
+withtype intGt(0) -> bool
+//
+*)
 fun
 atsIsPrime(x: intGt(0)): bool =
   case+ x of
   | 1 => false
   | _ =>>
     intrange_forall(2, $M.intsqrt(x)+1)
-    where { implement intrange_forall$pred<>(i) = x % i > 0 }
+    where {
+      implement intrange_forall$pred<>(i) = x % i > 0
+    } (* where *)
 // end of [atsIsPrime]
 //
 (* ****** ****** *)
@@ -68,10 +97,12 @@ atsTotient(n: intGt(0)): int =
 //
 #staload
 TIMING =
-"contrib/atscntrb-hx-mytesting/SATS/timing.sats"
+"contrib/atscntrb\
+/atscntrb-hx-mytesting/SATS/timing.sats"
 #staload
 _(*TIMING*) =
-"contrib/atscntrb-hx-mytesting/DATS/timing.dats"
+"contrib/atscntrb\
+/atscntrb-hx-mytesting/DATS/timing.dats"
 //
 (* ****** ****** *)
 

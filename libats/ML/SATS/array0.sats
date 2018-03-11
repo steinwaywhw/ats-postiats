@@ -198,9 +198,16 @@ array0_make_elt with array0_make_elt_size
 //
 fun{a:t0p}
 array0_make_list
-  (xs: list0(INV(a))):<!wrt> array0(a)
+  (xs: List(INV(a))):<!wrt> array0(a)
 fun{a:t0p}
 array0_make_rlist
+  (xs: List(INV(a))):<!wrt> array0(a)
+//
+fun{a:t0p}
+array0_make_list0
+  (xs: list0(INV(a))):<!wrt> array0(a)
+fun{a:t0p}
+array0_make_rlist0
   (xs: list0(INV(a))):<!wrt> array0(a)
 //
 (* ****** ****** *)
@@ -211,6 +218,18 @@ array0_make_subarray
 , st: size_t, ln: size_t):<!wrt> array0(a)
 // end of [array0_make_subarray]
 
+(* ****** ****** *)
+//
+fun{a:t0p}
+array0_make_stream
+  (xs: stream(INV(a))):<!wrt> array0(a)
+fun{a:t0p}
+array0_make_stream_vt
+  (xs: stream_vt(INV(a))):<!wrt> array0(a)
+//
+fun{}
+array0_make_stream$bufsize():<> intGte(1)
+//
 (* ****** ****** *)
 
 fun{a:t0p}
@@ -621,6 +640,14 @@ fun
 array0_is_ordered
 ( A0: array0(a)
 , cmp: (&a, &a) -<cloref1> int): bool
+//
+(* ****** ****** *)
+//
+fun
+{a:vt0p}
+array0_bsearch
+( A0: array0(a)
+, ford: (&a) -<cloref1> int): size_t
 //
 (* ****** ****** *)
 //
