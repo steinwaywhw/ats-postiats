@@ -21,6 +21,7 @@ aclocal.m4
 autom4te.cache
 patscc_env.sh
 patsopt_env.sh
+myatscc_env.sh
 
 #
 # An external link
@@ -37,6 +38,7 @@ src/Makefile_atxt.dats
 src/TAGS
 src/tags
 src/TAGATS
+src/*.a
 
 bin/patscc
 bin/patsopt
@@ -45,11 +47,12 @@ bin/myatscc
 bin/atsreloc_curl
 bin/atsreloc_wget
 bin/atscc2js
+bin/atscc2pl
 bin/atscc2clj
 bin/atscc2erl
 bin/atscc2php
-bin/atscc2pl
 bin/atscc2py3
+bin/atscc2r34
 bin/atscc2scm
 bin/patsolve
 bin/patsolve_z3

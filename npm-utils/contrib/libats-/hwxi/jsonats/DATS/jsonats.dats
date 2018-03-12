@@ -29,21 +29,27 @@
 (* ****** ****** *)
 //
 #define
-ATS_PACKNAME "ATSCNTRB.HX.jsonats"
+ATS_PACKNAME
+"ATSCNTRB.HX.jsonats"
 //
 (* ****** ****** *)
 //
 // HX-2014-05-09:
-// Some convenience functions for parsing JSON data
+// Convenience functions
+// for parsing JSON data
+//
+(* ****** ****** *)
+//
+#include
+"share/atspre_staload.hats"
 //
 (* ****** ****** *)
 //
 #define
 HX_CSTREAM_targetloc
-"$PATSHOME/contrib\
-/atscntrb-hx-cstream"
-#include
-"share/atspre_staload.hats"
+"\
+$PATSHOME/contrib\
+/atscntrb/atscntrb-hx-cstream"
 //
 (* ****** ****** *)
 //

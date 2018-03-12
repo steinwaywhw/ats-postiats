@@ -19,15 +19,15 @@ ATS_STATIC_PREFIX "_atslangweb_patservice__"
 //
 (* ****** ****** *)
 //
-staload
-UN = "prelude/SATS/unsafe.sats"
-//
-(* ****** ****** *)
-//
 #define
 LIBATSCC2JS_targetloc
 "$PATSHOME\
 /contrib/libatscc2js/ATS2-0.3.2"
+//
+(* ****** ****** *)
+//
+#staload
+UN = "prelude/SATS/unsafe.sats"
 //
 (* ****** ****** *)
 //
@@ -36,7 +36,7 @@ LIBATSCC2JS_targetloc
 //
 (* ****** ****** *)
 
-staload "./../SATS/atslangweb.sats"
+#staload "./../SATS/atslangweb.sats"
 
 (* ****** ****** *)
 //  
@@ -121,7 +121,7 @@ patservice_patsopt_tcats
 implement
 patsopt_tcats_rpc$cname<>() =
 (
-"https://atslangweb-postiats.rhcloud.com/SERVER/MYCODE/atslangweb_patsopt_tcats_0_.php"
+"http://www.ats-lang.org/SERVER/MYCODE/atslangweb_patsopt_tcats_0_.php"
 )
 implement
 patsopt_tcats_rpc$reply<>(reply) =
@@ -153,7 +153,7 @@ patservice_patsopt_ccats
 implement
 patsopt_ccats_rpc$cname<>() =
 (
-"https://atslangweb-postiats.rhcloud.com/SERVER/MYCODE/atslangweb_patsopt_ccats_0_.php"
+"http://www.ats-lang.org/SERVER/MYCODE/atslangweb_patsopt_ccats_0_.php"
 )
 implement
 patsopt_ccats_rpc$reply<>(reply) =
@@ -185,7 +185,7 @@ patservice_patsopt_cc2js
 implement
 patsopt_atscc2js_rpc$cname<>() =
 (
-"https://atslangweb-postiats.rhcloud.com/SERVER/MYCODE/atslangweb_patsopt_atscc2js_0_.php"
+"http://www.ats-lang.org/SERVER/MYCODE/atslangweb_patsopt_atscc2js_0_.php"
 )
 implement
 patsopt_atscc2js_rpc$reply<>(reply) =
@@ -217,7 +217,7 @@ patservice_pats2xhtml_eval
 implement
 pats2xhtml_eval_rpc$cname<>() =
 (
-"https://atslangweb-postiats.rhcloud.com/SERVER/MYCODE/atslangweb_pats2xhtml_eval_0_.php"
+"http://www.ats-lang.org/SERVER/MYCODE/atslangweb_pats2xhtml_eval_0_.php"
 )
 implement
 pats2xhtml_eval_rpc$reply<>(reply) =

@@ -78,9 +78,11 @@ end // end of [make2_entry]
 #
 
 ######
-
-CCOPT=gcc -std=c99
-
+#
+CCOPT=gcc
+#
+# CCOPT=gcc -std=c99
+#
 ######
 
 ifeq ("$(PATSHOME)","")
@@ -302,6 +304,10 @@ RMF=rm -f
 
 #make2_entry("libats_ML_monad_list", "-DATS_MEMALLOC_LIBC", "-L$(PATSLIB) -latslib")
 #make2_entry("libats_ML_monad_maybe", "-DATS_MEMALLOC_LIBC", "-L$(PATSLIB) -latslib")
+
+######
+
+#make2_entry("libats_ML_COMPILE_all", "-DATS_MEMALLOC_LIBC", "-L$(PATSLIB) -latslib")
 
 ######
 

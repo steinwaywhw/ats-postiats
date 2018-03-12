@@ -41,6 +41,7 @@ in
 end // end of [make_entry]
 
 %}\
+######
 #
 #
 # This Makefile is automatically generated
@@ -49,7 +50,6 @@ end // end of [make_entry]
 # make -f Makefile.gen
 #
 #
-
 ######
 
 ATSHOMEQ="$(ATSHOME)"
@@ -100,6 +100,11 @@ all_script::
 
 ######
 
+#make_entry("ccomp_atslib")
+#make_entry("ccomp_runtime")
+
+######
+
 #make_entry("atslib_prelude")
 
 ######
@@ -108,17 +113,13 @@ all_script::
 #make_entry("atslib_libats_ML")
 #make_entry("atslib_libats_libc")
 #make_entry("atslib_libats_ATS1")
+#make_entry("atslib_libats_ATS2")
 #make_entry("atslib_libats_BUCS320")
 
 ######
 #
-#make_entry("atslib_atscntrb")
+#make_entry("contrib_atscntrb")
 #
-######
-
-#make_entry("ccomp_atslib")
-#make_entry("ccomp_runtime")
-
 ######
 
 #make_entry("utils_emacs")
@@ -144,6 +145,7 @@ all_script::
 #make_entry("contrib_atscc2php")
 #make_entry("contrib_atscc2scm")
 #make_entry("contrib_atscc2clj")
+#make_entry("contrib_atscc2r34")
 #
 ######
 
@@ -154,6 +156,7 @@ all_script::
 #make_entry("contrib_libatscc2php")
 #make_entry("contrib_libatscc2scm")
 #make_entry("contrib_libatscc2clj")
+#make_entry("contrib_libatscc2r34")
 
 ######
 
@@ -185,13 +188,13 @@ all_script::
 #make_entry("patscontrib_libats_hwxi")
 #make_entry("patscontrib_libats_hwxi_teaching")
 #
-#make_entry("patscontrib_libatscc")
-#make_entry("patscontrib_libatscc2js")
-#make_entry("patscontrib_libatscc2pl")
-#make_entry("patscontrib_libatscc2py3")
-#make_entry("patscontrib_libatscc2php")
-#make_entry("patscontrib_libatscc2scm")
-#make_entry("patscontrib_libatscc2clj")
+\#make_entry("patscontrib_libatscc")
+\#make_entry("patscontrib_libatscc2js")
+\#make_entry("patscontrib_libatscc2pl")
+\#make_entry("patscontrib_libatscc2py3")
+\#make_entry("patscontrib_libatscc2php")
+\#make_entry("patscontrib_libatscc2scm")
+\#make_entry("patscontrib_libatscc2clj")
 #
 #make_entry("patscontrib_kernelats")
 #
@@ -203,11 +206,11 @@ atspackaging:: srcget_share
 atspackaging:: srcget_patsrc
 atspackaging:: srcget_patsrc_cboot
 #
-atspackaging:: srcget_atslib
-atspackaging:: srcget_atslib_atscntrb
-#
 atspackaging:: srcget_ccomp_atslib
 atspackaging:: srcget_ccomp_runtime
+#
+atspackaging:: srcget_atslib
+atspackaging:: srcget_contrib_atscntrb
 #
 atspackaging:: srcget_utils_emacs
 atspackaging:: srcget_utils_atscc
@@ -233,6 +236,7 @@ atspackaging:: srcget_contrib_atscc2py3
 atspackaging:: srcget_contrib_atscc2php
 atspackaging:: srcget_contrib_atscc2scm
 atspackaging:: srcget_contrib_atscc2clj
+atspackaging:: srcget_contrib_atscc2r34
 #
 atspackaging:: srcget_contrib_libatscc
 atspackaging:: srcget_contrib_libatscc2js
@@ -241,6 +245,7 @@ atspackaging:: srcget_contrib_libatscc2py3
 atspackaging:: srcget_contrib_libatscc2php
 atspackaging:: srcget_contrib_libatscc2scm
 atspackaging:: srcget_contrib_libatscc2clj
+atspackaging:: srcget_contrib_libatscc2r34
 #
 atspackaging:: srcget_doc_example
 #
@@ -260,10 +265,11 @@ srcget_home:: ; $(CPF) ../../INSTALL $(ATSDIST)/
 srcget_home:: ; $(CPF) ../../VERSION $(ATSDIST)/
 srcget_home:: ; $(CPF) ../../CHANGES-ats2 $(ATSDIST)/
 srcget_home:: ; $(CPF) ../../CHANGES-contrib $(ATSDIST)/
-srcget_home:: ; $(CPF) ../../configure.ac $(ATSDIST)/
-srcget_home:: ; $(CPF) ../../config.mk.in $(ATSDIST)/
-srcget_home:: ; $(CPF) ../../bin/patscc_env.sh.in $(ATSDIST)/bin/
-srcget_home:: ; $(CPF) ../../bin/patsopt_env.sh.in $(ATSDIST)/bin/
+\#srcget_home:: ; $(CPF) ../../configure.ac $(ATSDIST)/
+\#srcget_home:: ; $(CPF) ../../config.mk.in $(ATSDIST)/
+\#srcget_home:: ; $(CPF) ../../bin/patscc_env.sh.in $(ATSDIST)/bin/
+\#srcget_home:: ; $(CPF) ../../bin/myatscc_env.sh.in $(ATSDIST)/bin/
+\#srcget_home:: ; $(CPF) ../../bin/patsopt_env.sh.in $(ATSDIST)/bin/
 
 ######
 #
@@ -306,10 +312,12 @@ srcget_atslib:: srcget_atslib_libats_libc
 srcget_atslib_libats_libc:: SCRIPT/atslib_libats_libc.bash ; bash $<
 srcget_atslib:: srcget_atslib_libats_ATS1
 srcget_atslib_libats_ATS1:: SCRIPT/atslib_libats_ATS1.bash ; bash $<
+srcget_atslib:: srcget_atslib_libats_ATS2
+srcget_atslib_libats_ATS2:: SCRIPT/atslib_libats_ATS2.bash ; bash $<
 srcget_atslib:: srcget_atslib_libats_BUCS320
 srcget_atslib_libats_BUCS320:: SCRIPT/atslib_libats_BUCS320.bash ; bash $<
 #
-srcget_atslib_atscntrb:: SCRIPT/atslib_atscntrb.bash ; bash $<
+srcget_contrib_atscntrb:: SCRIPT/contrib_atscntrb.bash ; bash $<
 #
 ######
 
@@ -344,6 +352,7 @@ srcget_contrib_atscc2py3:: SCRIPT/contrib_atscc2py3.bash ; bash $<
 srcget_contrib_atscc2php:: SCRIPT/contrib_atscc2php.bash ; bash $<
 srcget_contrib_atscc2scm:: SCRIPT/contrib_atscc2scm.bash ; bash $<
 srcget_contrib_atscc2clj:: SCRIPT/contrib_atscc2clj.bash ; bash $<
+srcget_contrib_atscc2r34:: SCRIPT/contrib_atscc2r34.bash ; bash $<
 #
 srcget_contrib_libatscc:: SCRIPT/contrib_libatscc.bash ; bash $<
 srcget_contrib_libatscc2js:: SCRIPT/contrib_libatscc2js.bash ; bash $<
@@ -352,6 +361,7 @@ srcget_contrib_libatscc2py3:: SCRIPT/contrib_libatscc2py3.bash ; bash $<
 srcget_contrib_libatscc2php:: SCRIPT/contrib_libatscc2php.bash ; bash $<
 srcget_contrib_libatscc2scm:: SCRIPT/contrib_libatscc2scm.bash ; bash $<
 srcget_contrib_libatscc2clj:: SCRIPT/contrib_libatscc2clj.bash ; bash $<
+srcget_contrib_libatscc2r34:: SCRIPT/contrib_libatscc2r34.bash ; bash $<
 #
 ######
 #
@@ -473,12 +483,9 @@ srcget_patscontrib_kernelats:: SCRIPT/patscontrib_kernelats.bash ; bash $<
 
 ######
 
-srcget_patscontrib:: srcget_patscontrib_libatscc
-srcget_patscontrib_libatscc:: SCRIPT/patscontrib_libatscc.bash ; bash $<
-
 ######
 #
-PACKNAME=ATS2-Postiats-0.3.7
+PACKNAME=ATS2-Postiats-0.3.10
 #
 atspacktarzvcf:: ; $(RMRF) $(PACKNAME)
 atspacktarzvcf:: ; $(CPRF) ATS-Postiats $(PACKNAME)
@@ -493,14 +500,14 @@ scp $(PACKNAME).tgz ats-hwxi,ats-lang@web.sourceforge.net:htdocs/IMPLEMENT/Posti
 #
 ######
 #
-PACKNAMEintmin=ATS2-Postiats-intmin-0.3.3
+PACKNAMEintmin=ATS2-Postiats-intmin-0.3.7
 #
 atspacktarzvcf_intmin_up:: ; \\
 scp $(PACKNAME).tgz ats-hwxi,ats-lang@web.sourceforge.net:htdocs/IMPLEMENT/Postiats/$(PACKNAMEintmin).tgz
 #
 ######
 #
-CONTRIBNAME=ATS2-Postiats-contrib-0.3.7
+CONTRIBNAME=ATS2-Postiats-contrib-0.3.10
 atscontribtarzvcf:: ; $(RMRF) $(CONTRIBNAME)
 atscontribtarzvcf:: ; $(CPRF) ATS-Postiats-contrib $(CONTRIBNAME)
 atscontribtarzvcf:: ; $(TARZVCF)  $(CONTRIBNAME).tgz  $(CONTRIBNAME)/.

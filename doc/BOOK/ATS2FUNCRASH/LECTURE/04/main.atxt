@@ -32,7 +32,7 @@ square = lam(x: int): int => x * x
 
 where the keyword #keycode("lam") is for constructing a
 lambda-abstraction.  For defining a recursive anonymous function, the
-keyword #keycode("fix") needed. For instance, the factorial function
+keyword #keycode("fix") is needed. For instance, the factorial function
 can also be implemented as follows:
 
 #dats2xhtml('\
@@ -195,7 +195,7 @@ fun
 sq(i: int): int = i*i
 fun
 sqsum(n: int): int =
-int_foldleft<int>(n, 0, lam(res, i) => res * sq(i+1))
+int_foldleft<int>(n, 0, lam(res, i) => res + sq(i+1))
 //
 ')
 
@@ -277,9 +277,10 @@ end // end of [matrix_mulby]
 
 Note that the function templates #dyncode("gadd_val_val") and
 #dyncode("gmul_val_val") are for addition and multiplication
-operations on generic numbers of type #stacode("a").  What
-#dyncode("matrix_mulby") does is simply updating #dyncode("C") with
-#dyncode("C") plus the product of #dyncode("A") and #dyncode("B"). \
+operations on generic numbers of type #stacode("a"), respectively.
+What #dyncode("matrix_mulby") does is simply updating #dyncode("C")
+with #dyncode("C") plus the product of #dyncode("A") and
+#dyncode("B"). \
 
 ")
 

@@ -38,8 +38,10 @@ ATS_PACKNAME "ATEXTING"
 
 (* ****** ****** *)
 //
-#include
-"share/atspre_define.hats"
+#define
+CSTREAM_targetloc
+"$PATSHOME/contrib\
+/atscntrb/atscntrb-hx-cstream"
 //
 (* ****** ****** *)
 //
@@ -56,7 +58,7 @@ SBF =
 "libats/SATS/stringbuf.sats"
 staload
 CS0 =
-"{$HX_CSTREAM}/SATS/cstream.sats"
+"{$CSTREAM}/SATS/cstream.sats"
 //
 stadef
 dynarray = $DA.dynarray
@@ -496,6 +498,39 @@ fun
 atext_make_squote(loc_t, xs: atextlst): atext
 fun
 atext_make_dquote(loc_t, token, xs: atextlst): atext
+//
+(* ****** ****** *)
+//
+fun
+atext_tuple_2
+( l0: loc_t
+, x0: atext, x1: atext): atext
+fun
+atext_tuple_3
+( l0: loc_t
+, x0: atext
+, x1: atext, x2: atext): atext
+fun
+atext_tuple_4
+( l0: loc_t
+, x0: atext, x1: atext
+, x2: atext, x3: atext): atext
+fun
+atext_tuple_5
+( l0: loc_t
+, x0: atext, x1: atext
+, x2: atext, x3: atext, x4: atext): atext
+fun
+atext_tuple_6
+( l0: loc_t
+, x0: atext, x1: atext, x2: atext
+, x3: atext, x4: atext, x5: atext): atext
+//
+overload atext_tuple with atext_tuple_2
+overload atext_tuple with atext_tuple_3
+overload atext_tuple with atext_tuple_4
+overload atext_tuple with atext_tuple_5
+overload atext_tuple with atext_tuple_6
 //
 (* ****** ****** *)
 //

@@ -12,31 +12,14 @@
 //
 #include
 "share/atspre_staload.hats"
+#include
+"share/atspre_staload_libats_ML.hats"
 //
 (* ****** ****** *)
 
 staload
 UN = "prelude/SATS/unsafe.sats"
 
-(* ****** ****** *)
-
-staload "libats/ML/SATS/basis.sats"
-staload "libats/ML/SATS/list0.sats"
-staload "libats/ML/SATS/string.sats"
-
-(* ****** ****** *)
-
-staload _ = "libats/ML/DATS/list0.dats"
-staload _ = "libats/ML/DATS/string.dats"
-
-(* ****** ****** *)
-//
-staload _ = "libats/DATS/hashfun.dats"
-staload _ = "libats/DATS/linmap_list.dats"
-staload _ = "libats/DATS/hashtbl_chain.dats"
-//
-staload _ = "libats/ML/DATS/hashtblref.dats"
-//
 (* ****** ****** *)
 
 abstype wcmap_type = ptr
@@ -114,8 +97,10 @@ and loop2
 ) : charlst = let
   val i = char_get ()
 in
-  if isalpha (i) then
-    loop2 (cons0{char}(int2char0(i), res)) else res
+  if isalpha(i)
+    then
+    loop2 (cons0{char}(int2char0(i), res))
+    else res
   // end of [if]
 end // end of [loop2]
 //
@@ -124,8 +109,8 @@ val cs = loop ()
 in
 //
 case+ cs of
-| nil0 () => stropt_none ((*void*))
-| cons0 _ => stropt_some (string_make_rlist (cs))
+| nil0 () => stropt_none((*void*))
+| cons0 _ => stropt_some(string_make_rlist0(cs))
 //
 end // end of [word_get]
 
@@ -145,24 +130,26 @@ wcmap_type = hashtbl(string, int)
 in (* in of [local] *)
 
 implement
-wcmap_create () =
-  $HT.hashtbl_make_nil (i2sz(1024))
+wcmap_create() =
+  $HT.hashtbl_make_nil(i2sz(1024))
 // end of [wcmap_create]
 
 implement
 wcmap_incby1
   (map, w) = let
 //
-val opt = $HT.hashtbl_search (map, w)
+val
+opt =
+$HT.hashtbl_search<string,int>(map, w)
 //
 in
 //
 case+ opt of
-| ~Some_vt (n) =>
+| ~Some_vt(n) =>
   {
-    val-~Some_vt _ = $HT.hashtbl_insert (map, w, n+1)
+    val-~Some_vt _ = $HT.hashtbl_insert(map, w, n+1)
   }
-| ~None_vt ((*void*)) => $HT.hashtbl_insert_any (map, w, 1)
+| ~None_vt ((*void*)) => $HT.hashtbl_insert_any(map, w, 1)
 //
 end // end of [wcmap_incby1]
 

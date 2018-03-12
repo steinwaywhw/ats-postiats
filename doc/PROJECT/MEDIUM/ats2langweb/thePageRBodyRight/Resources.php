@@ -10,8 +10,24 @@ style="margin-top:8px;padding:8px;"
 <a
  href="https://github.com/bbarker/IntelliJATS">IntelliJATS
 </a></b><br>
-An ATS plugin for <a href="https://www.jetbrains.com/idea/">IntelliJ IDEA</a><br>
+ATS plugin for
+<a href="https://www.jetbrains.com/idea/">IntelliJ IDEA</a><br>
 by Brandon Barker
+<hr></hr>
+
+<b>
+<a href="https://bluishcoder.co.nz/tags/ats/index.html">Articles on ATS
+</a></b><br>
+A series of articles on programming features of ATS<br>
+prepared by Chris Double
+<hr></hr>
+
+<b>
+<a
+ href="https://hub.docker.com/r/dockerhwxi/ats2/">Dockerhwxi/ats2
+</a></b><br>
+Docker images for various versions of ATS/Postiats<br>
+prepared by Hongwei Xi
 <hr></hr>
 
 <b>
@@ -19,7 +35,8 @@ by Brandon Barker
  href="https://github.com/steinwaywhw/ats-mode-sublimetext">Ats-mode-sublimetext
 </a>
 </b><br>
-An ATS syntax highlighter for <a href="http://www.sublimetext.com">SublimeText 2/3</a><br>
+ATS syntax highlighter for
+<a href="http://www.sublimetext.com">SublimeText 2/3</a><br>
 by Hanwen (Steinway) Wu
 <hr></hr>
 

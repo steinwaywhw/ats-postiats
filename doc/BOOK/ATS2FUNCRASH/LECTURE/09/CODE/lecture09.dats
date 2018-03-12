@@ -93,11 +93,11 @@ println!
 ("forall_isevn(", xs, ") = ", list0_forall(xs, lam(x) => x%2 = 0))
 //
 (* ****** ****** *)
-
+//
 datatype tree(a:t@ype) =
-| tree_nil of ()
-| tree_cons of (tree(a), a, tree(a))
-
+  | tree_nil of ()
+  | tree_cons of (tree(a), a, tree(a))
+//
 (* ****** ****** *)
 //
 fun
@@ -142,7 +142,9 @@ case+ t0 of
 | tree_cons(tl, _, tr) => let
     val hl = aux(tl) and hr = aux(tr)
   in
-    if hl = hr then 1+max(hl, hr) else $raise NotPerfect
+    if hl = hr
+      then 1+max(hl, hr) else $raise NotPerfect()
+    // end of [if]
   end
 //
 in

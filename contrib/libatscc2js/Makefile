@@ -81,6 +81,9 @@ $(ATSCC2JS) -o ./output/DATS/gmatrixref_dats.js -i
 ######
 #
 all:: ; \
+$(PATSOPT) -d ./DATS/funarray.dats | \
+$(ATSCC2JS) -o ./output/DATS/funarray_dats.js -i
+all:: ; \
 $(PATSOPT) -d ./DATS/slistref.dats | \
 $(ATSCC2JS) -o ./output/DATS/slistref_dats.js -i
 all:: ; \
@@ -95,35 +98,28 @@ $(ATSCC2JS) -o ./output/DATS/ML/list0_dats.js -i
 all:: ; \
 $(PATSOPT) -d ./DATS/ML/array0.dats | \
 $(ATSCC2JS) -o ./output/DATS/ML/array0_dats.js -i
-#
-######
-#
 all:: ; \
-$(PATSOPT) -d ./Bacon.js/DATS/baconjs.dats | \
-$(ATSCC2JS) -o ./output/Bacon.js/DATS/baconjs_dats.js -i
+$(PATSOPT) -d ./DATS/ML/matrix0.dats | \
+$(ATSCC2JS) -o ./output/DATS/ML/matrix0_dats.js -i
 all:: ; \
-$(PATSOPT) -d ./Bacon.js/DATS/baconjs_ext.dats | \
-$(ATSCC2JS) -o ./output/Bacon.js/DATS/baconjs_ext_dats.js -i
+$(PATSOPT) -d ./DATS/ML/option0.dats | \
+$(ATSCC2JS) -o ./output/DATS/ML/option0_dats.js -i
 #
 ######
 #
 LIBATSCC2JS_ALL_JS=\
 output/libatscc2js_all.js
 #
-LIBATSCC2JS_BACONJS_ALL_JS=\
-output/libatscc2js_baconjs_all.js
-#
 ######
 
 all_in_one:: libatscc2js_all
-all_in_one:: libatscc2js_baconjs_all
 
 ######
 #
 DATE=/bin/date
 ECHO=/bin/echo -en
 #
-PRINTF=printf
+PRINTF=/usr/bin/printf
 #
 ######
 #
@@ -142,7 +138,7 @@ libatscc2js_all:: ; \
 $(PRINTF) '*/\n\n' | $(CAT) - >>$(LIBATSCC2JS_ALL_JS)
 #
 ######
-#
+
 libatscc2js_all:: ; \
 $(CAT) >>$(LIBATSCC2JS_ALL_JS) \
 CATS/basics_cats.js \
@@ -151,13 +147,11 @@ CATS/bool_cats.js \
 CATS/float_cats.js \
 CATS/string_cats.js \
 CATS/gvalue_cats.js \
-CATS/JSmath_cats.js \
-CATS/JSdate_cats.js \
 CATS/JSarray_cats.js \
-CATS/JSglobal_cats.js \
-CATS/Ajax/Ajax_cats.js \
-CATS/HTML/canvas-2d/canvas2d_cats.js
-#
+CATS/JSLIBC/JSmisc_cats.js \
+CATS/JSLIBC/JSmath_cats.js \
+CATS/JSLIBC/JSdate_cats.js \
+
 libatscc2js_all:: ; \
 $(CAT) >>$(LIBATSCC2JS_ALL_JS) \
 output/DATS/basics_dats.js \
@@ -175,11 +169,14 @@ output/DATS/reference_dats.js \
 output/DATS/arrayref_dats.js \
 output/DATS/matrixref_dats.js \
 output/DATS/gmatrixref_dats.js \
-output/DATS/qlistref_dats.js \
+output/DATS/funarray_dats.js \
 output/DATS/slistref_dats.js \
+output/DATS/qlistref_dats.js \
 output/DATS/ML/list0_dats.js \
-output/DATS/ML/array0_dats.js
-#
+output/DATS/ML/array0_dats.js \
+output/DATS/ML/matrix0_dats.js \
+output/DATS/ML/option0_dats.js \
+
 ######
 #
 libatscc2js_all:: ; \
@@ -188,23 +185,15 @@ libatscc2js_all:: ; \
 $(PRINTF) '\n/* end of [libatscc2js_all.js] */\n' | $(CAT) - >>$(LIBATSCC2JS_ALL_JS)
 #
 ######
-#
-libatscc2js_baconjs_all:: ; \
-$(CAT) \
->$(LIBATSCC2JS_BACONJS_ALL_JS) \
-Bacon.js/CATS/baconjs_cats.js \
-output/Bacon.js/DATS/baconjs_dats.js \
-output/Bacon.js/DATS/baconjs_ext_dats.js
-#
-######
 
 clean:: ; $(RMF) *~ */*~
 
 ######
 
 cleanall:: clean
+cleanall:: ; $(RMF) output/DATS/*_dats.js
+cleanall:: ; $(RMF) output/DATS/ML/*_dats.js
 cleanall:: ; $(RMF) $(LIBATSCC2JS_ALL_JS)
-cleanall:: ; $(RMF) $(LIBATSCC2JS_BACONJS_ALL_JS)
 
 ######
 

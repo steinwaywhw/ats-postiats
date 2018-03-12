@@ -155,6 +155,10 @@ all :: \
 GraphSearch-npm
 GraphSearch-npm:: ; $(MAKE) -C $@ $(TARGET)
 
+all :: \
+DivideConquerPar
+DivideConquerPar:: ; $(MAKE) -C $@ $(TARGET)
+
 ######
 
 uploadall::
@@ -186,6 +190,7 @@ uploadall::upload_funcomb-style
 uploadall::upload_DivideConquer
 uploadall::upload_GraphSearch
 uploadall::upload_GraphSearch-npm
+uploadall::upload_DivideConquerPar
 
 ######
 
@@ -349,10 +354,10 @@ upload_IPC-hiredis:: ; \
   $(SCP) \
   IPC-hiredis/index.html \
   IPC-hiredis/Makefile \
-  IPC-hiredis/mylib.dats \
+  IPC-hiredis/params.hats \
+  IPC-hiredis/testlib.dats \
   IPC-hiredis/msgchan.sats \
   IPC-hiredis/msgchan.dats \
-  IPC-hiredis/params.hats \
   IPC-hiredis/redisContextSetup.dats \
   IPC-hiredis/test_up.dats \
   IPC-hiredis/test_dn.dats \
@@ -473,6 +478,22 @@ upload_GraphSearch-npm:: ; \
   GraphSearch-npm/Makefile GraphSearch-npm/package.json \
   GraphSearch-npm/QueenPuzzle.dats GraphSearch-npm/DoubletsPlay.dats \
   ats-hwxi,ats-lang@web.sourceforge.net:htdocs/EXAMPLE/EFFECTIVATS/GraphSearch-npm/
+
+######
+
+upload_StreamPar:: ; \
+  $(SCP) \
+  StreamPar/index.html \
+  StreamPar/Makefile StreamPar/package.json StreamPar/*.?ats \
+  ats-hwxi,ats-lang@web.sourceforge.net:htdocs/EXAMPLE/EFFECTIVATS/StreamPar/
+
+######
+
+upload_DivideConquerPar:: ; \
+  $(SCP) \
+  DivideConquerPar/index.html \
+  DivideConquerPar/Makefile DivideConquerPar/package.json DivideConquerPar/*.?ats \
+  ats-hwxi,ats-lang@web.sourceforge.net:htdocs/EXAMPLE/EFFECTIVATS/DivideConquerPar/
 
 ######
 

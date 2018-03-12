@@ -15,7 +15,7 @@ Time of Generation: #timestamp()\
 ")
 <chapter
  id="lecture06-10">
-#title("Through ATS to Javascript")
+#title("Through ATS to PHP")
 
 #para("\
 
@@ -24,198 +24,161 @@ describe ATS. When given a programming language X, a programmer often
 assumes automatically that X is just meant for constructing programs
 #emphasis("manually"). Sometimes, a (much) more productive approach to
 writing code in X is to write some code in another programming
-language for generating the needed code in X.  In this chapter, I plan
-to demonstrate a style of co-programming with ATS and Javascript (JS).
-In practice (of this style of co-programming), ATS is primarily
-intended for high-level programming (that, for instance, makes
-extensive use of combinators) and JS for relatively low-level
-programming (that, for instance, handles direct interactions with the
-browser running JS code).
+language for generating the needed code in X.\
 
 ")
 
 #para("\
 
-Let us take a look at a simple webpage for computing factorials
+PHP is a programming language of great popularity for primarily
+supporting the server-side web development. In this chapter, I plan to
+demonstrate a style of co-programming with ATS and PHP.  In practice
+(of this style of co-programming), ATS is mainly intended for
+high-level programming (that, for instance, makes extensive use of
+combinators) and PHP for relatively low-level programming (that, for
+instance, handles direct interactions with the web server running PHP
+code).
+
+")
+
+#para("\
+
+It is straightforward to use ATS to generate PHP code. Suppose that
+the ATS code stored in a file of the name #filename("ats2php.dats")
+needs to be compiled into PHP. This can be done as follows in two steps:
+
+<informalexample><programlisting>
+patsopt -o ats2php_dats.c -d ats2php.dats
+atscc2php -o ats2php_dats.php -i ats2php_dats.c
+</programlisting></informalexample>
+
+The code contained in the file #filename("ats2php.dats") is first
+compiled into C (via a call to #command("patsopt")) and then
+transpiled from C into PHP (via a call to #command("atscc2php")).
+With piping, these two steps can be accomplished by issuing the
+following command-line:
+
+<informalexample><programlisting>
+patsopt -d ats2php.dats | atscc2php -o ats2php_dats.php -i -
+</programlisting></informalexample>
+
+Note that the PHP code generated from the ATS source in
+#filename("ats2php.dats") is stored in #filename("ats2php_dats.php").
+
+")
+
+#para("\
+
+In order for the PHP code generated from ATS source to run, the PHP
+file <ulink
+url=\"https://github.com/ats-lang/ats-lang.github.io/blob/master/LIBRARY/libatscc2php/libatscc2php_all.php\">libatscc2php_all.php</ulink>
+needs to be loaded first. For instance, loading can be done by
+executing the following line (of PHP code):
+
+<informalexample><programlisting>
+include_once \"$LIBATSCC2PHP_DIR/libatscc2php_all.php\"
+</programlisting></informalexample>
+
+where #dyncode("$LIBATSCC2PHP_DIR") refers to a directory containing a
+copy of the file #filename("libatscc2php_all.php").
+
+")
+
+#para("\
+
+As a concrete example, please see the code in
 <ulink
- url=\"https://ats-lang.github.io/DOCUMENT/ATS2FUNCRASH/LECTURE/06-10/CODE/Factorial.html\">on-line</ulink>.
-After inputing a natural number, one can click the
-#emphasis('Evaluate') button to see some output mentioning the
-factorial of the number.
-Please find the HTML source for the webpage
-<ulink url=\"https://github.com/ats-lang/ats-lang.github.io/tree/master/DOCUMENT/ATS2FUNCRASH/LECTURE/06-10/CODE/Factorial.html\">here</ulink>.
-
-Note that the following JS scripts are needed for evaluating
-JS code generated from ATS source:
-
-<informalexample><programlisting>
-&lt;script type=\"text/javascript\"
- src=\"https://ats-lang.github.io/LIBRARY/libatscc2js/ATS2-0.3.2/libatscc2js_all.js\"&gt;
-&lt;/script&gt;
-&lt;script type=\"text/javascript\"
-  src=\"https://ats-lang.github.io/LIBRARY/libatscc2js/ATS2-0.3.2/libatscc2js_print_store_cats.js\"&gt;
-&lt;/script&gt;
-</programlisting></informalexample>
-
-The JS code in the file #filename("Factorial_dats.js") is generated
-from compiling the ATS source stored in
-#filename("Factorial.dats"). The command #command("patsopt") is called
-on the ATS source to compile it onto C code, and the command
-#command("atscc2js") is subsequently called on the generated C code to
-transpile it into JS code:
-
-<informalexample><programlisting>
-patsopt -o Factorial_dats.c -d Factorial.dats
-atscc2js -o Factorial_dats.js -i Factorial_dats.c
-</programlisting></informalexample>
-
-")
-
-#para("\
-
-At the beginning of #filename("Factorial.dats"), the following
-code is present:
+url=\"https://github.com/ats-lang/ats-lang.github.io/blob/master/DOCUMENT/ATS2FUNCRASH/LECTURE/06-10/CODE/Factorial.dats\">Factorial.dats</ulink>.
+At the beginning of the file, the following code is present:
 
 #dats2xhtml('\
 //
-\#define ATS_MAINATSFLAG 1
-\#define ATS_DYNLOADNAME "Factorial__dynload"
+\#define ATS_DYNLOADFLAG 0
+//
+\#define ATS_EXTERN_PREFIX "Factorial_"
+\#define ATS_STATIC_PREFIX "_Factorial_"
 //
 ')
 
-which indicates to #command("patsopt") that a dynload-function of the
-name #dyncode("Factorial__dynload") is to be generated when the ATS
-source contained in #filename("Factorial.dats") is compiled into C.
-Then this dynload-function is transpiled into JS by
-#command("atscc2js"), and it is supposed to be called first (to
-perform initialization) before any function in the generated JS code
-is put into use.
+which indicates to #command("patsopt") that no dynload-function (for
+the purpose of code initialization) is to be generated when the ATS
+source is compiled into C. The string value of
+#dyncode("ATS_EXTERN_PREFIX") is used as a prefix to form names for
+functions in C that are generated from compiling functions in ATS
+given the special external name #dyncode("mac#%").  And the string
+value of #dyncode("ATS_STATIC_PREFIX") is used as a prefix to form
+names for static functions in C that are generated from compiling ATS
+source.
 
 ")
 
 #para("\
 
-The following lines in #filename("Factorial.dats")
-are added for accessing the LIBATSCC2JS library, which is
-needed for compiling ATS to JS:
+For compiling ATS to PHP, we need to have access to the
+LIBATSCC2PHP library, which can be done by adding the following
+lines:
 
 #dats2xhtml('\
 //
 \#define
-LIBATSCC2JS_targetloc
-"$PATSHOME/contrib\\\\\\\\
-/libatscc2js/ATS2-0.3.2"
+LIBATSCC2PHP_targetloc
+"$PATSHOME\\\\\\\\
+/contrib/libatscc2php/ATS2-0.3.2"
 //
-\#include "{$LIBATSCC2JS}/staloadall.hats" // for prelude stuff
-\#staload "{$LIBATSCC2JS}/SATS/print.sats" // for printing into a store
+\#include "{$LIBATSCC2PHP}/staloadall.hats"
 //
 ')
 
 The version we use here is ATS2-0.3.2, which is the latest
-stable release of LIBATSCC2JS.
+stable release of LIBATSCC2PHP.
 
 ")
 
 #para("\
 
 In the following code,
-a function of the name #dyncode("funarg1_get") is declared
-in ATS and implemented in JS:
+a function of the name #dyncode("Factorial") is declared
+and then implemented in ATS:
 
 #dats2xhtml('\
 //
 extern
 fun
-funarg1_get(): int = "mac\\\\#"
+Factorial(n: int): int = "mac#%"
 //
-\%{^
-function funarg1_get()
-{
-  return parseInt(document.getElementById("funarg1").value);
-}
-\%} (* end of external code *)
-//
-')
-
-The function #dyncode("funarg1_get") essentially locates a
-DOM-element identified by #dyncode("funarg1") and then converts
-into an integer the string stored in the value-field of the
-DOM-element.
-
-Note that the use of the string #dyncode('"mac\\\\#"') simply
-indicates to #command("patsopt") that the function
-#dyncode("funarg1_get") is to be given the same name when compiled
-into C.  In contrast, the name automatically chosen (by
-#command("patsopt")) for #dyncode("funarg1_get") contains a long
-prefix (for carrying some namespace information) if the string
-#dyncode('"mac\\\\#"') is not present. In case a different name is
-needed for #dyncode("funarg1_get") in C, the name should be explicitly
-mentioned after the symbol #dyncode('\\\\#'). For instance, if the
-string #dyncode('"mac\\\\#\JS_funarg1_get"') is used, then the name
-#dyncode("JS_funarg1_get") is chosen (by #command("patsopt")) for
-#dyncode("funarg1_get").  In ATS source, the code written between
-#dyncode("\%{^") and #dyncode("\%}") is considered external and is
-directly pasted by #command("patsopt") into the generated C code.  The
-symbol #dyncode("^") means that the pasted code is to appear near the
-beginning of the generated code. If the symbol #dyncode("^") is
-omitted or replaced with #dyncode("$"), the pasted code is to appear
-near the bottom of the generated code.
-
-")
-
-#para("\
-
-The following function is called when the
-#emphasis("Evaluate") button is clicked:
-
-#dats2xhtml('\
-//
-extern
-fun
-Factorial__evaluate
-  ((*void*)): void = "mac#"
+(* ****** ****** *)
 //
 implement
-Factorial__evaluate
-  ((*void*)) = let
-  val () =
-  the_print_store_clear()
-  val arg = funarg1_get()
-  val () =
-  println!
-  ("The factorial of ", arg, " is ", fact(arg))
-  // end of [val]
-  val theOutput =
-    document_getElementById("theOutput")
-  // end of [val]
-in
-  xmldoc_set_innerHTML(theOutput, the_print_store_join())
-end // end of [Factorial__evaluate]
+Factorial(n) =
+(fix
+ loop(i: int, res: int) =<cloref1>
+ if i < n then loop(i+1, res*(i+1)) else res
+)(0, 1) // end of [Factorial]
 //
 ')
 
-There is a global store, an array of strings, for receiving the
-output generated from calling various print-functions. The function
-#dyncode("the_print_store_clear") is for clearing this store and the
-function #dyncode("the_print_store_join") for joining the strings
-contained in the store into a single one.  Given a name,
-#dyncode("document_getElementById") locates the DOM-element identified
-by the name.  Given a DOM-element and a string,
-#dyncode("xmldoc_set_innerHTML") updates the innerHTML-field of the
-DOM-element with the string.
+Note that the use of the string #dyncode('"mac\\\\#%"') simply
+indicates to #command("patsopt") that the function
+#dyncode("Factorial") is to be given the same name prefixed by the
+string value of #dyncode("ATS_STATIC_PREFIX") when compiled into C.
+In contrast, the name automatically chosen (by #command("patsopt"))
+for #dyncode("Factorial") contains a long prefix (for carrying some
+namespace information) if the string #dyncode('"mac\\\\#%"') is not
+present. If a different name is needed, please replace the symbol
+#dyncode("%") in #dyncode("mac\\\\#%") with the name.
 
 ")
 
 #para("\
 
-For a more involved example, please visit <ulink
-url=\"https://ats-lang.github.io/DOCUMENT/ATS2FUNCRASH/LECTURE/06-10/CODE/QueenPuzzle.html\">on-line</ulink>
-a webpage for animating the process that searches (in the depth-first
-fashion) for solutions to the 8-queen puzzle. The HTML source for the
-webpage can be viewed <ulink
-url=\"https://github.com/ats-lang/ats-lang.github.io/tree/master/DOCUMENT/ATS2FUNCRASH/LECTURE/06-10/CODE/QueenPuzzle.html\">here</ulink>,
-and the code implementing depth-first search is simply adapted from some
-sample ATS code presented in a previous chapter.
+When doing co-programming with ATS and PHP, one often wants to include
+some PHP code in ATS source so that the included code can be directly
+pasted into the PHP code generated from the ATS source. The code
+written between #dyncode("\%{^") and #dyncode("\%}") is considered
+external, where the symbol #dyncode("^") means that the code is to be
+pasted near the beginning of the generated code. If the symbol
+#dyncode("^") is omitted or replaced with #dyncode("$"), the code is
+to be pasted near the bottom of the generated code.
 
 ")
 
@@ -229,14 +192,14 @@ the code used in this chapter. The mentioned URL link(s) can be found as follows
 <listitem>
 #para("\
 <ulink
-url=\"https://ats-lang.github.io/DOCUMENT/ATS2FUNCRASH/LECTURE/06-10/CODE/Factorial.html\">https://ats-lang.github.io/DOCUMENT/ATS2FUNCRASH/LECTURE/06-10/CODE/Factorial.html</ulink>
+url=\"https://github.com/ats-lang/ats-lang.github.io/blob/master/LIBRARY/libatscc2php/libatscc2php_all.php\">https://github.com/ats-lang/ats-lang.github.io/blob/master/LIBRARY/libatscc2php/libatscc2php_all.php</ulink>.
 ")#comment("para")
 </listitem>
 
 <listitem>
 #para("\
 <ulink
-url=\"https://ats-lang.github.io/DOCUMENT/ATS2FUNCRASH/LECTURE/06-10/CODE/QueenPuzzle.html\">https://ats-lang.github.io/DOCUMENT/ATS2FUNCRASH/LECTURE/06-10/CODE/QueenPuzzle.html</ulink>
+url=\"https://github.com/ats-lang/ats-lang.github.io/blob/master/DOCUMENT/ATS2FUNCRASH/LECTURE/06-10/CODE/Factorial.dats\">https://github.com/ats-lang/ats-lang.github.io/blob/master/DOCUMENT/ATS2FUNCRASH/LECTURE/06-10/CODE/Factorial.dats</ulink>.
 ")#comment("para")
 </listitem>
 
