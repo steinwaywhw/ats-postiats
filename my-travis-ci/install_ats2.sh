@@ -2,8 +2,8 @@
 #
 ######
 #
-cp ${ATSHOME}/config.h .
-make -f Makefile_devl CC=${CC} all
+(cp ${ATSHOME}/config.h .)
+(cd ${PATSHOME} && make -f Makefile_devl CC=${CC} all)
 #
 # make -f codegen/Makefile_atslib
 #
