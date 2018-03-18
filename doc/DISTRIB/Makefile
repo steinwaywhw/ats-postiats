@@ -837,8 +837,8 @@ srcget_dist_cleanup:: ; $(RMF) ATS-Postiats/contrib/libatscc2scm/ATS2-0.3.2/outp
 srcget_dist_cleanup:: ; $(RMF) ATS-Postiats/contrib/libatscc2clj/ATS2-0.3.2/output/DATS/*_?ats.clj
 srcget_dist_cleanup:: ; $(RMF) ATS-Postiats/contrib/libatscc2clj/ATS2-0.3.2/output/DATS/ML/*_?ats.clj
 #
-srcget_dist_cleanup:: ; $(RMF) ATS-Postiats/npm-utils/contrib/atscntrb-libsdl2/TEST/DATA/*.png
-srcget_dist_cleanup:: ; $(RMF) ATS-Postiats/npm-utils/contrib/atscntrb-libcairo/TEST/DATA/*.png
+srcget_dist_cleanup:: ; $(RMF) ATS-Postiats/npm-utils/contrib/atscntrb/atscntrb-hx-libsdl2/TEST/DATA/*.png
+srcget_dist_cleanup:: ; $(RMF) ATS-Postiats/npm-utils/contrib/atscntrb/atscntrb-hx-libcairo/TEST/DATA/*.png
 #
 srcget_dist_cleanup:: ; $(RMF) ATS-Postiats/npm-utils/contrib/libats-/hwxi/OpenSCAD/TEST/output/*.stl
 #
@@ -898,8 +898,11 @@ srcget_patscontrib_kernelats:: SCRIPT/patscontrib_kernelats.bash ; bash $<
 ######
 
 ######
+PATSVER=$(shell cat ${PATSHOME}/VERSION)
+######
 #
 PACKNAME=ATS2-Postiats-0.3.10
+PACKNAME=ATS2-Postiats-$(PATSVER)
 #
 atspacktarzvcf:: ; $(RMRF) $(PACKNAME)
 atspacktarzvcf:: ; $(CPRF) ATS-Postiats $(PACKNAME)
@@ -922,6 +925,8 @@ scp $(PACKNAME).tgz ats-hwxi,ats-lang@web.sourceforge.net:htdocs/IMPLEMENT/Posti
 ######
 #
 CONTRIBNAME=ATS2-Postiats-contrib-0.3.10
+CONTRIBNAME=ATS2-Postiats-contrib-$(PATSVER)
+#
 atscontribtarzvcf:: ; $(RMRF) $(CONTRIBNAME)
 atscontribtarzvcf:: ; $(CPRF) ATS-Postiats-contrib $(CONTRIBNAME)
 atscontribtarzvcf:: ; $(TARZVCF)  $(CONTRIBNAME).tgz  $(CONTRIBNAME)/.
