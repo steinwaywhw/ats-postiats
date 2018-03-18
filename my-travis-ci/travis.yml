@@ -63,7 +63,7 @@ after_success:
   - if [ "$TRAVIS_OS_NAME" = "linux" ]; then (cd ${PATSHOME} && make -C doc/BOOK/INT2PROGINATS); fi
   # Build&Upload Docker Image
   - docker login -u $DOCKER_USER_RELEASE -p $DOCKER_PASS_RELEASE
-  - if [ "$TRAVIS_PULL_REQUEST"="false" ] && [ "$TRAVIS_OS_NAME"=="linux" ] && [ "$CC"=="gcc" ]; then ./my-travis-ci/build_docker.sh; fi
+  - if [ "$TRAVIS_PULL_REQUEST"="false" ] && [ "$TRAVIS_OS_NAME"=="linux" ] && [ "$CC"=="gcc" ]; then (cd my-travis-ci && ./build_docker.sh); fi
 after_script:
   # End Time
   - date
