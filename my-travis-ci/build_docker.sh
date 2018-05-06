@@ -20,7 +20,7 @@ if [[ "$TRAVIS_BRANCH" == "master" ]]; then
 	fi
 else
 	echo "$REPO:$TRAVIS_BRANCH"
-	docker tag $REPO:$TRAVIS_COMMIT $REPO:$TRAVIS_BRANCH          # steinwaywhw/ats:branch
+	docker tag $REPO:$TRAVIS_COMMIT $REPO:$TRAVIS_BRANCH      # steinwaywhw/ats:branch
 	docker push $REPO:$TRAVIS_BRANCH
 fi
 
