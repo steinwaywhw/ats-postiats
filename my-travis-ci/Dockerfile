@@ -26,8 +26,8 @@ RUN git clone https://github.com/ats-lang/ATS-Postiats-release/ ${HOME}/ATS-Post
 
 WORKDIR /tmp
 RUN (cd ${HOME}     && /tmp/install_ats1.sh)
-RUN (cd ${HOME}     && /tmp/install_contrib.sh)
 RUN (cd ${PATSHOME} && /tmp/install_ats2.sh)
+RUN (cd ${HOME}     && /tmp/install_contrib.sh)
 RUN (cd ${PATSHOME} && /tmp/install_utilities.sh)
 
 WORKDIR /tmp
