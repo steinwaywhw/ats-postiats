@@ -48,7 +48,7 @@ install:
   - date
   - (cd ${HOME} && ${TRAVIS_BUILD_DIR}/my-travis-ci/install_ats1.sh)
 script:
-  # Building ATS2
+  # Build ATS2
   - ${CC} --version
   - (cd ${PATSHOME} && ${TRAVIS_BUILD_DIR}/my-travis-ci/install_ats2.sh)
   # Initial Testing
@@ -56,14 +56,14 @@ script:
   # Running regress test
   - (cd ${PATSHOME} && ${TRAVIS_BUILD_DIR}/my-travis-ci/test_regress.sh)
 after_success:
-  # Build Docker Image
-  - docker login -u $DOCKER_USER_RELEASE -p $DOCKER_PASS_RELEASE
-  - if [ "$TRAVIS_PULL_REQUEST" = "false" ] && [ "$TRAVIS_OS_NAME" == "linux" ] && [ "$CC" == "gcc" ]; then (cd ${TRAVIS_BUILD_DIR}/my-travis-ci/ && ./build_docker.sh); fi
-  # Building some utilities
+  # Build utils
   - (cd ${PATSHOME} && ${TRAVIS_BUILD_DIR}/my-travis-ci/install_utilities.sh)
-  # Building books
+  # Build books
   - if [ "$TRAVIS_OS_NAME" = "linux" ]; then (cd ${PATSHOME} && make -C doc/BOOK/ATS2TUTORIAL); fi
   - if [ "$TRAVIS_OS_NAME" = "linux" ]; then (cd ${PATSHOME} && make -C doc/BOOK/INT2PROGINATS); fi
+  # Build&Upload Docker Image
+  - docker login -u $DOCKER_USER_RELEASE -p $DOCKER_PASS_RELEASE
+  - if ["$TRAVIS_PULL_REQUEST" == "false"]&&["$TRAVIS_OS_NAME" == "linux"]&&["$CC" == "gcc"]; then (cd my-travis-ci && ./build_docker.sh); fi
 after_script:
   # End Time
   - date

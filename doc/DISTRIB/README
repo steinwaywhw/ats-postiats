@@ -1,14 +1,42 @@
 ######
 #
 # HX-2018-03-11:
-# It is assumed that ATS-Anairiats is available!
-# It is also assumed that ATS-Postiats-contrib is available!
-# Please set PATSCONTRIB to be the path to ATS-Postiats-contrib:
-# export PATSCONTRIB = <the-absolute-path-to-ATS-Postiats-contrib>
+# ATS-Anairiats(ATS1) is needed
+# for building ATS-Postiats(ATS2)!
+#
+######
+#
+# First,
+# update $PATSHOME/VERSION
+#
+# which affects the following:
+# $PATSHOME/doc/DISTRIB/Makefile.atxt
+#
+# Second,
+# execute the following command-line
+#
+# make -f Makefile.gen
+#
+# to generate Makefile based on Makefile.atxt
 #
 ######
 #
 # Packaging ATS
+#
+# cd /tmp
+# sh ${PATSHOME}/share/SCRIPT/buildRelease.sh
+# <
+# Move the following built packages to some place:
+# /tmp/ATS-Postiats/doc/DISTRIB/ATS2-Postiats-x.y.z.tgz
+# /tmp/ATS-Postiats/doc/DISTRIB/ATS2-Postiats-contrib-x.y.z.tgz
+# /tmp/ATS-Postiats/doc/DISTRIB/ATS2-Postiats-include-x.y.z.tgz
+# >
+# rm -rf /tmp/ATS-Postiats
+# rm -rf /tmp/ATS-Postiats-contrib
+#
+#######
+#
+# Releasing ATS
 #
 # Creating a release file like the following one:
 # ${PATSHOME}/doc/DISTRIB/ATS-Postiats/RELEASE/ats2-postiats-0.3.9-release.html
@@ -23,49 +51,6 @@
 # Updating ats-lang.org/Documents
 # Updating ats-lang.org/Community
 # Announcing to ats-lang-users@lists.sourceforge.net
-#
-######
-#
-# Key Steps for packaging ATS
-#
-######
-  
-git clone https://github.com/githwxi/ATS-Postiats.git
-cd ATS-Postiats
-export PATSHOME=`pwd`
-make -f Makefile_devl
-make -C src -f Makefile CBOOT
-(cp ./bin/*_env.sh.in ./doc/DISTRIB/ATS-Postiats/bin/.)
-(cd ./doc/DISTRIB/ATS-Postiats && sh ./autogen.sh && ./configure)
-make -C src/CBOOT/libc -f Makefile
-make -C src/CBOOT/libats -f Makefile
-make -C src/CBOOT/prelude -f Makefile
-make -C doc/DISTRIB -f Makefile atspackaging
-make -C doc/DISTRIB -f Makefile atspacktarzvcf
-make -C doc/DISTRIB -f Makefile atscontribing
-make -C doc/DISTRIB -f Makefile atscontribtarzvcf
-make -C doc/DISTRIB -f Makefile_inclats tarzvcf
-
-#######
-#
-# You should see the generated compressed tarballs
-# for ATS2 and ATS2-contrib and ATS2-inclats
-#
-#######
-
-ls -al doc/DISTRIB/ATS2-*.
-
-#######
-#
-# The following files should be listed for some numbers
-# x, y, and z (such that ATS2-x.y.z is the version being
-# packaged)
-#
-#
-# ATS2-Postiats-x.y.z.tgz
-# ATS2-Postiats-contrib-x.y.z.tgz
-# ATS2-Postiats-include-x.y.z.tgz
-#
 #
 #######
    
